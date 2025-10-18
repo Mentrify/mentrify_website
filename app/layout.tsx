@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import Navigation from "../components/Navigation";
+import Footer from "../components/Footer";
 import "./globals.css";
+// import AuthHydrator from "@/components/AuthHydrator";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,12 +23,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        className={`min-h-screen bg-white ${inter.className} pt-10 md:pt-12 lg:pt-14`}
-      >
+      <body className={`min-h-screen bg-white ${inter.className}`}>
         {/* Global header */}
         <Navigation />
-
+        {/* <AuthHydrator /> */}
+        {/* Page content — padded so it doesn't sit under the fixed header */}
         <main className="">{children}</main>
 
         {/* Global footer */}

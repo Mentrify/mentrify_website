@@ -1,11 +1,7 @@
-/* Tailwind v4 core + plugin */
-@import "tailwindcss";
-@plugin "tailwindcss-animate";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* (optional) helps the v4 scanner & IntelliSense */
-@source "./**/*.{ts,tsx}" "../components/**/*.{ts,tsx}" "../lib/**/*.{ts,tsx}";
-
-/* ====== Tokens (same values as v3) ====== */
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -28,11 +24,6 @@
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
     --radius: 0.5rem;
-
-    /* palette entries used by theme() in v3 */
-    --primaryPalette-200: 212 96% 78%;
-    --primaryPalette-300: 211 94% 68%;
-    --primary-900: 0 0% 9%;
   }
 
   .dark {
@@ -58,52 +49,38 @@
   }
 }
 
-/* Map tokens -> Tailwind v4 color slots so utilities like bg-background keep working */
-@theme {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-}
-
-/* Dark variant helper */
-@custom-variant dark (&:where(.dark, .dark *));
-
-/* Base resets — unchanged behavior from v3 */
 @layer base {
-  * { @apply border-border; }
+  * {
+    @apply border-border;
+  }
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
 
-/* Smooth scrolling */
-html { scroll-behavior: smooth; }
+/* Apple-style smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
 
-/* Custom scrollbar */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(0,0,0,.2); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,.3); }
+/* Custom scrollbar - Apple style */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
 
 /* Apple-style typography */
 .apple-text-hero {
@@ -112,12 +89,14 @@ html { scroll-behavior: smooth; }
   line-height: 1.05;
   letter-spacing: -0.015em;
 }
+
 .apple-text-large {
   font-size: clamp(1.5rem, 4vw, 3rem);
   font-weight: 600;
   line-height: 1.1;
   letter-spacing: -0.01em;
 }
+
 .apple-text-body {
   font-size: clamp(1.125rem, 2.5vw, 1.375rem);
   font-weight: 400;
@@ -125,74 +104,120 @@ html { scroll-behavior: smooth; }
   letter-spacing: -0.008em;
 }
 
-/* Gradients (theme() → CSS vars) */
+/* Apple-style gradients */
 .apple-gradient-text {
-  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+  background: linear-gradient(135deg,theme('colors.primary.DEFAULT') 0%, theme('colors.secondary.DEFAULT') 100%);
   -webkit-background-clip: text;
-  background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-.apple-gradient-blue   { background: linear-gradient(135deg, #007aff 0%, #0051d5 100%); }
-.apple-gradient-purple { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
 
-/* Animations */
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes scaleIn  { from { opacity: 0; transform: scale(0.95); }      to { opacity: 1; transform: scale(1); } }
-.animate-fade-in-up { animation: fadeInUp .8s ease-out forwards; }
-.animate-scale-in   { animation: scaleIn  .6s ease-out forwards; }
+.apple-gradient-blue {
+  background: linear-gradient(135deg, #007aff 0%, #0051d5 100%);
+}
 
-/* Glassmorphism */
+.apple-gradient-purple {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Apple-style animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.6s ease-out forwards;
+}
+
+/* Apple-style glass morphism */
 .glass {
-  background: rgba(255,255,255,.8);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
+
 .glass-dark {
-  background: rgba(0,0,0,.8);
+  background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Hover */
-.apple-hover { transition: all .3s cubic-bezier(.25,.46,.45,.94); }
-.apple-hover:hover { transform: translateY(-2px); box-shadow: 0 20px 40px rgba(0,0,0,.1); }
+/* Apple-style hover effects */
+.apple-hover {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
 
-/* Buttons (theme() → CSS vars) */
+.apple-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Apple-style buttons */
 .apple-button {
   background: #A98BE7;
-  color: hsl(var(--primaryPalette-200));
+  color: theme('colors.primaryPalette.200');
   border: none;
   border-radius: 980px;
   padding: 12px 24px;
   font-weight: 500;
   font-size: 17px;
   line-height: 1.2;
-  transition: all .3s cubic-bezier(.25,.46,.45,.94);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .apple-button:hover {
   background: #7C63AA;
-  color: hsl(var(--primaryPalette-300));
+  color:theme('colors.primaryPalette.300');
   transform: scale(1.02);
 }
 
 .apple-button-secondary {
   background: transparent;
-  color: hsl(var(--primary-900));
-  border: 2px solid hsl(var(--primary-900));
+  color: theme('colors.primary.900');
+  border: 2px solid theme('colors.primary.900');
   border-radius: 980px;
   padding: 10px 22px;
   font-weight: 500;
   font-size: 17px;
   line-height: 1.2;
-  transition: all .3s cubic-bezier(.25,.46,.45,.94);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
+
 .apple-button-secondary:hover {
-  background: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
+  background: theme('colors.primary.DEFAULT');
+  color: theme('colors.primary.foreground');
   transform: scale(1.02);
 }
 
-/* Remove default focus outlines (prefer Tailwind focus-visible utilities) */
-button:focus, a:focus, input:focus, textarea:focus, select:focus { outline: none; }
+/* Remove default focus styles and add Apple-style ones */
+button:focus,
+a:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
