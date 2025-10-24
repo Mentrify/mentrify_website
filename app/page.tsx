@@ -153,21 +153,23 @@ export default function HomePage() {
                 : "text-5xl md:text-6xl text-black"
             }`}
           >
-            Make the Right Choice with Someone Who’s Living It
+            Make the Right Choice with Someone Who's Living It
           </h1>
 
           <p className={`mx-auto mt-6 max-w-2xl text-lg md:text-xl ${muted}`}>
-            Choosing a college is overwhelming — but you don’t have to do it
+            Choosing a college is overwhelming — but you don't have to do it
             alone. <b>Mentrify</b> connects you with real students from your
             target colleges for 1-on-1 mentorship, honest reviews, and insider
             advice.
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link href="/mentors">
-              <button className="apple-button text-base md:text-lg px-8 py-4 flex items-center justify-center group">
-                Find a Mentor
-                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-0.5" />
+            <Link href="/mentors" className="w-full max-w-md">
+              <button className="apple-button text-base md:text-lg px-12 py-5 flex items-center justify-center group w-full relative overflow-hidden">
+                <span className="absolute inset-0 bg-gradient-to-r from-primary-900/0 via-primary-800/20 to-primary-900/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
+                <Sparkles className="mr-3 h-5 w-5 md:h-6 md:w-6 text-white group-hover:rotate-12 transition-transform" />
+                <span className="font-semibold">Find Your Perfect Mentor</span>
+                <ArrowRight className="ml-3 h-5 w-5 md:h-6 md:w-6 transition-transform group-hover:translate-x-1" />
               </button>
             </Link>
           </div>
@@ -190,6 +192,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Carousel for cllg logos */}
+      {/* iit_bombay.png iit_delhi.png iit_gandhinagar.png iit_kanpur.png iit_madras.png */}
+      
 
       {/* Feature cards row (still part of landing) */}
       <section className="relative">
@@ -252,7 +258,7 @@ export default function HomePage() {
             {[
               {
                 t: "Clarity",
-                d: "Cut through the noise with clear next steps and real examples from students who’ve been there before.",
+                d: "Cut through the noise with clear next steps and real examples from students who've been there before.",
               },
               {
                 t: "Authenticity",
@@ -289,6 +295,19 @@ export default function HomePage() {
                 <div className="mt-2" />
               </div>
             ))}
+          </div>
+
+          <div className="mt-10 flex justify-center">
+            <Link href="/about">
+              <button className={`group inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-medium transition-all hover:gap-3 ${
+                USE_GREY 
+                  ? "bg-grey-1000/70 text-primaryPalette-200 ring-1 ring-white/10 hover:ring-primary-900/50" 
+                  : "bg-white text-grey-900 ring-1 ring-black/10 hover:ring-primary-900/30 shadow-sm"
+              }`}>
+                Know More About Us
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -374,6 +393,19 @@ export default function HomePage() {
                 <p className={`mt-2 ${muted}`}>{s.desc}</p>
               </div>
             ))}
+          </div>
+
+          <div className="mt-10 flex justify-center">
+            <Link href="/how-it-works">
+              <button className={`group inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-medium transition-all hover:gap-3 ${
+                USE_GREY 
+                  ? "bg-grey-1000/70 text-primaryPalette-200 ring-1 ring-white/10 hover:ring-primary-900/50" 
+                  : "bg-white text-grey-900 ring-1 ring-black/10 hover:ring-primary-900/30 shadow-sm"
+              }`}>
+                Learn More About the Process
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </button>
+            </Link>
           </div>
         </div>
       </section>
