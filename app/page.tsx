@@ -4,6 +4,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowRight, CheckCircle, Sparkles, Stars } from "lucide-react";
+import { CollegeCarousel } from "@/components/CollegeCarousel";
 
 // ── Toggle this to switch the whole page look ──────────────────────────────────
 const USE_GREY = false;
@@ -153,12 +154,12 @@ export default function HomePage() {
                 : "text-5xl md:text-6xl text-black"
             }`}
           >
-            Make the Right Choice with Someone Who's Living It
+            Make the Right Choice with Someone Who&apos;s Living It
           </h1>
 
           <p className={`mx-auto mt-6 max-w-2xl text-lg md:text-xl ${muted}`}>
-            Choosing a college is overwhelming — but you don't have to do it
-            alone. <b>Mentrify</b> connects you with real students from your
+            Choosing a college is overwhelming — but you don&apos;t have to do
+            it alone. <b>Mentrify</b> connects you with real students from your
             target colleges for 1-on-1 mentorship, honest reviews, and insider
             advice.
           </p>
@@ -194,8 +195,7 @@ export default function HomePage() {
       </section>
 
       {/* Carousel for cllg logos */}
-      {/* iit_bombay.png iit_delhi.png iit_gandhinagar.png iit_kanpur.png iit_madras.png */}
-      
+      <CollegeCarousel useGrey={USE_GREY} />
 
       {/* Feature cards row (still part of landing) */}
       <section className="relative">
@@ -299,11 +299,13 @@ export default function HomePage() {
 
           <div className="mt-10 flex justify-center">
             <Link href="/about">
-              <button className={`group inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-medium transition-all hover:gap-3 ${
-                USE_GREY 
-                  ? "bg-grey-1000/70 text-primaryPalette-200 ring-1 ring-white/10 hover:ring-primary-900/50" 
-                  : "bg-white text-grey-900 ring-1 ring-black/10 hover:ring-primary-900/30 shadow-sm"
-              }`}>
+              <button
+                className={`group inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-medium transition-all hover:gap-3 ${
+                  USE_GREY
+                    ? "bg-grey-1000/70 text-primaryPalette-200 ring-1 ring-white/10 hover:ring-primary-900/50"
+                    : "bg-white text-grey-900 ring-1 ring-black/10 hover:ring-primary-900/30 shadow-sm"
+                }`}
+              >
                 Know More About Us
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </button>
@@ -397,11 +399,13 @@ export default function HomePage() {
 
           <div className="mt-10 flex justify-center">
             <Link href="/how-it-works">
-              <button className={`group inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-medium transition-all hover:gap-3 ${
-                USE_GREY 
-                  ? "bg-grey-1000/70 text-primaryPalette-200 ring-1 ring-white/10 hover:ring-primary-900/50" 
-                  : "bg-white text-grey-900 ring-1 ring-black/10 hover:ring-primary-900/30 shadow-sm"
-              }`}>
+              <button
+                className={`group inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-medium transition-all hover:gap-3 ${
+                  USE_GREY
+                    ? "bg-grey-1000/70 text-primaryPalette-200 ring-1 ring-white/10 hover:ring-primary-900/50"
+                    : "bg-white text-grey-900 ring-1 ring-black/10 hover:ring-primary-900/30 shadow-sm"
+                }`}
+              >
                 Learn More About the Process
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </button>
