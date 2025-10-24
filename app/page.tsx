@@ -96,7 +96,7 @@ export default function HomePage() {
         ref={(el) => {
           heroSectionRef.current = el;
         }}
-        className="relative isolate min-h-[92vh] flex items-center justify-center overflow-hidden"
+        className="relative isolate pt-[150px] flex flex-col items-center text-center overflow-hidden"
         onMouseMove={handleHeroMouseMove}
         onMouseLeave={resetHeroSpotlight}
         style={{ ["--hx" as any]: "50%", ["--hy" as any]: "35%" }}
@@ -126,7 +126,7 @@ export default function HomePage() {
 
         {/* Small pill */}
         <div
-          className={`absolute top-28 left-1/2 -translate-x-1/2 rounded-full ${
+          className={`relative mx-auto rounded-full ${
             USE_GREY
               ? "bg-grey-1000/70 text-primaryPalette-200/80 ring-white/5"
               : "bg-white/70 text-grey-700 ring-black/10"

@@ -152,7 +152,7 @@ export default function TermsOfServicePage() {
   return (
     <div className="min-h-screen bg-white text-grey-900 selection:bg-primary-900/20 selection:text-primary-900">
       {/* Soft hero gradient */}
-      <section className="relative mt-[100px]">
+      <section className="relative mt-[125px]">
         <div className="absolute inset-0 -z-10">
           <div className="absolute inset-0 bg-[radial-gradient(120%_120%_at_50%_-10%,theme(colors.primaryPalette.100/_0.55),transparent_60%),linear-gradient(to_bottom,white,theme(colors.secondaryPalette.100/_0.25))]" />
           <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,.06)_1px,transparent_1px)] bg-[size:44px_44px]" />
