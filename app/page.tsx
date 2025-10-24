@@ -201,11 +201,10 @@ export default function HomePage() {
       <section className="relative">
         <div
           className="
-      mx-auto w-[92%] max-w-6xl
-      px-6 md:px-0
-      /* On mobile: static (no overlap). On md+: float above the boundary */
-      md:absolute md:-top-20 md:left-1/2 md:-translate-x-1/2 md:z-10
-    "
+    mx-auto w-[92%] max-w-6xl
+    px-6 md:px-0
+    mt-8 md:mt-12
+  "
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {[
