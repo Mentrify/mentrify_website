@@ -4,8 +4,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React, { useEffect, useRef } from "react";
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
 import { useForm, ValidationError } from "@formspree/react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
@@ -186,50 +184,60 @@ export default function HelpPage() {
         <section className="max-w-5xl mx-auto px-4 pb-12">
           <div
             ref={accordionRef}
-            className="rounded-2xl bg-white shadow-[0_20px_60px_-30px_rgba(120,99,255,.25)] ring-1 ring-black/10 overflow-hidden"
+            className="rounded-2xl bg-white shadow-[0_20px_60px_-20px_rgba(120,99,255,.25)] ring-1 ring-black/[0.08] overflow-hidden"
           >
-            <div className="px-6 pt-6 pb-2">
-              <h2 className="text-xl font-semibold text-gray-900">
+            <div className="px-8 pt-8 pb-4">
+              <h2 className="text-2xl font-semibold text-gray-900">
                 {faqs[active].title}
               </h2>
-              <p className="text-sm text-gray-600">
+              <p className="mt-1 text-sm text-gray-500">
                 {selectedItems.length}{" "}
                 {selectedItems.length === 1 ? "article" : "articles"}
               </p>
             </div>
 
-            <div className="divide-y divide-gray-200">
+            <div className="divide-y divide-gray-200/70">
               {selectedItems.map((item, idx) => {
                 const open = openIndex === idx;
                 return (
                   <div key={idx} className="group">
                     <button
                       onClick={() => setOpenIndex(open ? null : idx)}
-                      className="w-full text-left px-8 py-5 flex items-start justify-between gap-6 hover:bg-gray-50 transition-all duration-200
-          focus:outline-none focus:ring-0 focus-visible:outline-none"
+                      className={[
+                        "w-full text-left px-8 py-6",
+                        "flex items-start justify-between gap-6",
+                        "hover:bg-gray-50/80 transition-all duration-200",
+                        "focus:outline-none focus-visible:bg-gray-50/80",
+                      ].join(" ")}
                       aria-expanded={open}
                     >
-                      <span className="font-medium text-gray-900 text-base leading-snug w-11/12">
+                      <span className="font-medium text-gray-900 text-[15px] leading-normal w-[calc(100%-2rem)]">
                         {item.q}
                       </span>
-                      {open ? (
-                        <ChevronUp className="h-5 w-5 text-gray-500 mt-1 shrink-0" />
-                      ) : (
-                        <ChevronDown className="h-5 w-5 text-gray-500 mt-1 shrink-0" />
-                      )}
+                      <div className={`transform transition-transform duration-200 ${open ? "rotate-180" : ""}`}>
+                        <ChevronDown className="h-5 w-5 text-gray-400" />
+                      </div>
                     </button>
 
                     <div
                       className={[
-                        "px-8 flex justify-between",
-                        "transition-[max-height,opacity] duration-300 ease-out",
-                        open
-                          ? "max-h-96 opacity-100 pb-5"
-                          : "max-h-0 opacity-0 overflow-hidden",
+                        "grid",
+                        open ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
+                        "transition-[grid-template-rows] duration-300 ease-out",
                       ].join(" ")}
                     >
-                      <div className="w-11/12 text-gray-700 leading-relaxed text-[15px]">
-                        {item.a}
+                      <div className="overflow-hidden">
+                        <div 
+                          className={[
+                            "px-8 pb-6",
+                            "transition-opacity duration-300",
+                            open ? "opacity-100" : "opacity-0",
+                          ].join(" ")}
+                        >
+                          <div className="text-gray-600 leading-relaxed text-[15px] pr-8">
+                            {item.a}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>

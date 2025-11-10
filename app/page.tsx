@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle, Sparkles, Stars } from "lucide-react";
+import { ArrowRight, CheckCircle, Sparkles, Stars, X } from "lucide-react";
 import { CollegeCarousel } from "@/components/CollegeCarousel";
 
 // ── Toggle this to switch the whole page look ──────────────────────────────────
@@ -31,6 +31,7 @@ export default function HomePage() {
 
   // HERO spotlight
   const heroSectionRef = useRef<HTMLElement | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const handleHeroMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     const el = heroSectionRef.current;
     if (!el) return;
@@ -137,7 +138,7 @@ export default function HomePage() {
               USE_GREY ? "text-primary-900/70" : "text-primary-900"
             }`}
           />
-          Real talks. Real students. Real clarity.
+          Real Mentors. Real Stories. Real Guidance
         </div>
 
         {/* Copy */}
@@ -165,14 +166,15 @@ export default function HomePage() {
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link href="/mentors" className="w-full max-w-md">
-              <button className="apple-button text-base md:text-lg px-12 py-5 flex items-center justify-center group w-full relative overflow-hidden">
-                <span className="absolute inset-0 bg-gradient-to-r from-primary-900/0 via-primary-800/20 to-primary-900/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
-                <Sparkles className="mr-3 h-5 w-5 md:h-6 md:w-6 text-white group-hover:rotate-12 transition-transform" />
-                <span className="font-semibold">Find Your Perfect Mentor</span>
-                <ArrowRight className="ml-3 h-5 w-5 md:h-6 md:w-6 transition-transform group-hover:translate-x-1" />
-              </button>
-            </Link>
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="apple-button text-base md:text-lg px-12 py-5 flex items-center justify-center group w-full max-w-md relative overflow-hidden"
+            >
+              <span className="absolute inset-0 bg-gradient-to-r from-primary-900/0 via-primary-800/20 to-primary-900/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
+              <Sparkles className="mr-3 h-5 w-5 md:h-6 md:w-6 text-white group-hover:rotate-12 transition-transform" />
+              <span className="font-semibold">Find Your Perfect Mentor</span>
+              <ArrowRight className="ml-3 h-5 w-5 md:h-6 md:w-6 transition-transform group-hover:translate-x-1" />
+            </button>
           </div>
 
           {/* Trust badges */}
@@ -196,6 +198,64 @@ export default function HomePage() {
 
       {/* Carousel for cllg logos */}
       <CollegeCarousel useGrey={USE_GREY} />
+
+      {isModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          onClick={() => setIsModalOpen(false)}
+        >
+          <div
+            className={`relative mx-4 w-full max-w-md rounded-2xl p-6 ${card}`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              aria-label="Close modal"
+              onClick={() => setIsModalOpen(false)}
+              className={`absolute top-3 right-3 inline-flex items-center justify-center rounded-full p-2 ${
+                USE_GREY
+                  ? "bg-grey-1000/70 text-primaryPalette-200"
+                  : "bg-white text-grey-900"
+              }`}
+            >
+              <X className="h-4 w-4" />
+            </button>
+
+            <div className="flex flex-col items-center text-center">
+              <Sparkles className="h-8 w-8 text-primary-900 mb-3" />
+              <h3 className={`text-2xl font-semibold ${strong}`}>Coming Soon!</h3>
+              <p className={`mt-2 text-sm ${muted}`}>
+                We're currently building the Find Mentors page. In the meantime, explore these options:
+              </p>
+
+              <div className="mt-6 flex w-full gap-3 flex-col sm:flex-row">
+                <Link
+                  href="/"
+                  onClick={() => setIsModalOpen(false)}
+                  className={`inline-flex items-center justify-center w-full rounded-full px-4 py-2 text-sm font-medium ${
+                    USE_GREY
+                      ? "bg-grey-1000/70 text-primaryPalette-200 ring-1 ring-white/10 hover:ring-primary-900/50"
+                      : "bg-white text-grey-900 ring-1 ring-black/10 hover:ring-primary-900/30 shadow-sm"
+                  }`}
+                >
+                  Go to Home
+                </Link>
+
+                <Link
+                  href="/become-mentor"
+                  onClick={() => setIsModalOpen(false)}
+                  className={`inline-flex items-center justify-center w-full rounded-full px-4 py-2 text-sm font-medium ${
+                    USE_GREY
+                      ? "bg-primaryPalette-200 text-primaryPalette-900"
+                      : "bg-primary-900 text-white"
+                  }`}
+                >
+                  Become a Mentor
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Feature cards row (still part of landing) */}
       <section className="relative">
@@ -413,32 +473,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4) READY / CTA */}
-      {/* <section className="bg-black text-white overflow-hidden py-20 flex items-center justify-center">
-        <div className="mx-auto w-full max-w-3xl px-6 text-center">
-          <h2 className={`text-4xl font-bold ${strong} text-white`}>
-            Ready to make the right choice?
-          </h2>
-          <p className="mt-4 text-lg text-white">
-            Connect with a mentor today for a short, focused session and get the
-            clarity you need to move forward.
-          </p>
-
-          <div className="mt-8 flex items-center justify-center gap-4">
-            <Link href="/mentors">
-              <button
-                className="apple-button text-lg px-8 py-4 transition-transform duration-200 will-change-transform"
-                style={{
-                  transform:
-                    "translate3d(calc((var(--xnum) - 50) * 0.06px), calc((var(--ynum) - 50) * 0.06px), 0)",
-                }}
-              >
-                Browse Mentors
-              </button>
-            </Link>
-          </div>
-        </div>
-      </section> */}
     </div>
   );
 }

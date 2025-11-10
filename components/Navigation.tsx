@@ -51,7 +51,7 @@ export default function Navigation() {
             {/* Desktop links */}
             <div className="hidden md:flex items-center space-x-1">
               {[
-                { href: "/mentors", label: "Find Mentors" },
+                // { href: "/mentors", label: "Find Mentors" },
                 { href: "/become-mentor", label: "Become a Mentor" },
                 { href: "/about", label: "About" },
                 { href: "/pricing", label: "Pricing" },
@@ -129,7 +129,7 @@ export default function Navigation() {
         >
           <div className="px-6 py-6 space-y-2">
             {[
-              { href: "/mentors", label: "Find Mentors" },
+              // { href: "/mentors", label: "Find Mentors" },
               { href: "/become-mentor", label: "Become a Mentor" },
               { href: "/about", label: "About" },
               { href: "/pricing", label: "Pricing" },

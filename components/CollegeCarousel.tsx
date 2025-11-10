@@ -6,8 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 type Logo = {
   src: string;
-  alt: string; // also used as display name
-  href?: string;
+  alt: string; // college name
 };
 
 export function CollegeCarousel({ useGrey = false }: { useGrey?: boolean }) {
@@ -18,50 +17,42 @@ export function CollegeCarousel({ useGrey = false }: { useGrey?: boolean }) {
       { src: "/logo/iit_kanpur.png", alt: "IIT Kanpur" },
       { src: "/logo/iit_madras.png", alt: "IIT Madras" },
       { src: "/logo/iit_gandhinagar.png", alt: "IIT Gandhinagar" },
-      // add more…
+      // add more logos here
     ],
     []
   );
 
-  // we’ll render the list twice to make the loop seamless
-  const items = useMemo(() => [...logos, ...logos], [logos]);
+  // Duplicate for seamless scroll
+  const items = useMemo(() => [...logos, ...logos, ...logos], [logos]);
 
   const shell = useGrey
     ? "bg-grey-1200"
     : "bg-[radial-gradient(120%_120%_at_0%_0%,theme(colors.secondaryPalette.100/_0.35),transparent_60%)]";
   const ring = useGrey ? "ring-white/10" : "ring-black/10";
-  const label = useGrey ? "text-primaryPalette-200/80" : "text-grey-600";
-  const nameColor = useGrey ? "text-primaryPalette-200/90" : "text-grey-900";
+  const strong = useGrey ? "text-primaryPalette-200" : "text-grey-900";
+  const muted = useGrey ? "text-primaryPalette-200/80" : "text-grey-600";
 
   const viewportRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
-  const [duration, setDuration] = useState(20); // fallback
+  const [duration, setDuration] = useState(30);
+  const [isInView, setIsInView] = useState(true);
 
-  // compute animation duration based on content width (~100px/sec)
+  // Calculate scroll duration dynamically
   useEffect(() => {
     const calc = () => {
       const track = trackRef.current;
-      const viewport = viewportRef.current;
-      if (!track || !viewport) return;
-      // half of track width is one full loop (because items are duplicated)
-      const halfWidth = track.scrollWidth / 2;
-      const pxPerSec = 100; // adjust for speed
-      const secs = Math.max(8, Math.min(60, halfWidth / pxPerSec));
+      if (!track) return;
+      const width = track.scrollWidth / 3;
+      const pxPerSec = 120;
+      const secs = Math.max(10, Math.min(60, width / pxPerSec));
       setDuration(secs);
     };
     calc();
-    // recalc on resize/font load
     window.addEventListener("resize", calc);
-    const id = setInterval(calc, 500); // quick settle for first render/layout
-    setTimeout(() => clearInterval(id), 1500);
-    return () => {
-      window.removeEventListener("resize", calc);
-      clearInterval(id);
-    };
+    return () => window.removeEventListener("resize", calc);
   }, []);
 
-  // pause when not visible
-  const [isInView, setIsInView] = useState(true);
+  // Pause when not visible
   useEffect(() => {
     const vp = viewportRef.current;
     if (!vp) return;
@@ -75,21 +66,22 @@ export function CollegeCarousel({ useGrey = false }: { useGrey?: boolean }) {
 
   return (
     <section
-      className={`relative ${shell} py-10`}
+      className={`relative ${shell} py-12`}
       aria-label="Top colleges using Mentrify mentors"
     >
-      <div className="mx-auto w-[92%] max-w-6xl px-6">
-        <div className="flex items-center justify-between gap-4">
-          <p className={`text-base ${label}`}>Mentors from</p>
-        </div>
+      <div className="mx-auto max-w-6xl px-6 text-center">
+        {/* Header */}
+        <h2 className={`text-3xl md:text-4xl font-bold ${strong}`}>
+          Mentors From Top Colleges
+        </h2>
+        <p className={`mx-auto mt-3 max-w-3xl ${muted} text-base md:text-lg`}>
+          Connect with real students from IITs, NITs, BITS, and other premier institutions to get authentic insights and guidance.
+        </p>
 
+        {/* Carousel */}
         <div
           ref={viewportRef}
-          className={`
-            mt-4 relative overflow-hidden
-            rounded-2xl ring-1 ${ring} backdrop-blur-md
-            // fade edges
-          `}
+          className={`mt-10 relative overflow-hidden rounded-2xl ring-1 ${ring} backdrop-blur-md`}
           style={{
             maskImage:
               "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
@@ -98,11 +90,9 @@ export function CollegeCarousel({ useGrey = false }: { useGrey?: boolean }) {
           }}
         >
           <div
-            // this wrapper controls the animation
             className={`marquee ${isInView ? "" : "paused"} no-scrollbar`}
             style={
               {
-                // @ts-ignore -- CSS var used in styled-jsx below
                 "--marquee-duration": `${duration}s`,
               } as React.CSSProperties
             }
@@ -111,28 +101,17 @@ export function CollegeCarousel({ useGrey = false }: { useGrey?: boolean }) {
               {items.map((logo, i) => (
                 <div
                   key={`${logo.src}-${i}`}
-                  role="listitem"
-                  className={`
-  card
-  ${
-    useGrey
-      ? "bg-grey-1000/60 border-2 border-white"
-      : "bg-white border-2 border-black/20"
-  }
-`}
-                  title={logo.alt}
+                  className="flex flex-col items-center justify-center mx-8"
                 >
                   <Image
                     src={logo.src}
                     alt={logo.alt}
-                    width={200}
+                    width={160}
                     height={60}
                     className="object-contain h-12 sm:h-14 w-auto opacity-90"
                     priority={i < 6}
                   />
-                  <span
-                    className={`text-sm sm:text-sm font-semibold ${nameColor} text-center leading-tight opacity-100`}
-                  >
+                  <span className={`mt-1 text-sm ${muted} text-center`}>
                     {logo.alt}
                   </span>
                 </div>
@@ -142,32 +121,14 @@ export function CollegeCarousel({ useGrey = false }: { useGrey?: boolean }) {
         </div>
       </div>
 
-      {/* styles JUST for this component */}
+      {/* Styles */}
       <style jsx>{`
-        .card {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          gap: 6px;
-          height: 112px; /* h-28 */
-          width: 220px; /* sm:w-[220px] baseline */
-          padding: 12px; /* p-3 */
-          border-radius: 0.75rem; /* rounded-xl */
-          margin-right: 12px; /* gap */
-          backdrop-filter: blur(6px);
-        }
-        @media (min-width: 640px) {
-          .card {
-            margin-right: 16px; /* sm:gap-4-ish */
-          }
-        }
-
         .marquee {
           position: relative;
           width: 100%;
-          cursor: default;
+          overflow: hidden;
         }
+
         .marquee:hover .marquee-track {
           animation-play-state: paused;
         }
@@ -176,24 +137,22 @@ export function CollegeCarousel({ useGrey = false }: { useGrey?: boolean }) {
         }
 
         .marquee-track {
-          display: inline-flex;
+          display: flex;
           align-items: center;
-          width: max-content; /* let content define intrinsic width */
-          animation: marquee var(--marquee-duration, 20s) linear infinite;
+          width: max-content;
+          animation: scroll var(--marquee-duration, 30s) linear infinite;
           will-change: transform;
-          padding: 12px; /* outer p-3 to match your ring radius */
         }
 
-        @keyframes marquee {
-          0% {
+        @keyframes scroll {
+          from {
             transform: translateX(0);
           }
-          100% {
-            transform: translateX(-50%);
+          to {
+            transform: translateX(-33.333%);
           }
         }
 
-        /* hide scrollbars just in case */
         .no-scrollbar::-webkit-scrollbar {
           display: none;
         }
@@ -202,7 +161,6 @@ export function CollegeCarousel({ useGrey = false }: { useGrey?: boolean }) {
           scrollbar-width: none;
         }
 
-        /* Respect reduced motion */
         @media (prefers-reduced-motion: reduce) {
           .marquee-track {
             animation: none !important;

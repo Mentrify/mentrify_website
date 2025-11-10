@@ -1,127 +1,44 @@
-"use client";
+"use client"
 
-import React, { useMemo } from "react";
+import React from "react";
 import {
   ArrowRight,
   Users,
   Award,
   TrendingUp,
-  Star,
-  DollarSign,
   CheckCircle,
   Sparkles,
+  X,
 } from "lucide-react";
 
 export default function BecomeMentorPage() {
-  // Stats
-  const stats = useMemo(
-    () => [
-      {
-        icon: DollarSign,
-        number: "₹100",
-        label: "Per Session",
-        grad: "from-emerald-300/50 to-emerald-500/40",
-        iconBg: "bg-emerald-500",
-      },
-      {
-        icon: Users,
-        number: "1000+",
-        label: "Students Helped",
-        grad: "from-blue-300/50 to-blue-500/40",
-        iconBg: "bg-blue-500",
-      },
-      {
-        icon: Star,
-        number: "4.9",
-        label: "Avg. Rating",
-        grad: "from-amber-300/50 to-amber-500/40",
-        iconBg: "bg-amber-500",
-      },
-      {
-        icon: TrendingUp,
-        number: "98%",
-        label: "Success Rate",
-        grad: "from-violet-300/50 to-violet-500/40",
-        iconBg: "bg-violet-500",
-      },
-    ],
-    []
-  );
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
 
-  // Benefits
-  const benefits = useMemo(
-    () => [
-      {
-        icon: Award,
-        title: "Verified Certificate",
-        desc: "Get a mentor certificate to showcase on LinkedIn and resumes.",
-        accent: "from-blue-50 to-white",
-      },
-      {
-        icon: TrendingUp,
-        title: "Build Your Brand",
-        desc: "Position yourself as a thought leader among your peers.",
-        accent: "from-violet-50 to-white",
-      },
-      {
-        icon: Users,
-        title: "Impact Students",
-        desc: "Provide authentic guidance that helps juniors succeed.",
-        accent: "from-emerald-50 to-white",
-      },
-    ],
-    []
-  );
-
-  function StatCard({
-    Icon,
-    number,
-    label,
-    grad,
-    iconBg,
-  }: {
-    Icon: React.ElementType;
-    number: string;
-    label: string;
-    grad: string;
-    iconBg: string;
-  }) {
-    return (
-      <div className="relative rounded-3xl">
-        {/* gradient border */}
-        <div
-          className={`absolute inset-0 rounded-3xl p-[1px] bg-gradient-to-br ${grad}`}
-        >
-          <div className="h-full w-full rounded-[calc(1.5rem-1px)] bg-white/85 backdrop-blur" />
-        </div>
-
-        {/* card */}
-        <div
-          className="relative rounded-3xl p-6 shadow-[0_24px_60px_-28px_rgba(120,99,255,.35)] transition
-                      hover:-translate-y-0.5 hover:shadow-[0_36px_90px_-30px_rgba(120,99,255,.45)]"
-        >
-          <div className="flex items-center gap-4">
-            <div
-              className={`h-12 w-12 rounded-2xl ${iconBg} text-white grid place-items-center shadow-sm`}
-            >
-              <Icon className="h-6 w-6" />
-            </div>
-            <div>
-              <div className="text-2xl font-semibold leading-none tracking-tight">
-                {number}
-              </div>
-              <div className="mt-1 text-sm text-gray-600">{label}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const benefits = [
+    {
+      icon: Award,
+      title: "Verified Certificate",
+      desc: "Get a mentor certificate to showcase on LinkedIn and resumes.",
+      accent: "from-blue-50 to-white",
+    },
+    {
+      icon: TrendingUp,
+      title: "Build Your Brand",
+      desc: "Position yourself as a thought leader among your peers.",
+      accent: "from-violet-50 to-white",
+    },
+    {
+      icon: Users,
+      title: "Impact Students",
+      desc: "Provide authentic guidance that helps juniors succeed.",
+      accent: "from-emerald-50 to-white",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-white text-gray-900 antialiased selection:bg-primary-900/20">
       {/* HERO */}
-      <section className="relative overflow-hidden mt-20 pb-20">
+      <section className="relative overflow-hidden mt-[145px] pb-20">
         {/* background */}
         <div className="pointer-events-none absolute inset-0 -z-10">
           <div className="absolute inset-0 bg-[radial-gradient(120%_80%_at_50%_-10%,rgba(120,99,255,0.20),transparent_60%),linear-gradient(to_bottom,white,rgba(212,172,208,0.20))]" />
@@ -141,7 +58,7 @@ export default function BecomeMentorPage() {
           <h1 className="mt-6 text-5xl md:text-6xl font-extrabold tracking-tight">
             Share Your Journey. <br />
             <span className="bg-gradient-to-r from-primary-900 via-violet-500 to-pink-400 bg-clip-text text-transparent">
-              Shape Someone&apos;s Future.
+              Shape Someone's Future.
             </span>
           </h1>
           <p className="mt-5 text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
@@ -149,12 +66,12 @@ export default function BecomeMentorPage() {
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-            <a
-              href="/signup"
+            <button
+              onClick={() => setIsModalOpen(true)}
               className="apple-button text-lg px-8 py-4 inline-flex items-center justify-center"
             >
               Start Application <ArrowRight className="ml-2 h-5 w-5" />
-            </a>
+            </button>
             <a
               href="#benefits"
               className="apple-button-secondary text-lg px-8 py-4 inline-flex items-center justify-center"
@@ -162,25 +79,11 @@ export default function BecomeMentorPage() {
               Why mentor?
             </a>
           </div>
-
-          {/* Stats */}
-          <div className="mt-14 max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-5">
-            {stats.map((s, i) => (
-              <StatCard
-                key={i}
-                Icon={s.icon}
-                number={s.number}
-                label={s.label}
-                grad={s.grad}
-                iconBg={s.iconBg}
-              />
-            ))}
-          </div>
         </div>
       </section>
 
       {/* BENEFITS */}
-      <section id="benefits" className="py-20">
+      <section id="benefits" className="py-5">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h2 className="text-3xl md:text-4xl font-bold">
             Why Mentor with Mentrify?
@@ -191,29 +94,31 @@ export default function BecomeMentorPage() {
           </p>
 
           <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {benefits.map((b, i) => (
-              <article
-                key={i}
-                className={`group relative overflow-hidden rounded-3xl bg-gradient-to-b ${b.accent} ring-1 ring-black/10 p-8 text-left transition hover:-translate-y-0.5 hover:shadow-xl`}
-              >
-                <div className="absolute -top-12 -right-10 h-36 w-36 rounded-full bg-[radial-gradient(closest-side,rgba(160,130,255,.25),transparent_60%)] opacity-30 group-hover:opacity-50" />
-                <div className="flex items-center gap-3">
-                  <div className="h-12 w-12 rounded-xl grid place-items-center bg-white ring-1 ring-black/10">
-                    <b.icon className="h-6 w-6 text-primary-900" />
+            {benefits.map((b, i) => {
+              const IconComponent = b.icon;
+              return (
+                <article
+                  key={i}
+                  className={`group relative overflow-hidden rounded-3xl bg-gradient-to-b ${b.accent} ring-1 ring-black/10 p-8 text-left transition hover:-translate-y-0.5 hover:shadow-xl`}
+                >
+                  <div className="absolute -top-12 -right-10 h-36 w-36 rounded-full bg-[radial-gradient(closest-side,rgba(160,130,255,.25),transparent_60%)] opacity-30 group-hover:opacity-50" />
+                  <div className="flex items-center gap-3">
+                    <div className="h-12 w-12 rounded-xl grid place-items-center bg-white ring-1 ring-black/10">
+                      <IconComponent className="h-6 w-6 text-primary-900" />
+                    </div>
+                    <h3 className="text-xl font-semibold">{b.title}</h3>
                   </div>
-                  <h3 className="text-xl font-semibold">{b.title}</h3>
-                </div>
-                <p className="mt-3 text-gray-700">{b.desc}</p>
-              </article>
-            ))}
+                  <p className="mt-3 text-gray-700">{b.desc}</p>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* PROCESS (no form) */}
+      {/* PROCESS */}
       <section>
         <div className="max-w-6xl mx-auto px-6 mb-10">
-          {/* Steps */}
           <div>
             <h2 className="text-3xl md:text-4xl font-bold">Your Next Steps</h2>
             <p className="mt-3 text-lg text-gray-600">
@@ -229,11 +134,11 @@ export default function BecomeMentorPage() {
                 },
                 {
                   t: "Profile verification",
-                  d: "We verify your identity and details within 24 hours.",
+                  d: "We will verify your identity and get back to you within 24 hours.",
                 },
                 {
-                  t: "Start earning",
-                  d: "Go live and earn ₹100 per session with flexible scheduling.",
+                  t: "Start mentoring and earning",
+                  d: "Once approved, you can start taking mentee sessions and earning.",
                 },
               ].map((s, i) => (
                 <li
@@ -254,21 +159,43 @@ export default function BecomeMentorPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      {/* <section className="py-20 text-center bg-black">
-        <h2 className="text-4xl font-bold text-white">
-          Ready to Start Mentoring?
-        </h2>
-        <p className="mt-3 text-lg text-gray-500">
-          Help juniors. Build your brand. Earn along the way.
-        </p>
-        <a
-          href="/signup"
-          className="mt-6 inline-block apple-button text-lg px-8 py-4"
-        >
-          Apply Now
-        </a>
-      </section> */}
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div 
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setIsModalOpen(false)}
+          />
+          <div className="relative bg-white rounded-3xl shadow-2xl max-w-md w-full p-8">
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-6 right-6 p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
+            >
+              <X className="h-5 w-5 text-gray-500" />
+            </button>
+            
+            <div className="text-center">
+              <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-900 to-violet-600 mb-6">
+                <Sparkles className="h-8 w-8 text-white" />
+              </div>
+              
+              <h3 className="text-2xl font-bold mb-3">Ready to Make an Impact?</h3>
+              <p className="text-gray-600 leading-relaxed mb-8">
+                Fill out our quick 5-minute application form and join hundreds of mentors helping students succeed. We'll review your application and get back to you within 24 hours!
+              </p>
+              
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLSfa5VsGV8n26SslUehuFqtsR-rVwHVjV22BqosFFzzNvW44vg/viewform?usp=preview"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="apple-button text-base px-8 py-4 inline-flex items-center justify-center w-full"
+              >
+                Open Application Form <ArrowRight className="ml-2 h-5 w-5" />
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -3,8 +3,6 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { Eye, Target, Users, Heart, Unlock, Globe } from "lucide-react";
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
 
 export default function AboutPage() {
   const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
