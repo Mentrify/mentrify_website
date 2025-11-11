@@ -1,28 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
-import Link from "next/link";
-import Navigation from "../../components/Navigation";
-import Footer from "../../components/Footer";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Privacy Policy - Mentrify",
-  description:
-    "Read Mentrify's privacy policy. Understand how we collect, use, and protect your personal data.",
-  openGraph: {
-    title: "Privacy Policy - Mentrify",
-    description:
-      "Read Mentrify's privacy policy. Understand how we collect, use, and protect your personal data.",
-    url: "https://mentrify.com/privacy",
-    type: "website",
-  },
-  twitter: {
-    title: "Privacy Policy - Mentrify",
-    description:
-      "Read Mentrify's privacy policy. Understand how we collect, use, and protect your personal data.",
-  },
-};
+import React, { useMemo } from "react";;
 
 const EFFECTIVE_DATE = "October 9, 2025";
 const slug = (s: string) =>

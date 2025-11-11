@@ -7,25 +7,6 @@ import React, { useState } from "react";
 import { useForm, ValidationError } from "@formspree/react";
 import Link from "next/link";
 import { Mail, Phone, MapPin } from "lucide-react";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Contact Us - Mentrify Support",
-  description:
-    "Get in touch with Mentrify support. Have questions about mentorship? Contact us and we'll help you get started.",
-  openGraph: {
-    title: "Contact Us - Mentrify Support",
-    description:
-      "Get in touch with Mentrify support. Have questions about mentorship? Contact us and we'll help you get started.",
-    url: "https://mentrify.com/contact",
-    type: "website",
-  },
-  twitter: {
-    title: "Contact Us - Mentrify Support",
-    description:
-      "Get in touch with Mentrify support. Have questions about mentorship? Contact us and we'll help you get started.",
-  },
-};
 
 export default function ContactPage() {
   const [state, handleSubmit] = useForm("xjkaroan");
@@ -46,11 +27,14 @@ export default function ContactPage() {
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-b from-white via-blue-50 to-white py-20 md:py-32 px-6">
-        <div className="max-w-5xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Get in Touch
+        <div className="max-w-5xl mx-auto text-center mt-10">
+          <h1 className="text-5xl md:text-6xl text-black font-extrabold tracking-tight">
+            Get in{" "}
+            <span className="bg-gradient-to-r from-primary-900 via-violet-500 to-pink-400 bg-clip-text text-transparent">
+              Touch
+            </span>
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto mt-2">
             Have questions about Mentrify? We'd love to hear from you. Reach out
             to our team and we'll respond as soon as possible.
           </p>
@@ -58,7 +42,7 @@ export default function ContactPage() {
       </section>
 
       {/* Content Section */}
-      <section className="py-16 md:py-24 px-6">
+      <section className="px-6">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
           {/* Contact Info */}
           <div className="space-y-8">
@@ -107,7 +91,9 @@ export default function ContactPage() {
                     <MapPin className="w-6 h-6 text-blue-600 mt-1" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">Headquarters</h3>
+                    <h3 className="font-semibold text-gray-900">
+                      Headquarters
+                    </h3>
                     <p className="text-gray-600 mt-1">India</p>
                   </div>
                 </div>
@@ -121,10 +107,7 @@ export default function ContactPage() {
               </h3>
               <ul className="space-y-2 text-gray-600">
                 <li>
-                  <Link
-                    href="/help"
-                    className="hover:text-blue-600 transition"
-                  >
+                  <Link href="/help" className="hover:text-blue-600 transition">
                     → FAQs
                   </Link>
                 </li>
@@ -134,30 +117,6 @@ export default function ContactPage() {
                     className="hover:text-blue-600 transition"
                   >
                     → How It Works
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/privacy"
-                    className="hover:text-blue-600 transition"
-                  >
-                    → Privacy Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/terms"
-                    className="hover:text-blue-600 transition"
-                  >
-                    → Terms of Service
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/refund-policy"
-                    className="hover:text-blue-600 transition"
-                  >
-                    → Refund Policy
                   </Link>
                 </li>
               </ul>
@@ -194,7 +153,11 @@ export default function ContactPage() {
                     required
                     className="bg-white border-gray-300 rounded-lg"
                   />
-                  <ValidationError prefix="Name" field="name" errors={state.errors} />
+                  <ValidationError
+                    prefix="Name"
+                    field="name"
+                    errors={state.errors}
+                  />
                 </div>
 
                 {/* Email */}
@@ -219,7 +182,10 @@ export default function ContactPage() {
 
                 {/* Subject */}
                 <div className="space-y-2">
-                  <Label htmlFor="subject" className="text-gray-700 font-medium">
+                  <Label
+                    htmlFor="subject"
+                    className="text-gray-700 font-medium"
+                  >
                     Subject
                   </Label>
                   <Input
@@ -239,7 +205,10 @@ export default function ContactPage() {
 
                 {/* Message */}
                 <div className="space-y-2">
-                  <Label htmlFor="message" className="text-gray-700 font-medium">
+                  <Label
+                    htmlFor="message"
+                    className="text-gray-700 font-medium"
+                  >
                     Message
                   </Label>
                   <Textarea
@@ -261,7 +230,7 @@ export default function ContactPage() {
                 <button
                   type="submit"
                   disabled={state.submitting}
-                  className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 rounded-lg transition duration-200"
+                  className="apple-button text-base md:text-lg px-12 py-5 flex items-center justify-center group w-full max-w-md relative overflow-hidden"
                 >
                   {state.submitting ? "Sending..." : "Send Message"}
                 </button>
@@ -274,24 +243,6 @@ export default function ContactPage() {
               </form>
             )}
           </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 md:py-20 px-6 bg-gradient-to-b from-white to-blue-50">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
-            Ready to find the right mentor?
-          </h2>
-          <p className="text-gray-600 mb-8">
-            Browse our verified mentors and start your mentorship journey today.
-          </p>
-          <Link
-            href="/mentors"
-            className="inline-flex items-center rounded-full bg-blue-600 px-8 py-3 text-white font-semibold hover:bg-blue-700 transition"
-          >
-            Find a Mentor
-          </Link>
         </div>
       </section>
     </div>

@@ -235,22 +235,6 @@ export default function Footer() {
                         Contact Us
                       </Link>
                     </li>
-                    <li>
-                      <Link
-                        href="/privacy"
-                        className="text-gray-600 hover:text-gray-900"
-                      >
-                        Privacy Policy
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/terms"
-                        className="text-gray-600 hover:text-gray-900"
-                      >
-                        Terms of Service
-                      </Link>
-                    </li>
                   </ul>
                 </div>
               </div>
@@ -274,6 +258,12 @@ export default function Footer() {
                     className="text-gray-500 hover:text-gray-900"
                   >
                     Terms of Service
+                  </Link>
+                  <Link
+                    href="/refund-policy"
+                    className="text-gray-500 hover:text-gray-900"
+                  >
+                    Refund Policy
                   </Link>
                 </div>
               </div>
