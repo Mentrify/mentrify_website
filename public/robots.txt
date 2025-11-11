@@ -1,0 +1,24 @@
+# Mentrify SEO Robots Configuration
+
+# Allow all bots to crawl all pages
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /profile
+Disallow: /settings
+Disallow: /_next
+Disallow: /api
+
+# Specific rules for Google
+User-agent: Googlebot
+Allow: /
+
+# Specific rules for Bing
+User-agent: Bingbot
+Allow: /
+
+# Sitemap location
+Sitemap: https://mentrify.com/sitemap.xml
+
+# Crawl delay for respectful crawling (in seconds)
+Crawl-delay: 1
