@@ -18,6 +18,25 @@ import {
   BookOpen,
 } from "lucide-react";
 import Navigation from "../../components/Navigation";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Find Mentors - Mentrify",
+  description:
+    "Browse and connect with verified college mentors at Mentrify. Find the perfect mentor for guidance on courses, careers, and campus life.",
+  openGraph: {
+    title: "Find Mentors - Mentrify",
+    description:
+      "Browse and connect with verified college mentors at Mentrify.",
+    url: "https://mentrify.com/mentors",
+    type: "website",
+  },
+  twitter: {
+    title: "Find Mentors - Mentrify",
+    description:
+      "Browse and connect with verified college mentors at Mentrify.",
+  },
+};
 import Footer from "../../components/Footer";
 import RazorpayButton from "../razorpay/razorpaybutton";
 const mentors = [
