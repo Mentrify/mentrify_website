@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react";
 
-const EFFECTIVE_DATE = "November 2024";
+const EFFECTIVE_DATE = "November 2025";
 const slug = (s: string) =>
   s
     .toLowerCase()
@@ -50,13 +50,13 @@ export default function RefundPolicyPage() {
               </li>
               <li>
                 <strong>Unused Credits:</strong> If you purchase a package and
-                do not use all credits within 6 months, you may request a
-                refund for unused credits, minus a 10% processing fee.
+                do not use all credits within 6 months, you may request a refund
+                for unused credits, minus a 10% processing fee.
               </li>
               <li>
                 <strong>Duplicate Charges:</strong> In case of accidental
-                duplicate billing, we will issue a full refund for the
-                duplicate charge within 5 business days.
+                duplicate billing, we will issue a full refund for the duplicate
+                charge within 5 business days.
               </li>
             </ul>
           </>
@@ -204,8 +204,8 @@ export default function RefundPolicyPage() {
             If you disagree with our refund decision, you may:
             <ul className="list-disc pl-6 mt-2 space-y-1">
               <li>
-                <strong>Appeal:</strong> Submit an appeal with additional details
-                to{" "}
+                <strong>Appeal:</strong> Submit an appeal with additional
+                details to{" "}
                 <a
                   href="mailto:support@mentrify.com"
                   className="underline text-primary-900"
@@ -215,13 +215,13 @@ export default function RefundPolicyPage() {
                 within 7 days of our decision.
               </li>
               <li>
-                <strong>Escalation:</strong> Our management team will review your
-                case within 10 business days.
+                <strong>Escalation:</strong> Our management team will review
+                your case within 10 business days.
               </li>
               <li>
-                <strong>Chargebacks:</strong> We ask that you exhaust all support
-                channels before filing a chargeback with your bank. Chargebacks
-                may result in account suspension.
+                <strong>Chargebacks:</strong> We ask that you exhaust all
+                support channels before filing a chargeback with your bank.
+                Chargebacks may result in account suspension.
               </li>
             </ul>
           </>

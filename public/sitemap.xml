@@ -3,7 +3,7 @@
   <!-- Home Page -->
   <url>
     <loc>https://mentrify.com</loc>
-    <lastmod>2024-11-11</lastmod>
+    <lastmod>2025-11-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -11,7 +11,7 @@
   <!-- About Page -->
   <url>
     <loc>https://mentrify.com/about</loc>
-    <lastmod>2024-11-11</lastmod>
+    <lastmod>2025-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -19,7 +19,7 @@
   <!-- How It Works Page -->
   <url>
     <loc>https://mentrify.com/how-it-works</loc>
-    <lastmod>2024-11-11</lastmod>
+    <lastmod>2025-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -27,7 +27,7 @@
   <!-- Pricing Page -->
   <url>
     <loc>https://mentrify.com/pricing</loc>
-    <lastmod>2024-11-11</lastmod>
+    <lastmod>2025-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -35,7 +35,7 @@
   <!-- Mentors Browsing Page -->
   <url>
     <loc>https://mentrify.com/mentors</loc>
-    <lastmod>2024-11-11</lastmod>
+    <lastmod>2025-11-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
@@ -43,7 +43,7 @@
   <!-- Help & FAQs Page -->
   <url>
     <loc>https://mentrify.com/help</loc>
-    <lastmod>2024-11-11</lastmod>
+    <lastmod>2025-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -51,7 +51,7 @@
   <!-- Contact Us Page -->
   <url>
     <loc>https://mentrify.com/contact</loc>
-    <lastmod>2024-11-11</lastmod>
+    <lastmod>2025-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -59,7 +59,7 @@
   <!-- Become a Mentor Page -->
   <url>
     <loc>https://mentrify.com/become-mentor</loc>
-    <lastmod>2024-11-11</lastmod>
+    <lastmod>2025-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -67,7 +67,7 @@
   <!-- Sign Up Page -->
   <url>
     <loc>https://mentrify.com/signup</loc>
-    <lastmod>2024-11-11</lastmod>
+    <lastmod>2025-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -75,7 +75,7 @@
   <!-- Sign In Page -->
   <url>
     <loc>https://mentrify.com/signin</loc>
-    <lastmod>2024-11-11</lastmod>
+    <lastmod>2025-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -83,21 +83,21 @@
   <!-- Legal Pages -->
   <url>
     <loc>https://mentrify.com/privacy</loc>
-    <lastmod>2024-11-11</lastmod>
+    <lastmod>2025-11-11</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <url>
     <loc>https://mentrify.com/terms</loc>
-    <lastmod>2024-11-11</lastmod>
+    <lastmod>2025-11-11</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <url>
     <loc>https://mentrify.com/refund-policy</loc>
-    <lastmod>2024-11-11</lastmod>
+    <lastmod>2025-11-11</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
