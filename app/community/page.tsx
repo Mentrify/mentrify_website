@@ -126,7 +126,7 @@ export default function CommunityPage() {
               Built on Discord, Driven by Students
             </p>
             <p className="text-lg sm:text-xl text-grey-700 max-w-2xl mx-auto leading-relaxed">
-              At Mentrify, we believe mentorship goes beyond scheduled calls 
+              At Mentrify, we believe mentorship goes beyond scheduled calls
               it's about building a supportive, collaborative, and inspiring
               community where every student can thrive.
             </p>
