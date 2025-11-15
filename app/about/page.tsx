@@ -102,7 +102,7 @@ export default function AboutPage() {
             <span className="text-sm font-semibold text-gray-800">Built by students, for students</span>
           </div>
           <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold text-gray-900 mb-6 leading-[0.95]">
-            About <span className="apple-gradient-text">Mentrify</span>
+            About <span className="bg-gradient-to-r from-primary-900 via-violet-500 to-pink-400 bg-clip-text text-transparent">Mentrify</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
             We're <span className="font-semibold text-gray-900">revolutionizing mentorship</span> by connecting students with <span className="font-semibold text-gray-900">seniors</span> who truly understand their journey
