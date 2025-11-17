@@ -203,7 +203,7 @@ function PricingCard({
         </ul>
 
         <Link
-          href="/mentors"
+          href="/find-mentors"
           className="mt-6 block rounded-xl text-center text-sm font-medium px-4 py-3
             bg-black text-white hover:opacity-90 transition
             focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0"

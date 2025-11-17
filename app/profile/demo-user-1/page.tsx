@@ -11,10 +11,10 @@ import {
   Search,
   CalendarCheck,
 } from "lucide-react";
-import { /* getUser, saveUser, isAuthenticated */ } from "@/lib/auth";
-import { useAuthStore } from '@/lib/useAuthStore'
-import api, { API_GET_MENTEES } from '@/lib/api'
-import { Button } from "@/components/ui/button"; 
+import /* getUser, saveUser, isAuthenticated */ "@/lib/auth";
+import { useAuthStore } from "@/lib/useAuthStore";
+import api, { API_GET_MENTEES } from "@/lib/api";
+import { Button } from "@/components/ui/button";
 import Navigation from "@/app/components/Navigation";
 import Footer from "@/app/components/Footer";
 
@@ -41,54 +41,72 @@ export default function MenteeProfilePage() {
 
   useEffect(() => {
     // prefer authenticated user from zustand
-    const authUser = useAuthStore.getState().user
+    const authUser = useAuthStore.getState().user;
     if (!authUser) {
-      router.push('/signin')
-      return
+      router.push("/signin");
+      return;
     }
 
     const fetchProfile = async () => {
       try {
-        const lookupBy = authUser.username || authUser.id || profileId
-        let res = await api.get(API_GET_MENTEES, { params: { username: lookupBy } })
-        let data: any = res.data
-        let payload: any = null
-        if (data && Array.isArray(data.results)) payload = data.results.length ? data.results[0] : null
-        else if (Array.isArray(data)) payload = data.length ? data[0] : null
-        else payload = data
+        const lookupBy = authUser.username || authUser.id || profileId;
+        let res = await api.get(API_GET_MENTEES, {
+          params: { username: lookupBy },
+        });
+        let data: any = res.data;
+        let payload: any = null;
+        if (data && Array.isArray(data.results))
+          payload = data.results.length ? data.results[0] : null;
+        else if (Array.isArray(data)) payload = data.length ? data[0] : null;
+        else payload = data;
 
         if (!payload && !isNaN(Number(lookupBy))) {
-          res = await api.get(API_GET_MENTEES, { params: { mentee_id: lookupBy } })
-          data = res.data
-          if (data && Array.isArray(data.results)) payload = data.results.length ? data.results[0] : null
-          else if (Array.isArray(data)) payload = data.length ? data[0] : null
-          else payload = data
+          res = await api.get(API_GET_MENTEES, {
+            params: { mentee_id: lookupBy },
+          });
+          data = res.data;
+          if (data && Array.isArray(data.results))
+            payload = data.results.length ? data.results[0] : null;
+          else if (Array.isArray(data)) payload = data.length ? data[0] : null;
+          else payload = data;
         }
 
         if (payload) {
           const profileData: MenteeProfile = {
-            id: String(payload.mentee_id || payload.id || payload._id || payload.user_id || lookupBy),
-            name: `${payload.first_name || payload.firstName || ''} ${payload.last_name || payload.lastName || ''}`.trim() || payload.username || payload.name || '',
-            email: payload.email || payload.user_email || '',
-            username: payload.userName || payload.user_name || '',
-            role: 'mentee',
-            brief: payload.brief || payload.bio || '',
+            id: String(
+              payload.mentee_id ||
+                payload.id ||
+                payload._id ||
+                payload.user_id ||
+                lookupBy
+            ),
+            name:
+              `${payload.first_name || payload.firstName || ""} ${
+                payload.last_name || payload.lastName || ""
+              }`.trim() ||
+              payload.username ||
+              payload.name ||
+              "",
+            email: payload.email || payload.user_email || "",
+            username: payload.userName || payload.user_name || "",
+            role: "mentee",
+            brief: payload.brief || payload.bio || "",
             linkedin: payload.linkedin || null,
-          }
-          setProfile(profileData)
+          };
+          setProfile(profileData);
         } else {
           // No profile found from backend
-          setProfile(null)
+          setProfile(null);
         }
       } catch (e) {
-        console.error('Failed to fetch mentee profile', e)
-        setProfile(null)
+        console.error("Failed to fetch mentee profile", e);
+        setProfile(null);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchProfile()
+    fetchProfile();
   }, [profileId, router]);
 
   const updateProfileField = (field: keyof MenteeProfile, value: string) => {
@@ -100,7 +118,9 @@ export default function MenteeProfilePage() {
     setSaving(true);
     try {
       // Persist change to central auth store; no local demo persistence
-      try { useAuthStore.getState().setUser(profile as any) } catch {}
+      try {
+        useAuthStore.getState().setUser(profile as any);
+      } catch {}
 
       setTimeout(() => {
         setSaving(false);
@@ -244,7 +264,7 @@ export default function MenteeProfilePage() {
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-md mx-auto">
                   <Button
-                    onClick={() => router.push("/mentors")}
+                    onClick={() => router.push("/find-mentors")}
                     className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 flex items-center justify-center gap-2"
                   >
                     <Search className="h-5 w-5" />

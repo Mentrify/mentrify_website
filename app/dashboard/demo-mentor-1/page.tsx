@@ -12,8 +12,6 @@ import {
   Star,
 } from "lucide-react";
 import type { User as UserType } from "@/lib/auth";
-import Navigation from "@/app/components/Navigation";
-import Footer from "@/app/components/Footer";
 
 export default function DashboardPage() {
   const [user, setUser] = useState<UserType | null>(null);

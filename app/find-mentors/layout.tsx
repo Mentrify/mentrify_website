@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     title: "Find Mentors - Mentrify",
     description:
       "Browse and connect with verified college mentors at Mentrify.",
-    url: "https://mentrify.com/mentors",
+    url: "https://mentrify.com/find-mentors",
     type: "website",
   },
   twitter: {

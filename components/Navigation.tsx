@@ -51,7 +51,7 @@ export default function Navigation() {
             {/* Desktop links */}
             <div className="hidden md:flex items-center space-x-1">
               {[
-                // { href: "/mentors", label: "Find Mentors" },
+                { href: "/find-mentors", label: "Find Mentors" },
                 { href: "/become-mentor", label: "Become a Mentor" },
                 { href: "/about", label: "About" },
                 { href: "/pricing", label: "Pricing" },
@@ -96,7 +96,7 @@ export default function Navigation() {
                 />
               </Link>
 
-              <Link href="/mentors">
+              <Link href="/find-mentors">
                 <button className="px-4 py-2 rounded-full bg-black text-white text-sm font-medium hover:opacity-90 transition-all duration-300 shadow-sm">
                   Get Started
                 </button>
@@ -129,7 +129,7 @@ export default function Navigation() {
         >
           <div className="px-6 py-6 space-y-2">
             {[
-              // { href: "/mentors", label: "Find Mentors" },
+              { href: "/find-mentors", label: "Find Mentors" },
               { href: "/become-mentor", label: "Become a Mentor" },
               { href: "/about", label: "About" },
               { href: "/pricing", label: "Pricing" },
@@ -148,7 +148,7 @@ export default function Navigation() {
                 {item.label}
               </Link>
             ))}
-            <Link href="/mentors" onClick={() => setIsOpen(false)}>
+            <Link href="/find-mentors" onClick={() => setIsOpen(false)}>
               <button className="w-full px-4 py-3 rounded-2xl bg-black text-white font-medium hover:opacity-90 transition-all duration-300 shadow-sm">
                 Get Started
               </button>

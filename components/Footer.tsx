@@ -157,7 +157,7 @@ export default function Footer() {
                   <ul className="space-y-3 text-sm">
                     <li>
                       <Link
-                        href="/mentors"
+                        href="/find-mentors"
                         className="text-gray-600 hover:text-gray-900"
                       >
                         Find Mentors
