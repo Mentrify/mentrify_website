@@ -18,7 +18,6 @@ import {
   BookOpen,
 } from "lucide-react";
 import Navigation from "../../components/Navigation";
-import Footer from "../../components/Footer";
 
 const mentors = [
   {
@@ -518,45 +517,7 @@ export default function MentorsPage() {
                         className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
                       />
                     </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="relative">
-                        <select
-                          value={streamFilter}
-                          onChange={(e) => setStreamFilter(e.target.value)}
-                          className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm appearance-none cursor-pointer"
-                        >
-                          <option value="all">All Streams</option>
-                          {["Engineering", "Medical", "Commerce", "MBA"].map(
-                            (s) => (
-                              <option key={s} value={s}>
-                                {s}
-                              </option>
-                            )
-                          )}
-                        </select>
-                      </div>
-                      <div className="relative">
-                        <select
-                          value={locationFilter}
-                          onChange={(e) => setLocationFilter(e.target.value)}
-                          className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm appearance-none cursor-pointer"
-                        >
-                          <option value="all">All Locations</option>
-                          {[
-                            "Delhi",
-                            "Tamil Nadu",
-                            "Gujarat",
-                            "Rajasthan",
-                            "Bangalore",
-                            "Mumbai",
-                          ].map((l) => (
-                            <option key={l} value={l}>
-                              {l}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
+
                     <div className="pt-2 border-t border-gray-100">
                       <div className="grid grid-cols-3 gap-2 text-center">
                         <div>
@@ -588,16 +549,47 @@ export default function MentorsPage() {
       </section>
 
       {/* Filters and Results Section */}
-      <section className="py-12 px-4 bg-white border-t border-gray-100">
+      <section className="py-12 px-4 bg-gradient-to-b from-white via-blue-50/30 to-white">
         <div className="max-w-7xl mx-auto">
-          {/* Filter Bar */}
-          <div className="mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
-            <div className="flex gap-2 flex-wrap">
-              <div className="relative hidden md:block">
+          {/* Modern Filter Cards */}
+          <div className="mb-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+              {/* Sort By Card */}
+              <div className="bg-white rounded-2xl p-4 border-2 border-gray-100 hover:border-blue-300 shadow-sm hover:shadow-md transition-all duration-300 group">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="p-2 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
+                    <Star className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    Sort By
+                  </label>
+                </div>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium appearance-none cursor-pointer hover:border-blue-300 transition-colors"
+                >
+                  <option value="rating">Highest Rating</option>
+                  <option value="sessions">Most Sessions</option>
+                  <option value="price_low">Price: Low to High</option>
+                  <option value="price_high">Price: High to Low</option>
+                </select>
+              </div>
+
+              {/* College Type Card */}
+              <div className="bg-white rounded-2xl p-4 border-2 border-gray-100 hover:border-purple-300 shadow-sm hover:shadow-md transition-all duration-300 group">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="p-2 bg-purple-100 rounded-lg group-hover:bg-purple-200 transition-colors">
+                    <Award className="w-4 h-4 text-purple-600" />
+                  </div>
+                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    College
+                  </label>
+                </div>
                 <select
                   value={collegeFilter}
                   onChange={(e) => setCollegeFilter(e.target.value)}
-                  className="px-4 py-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm appearance-none cursor-pointer pr-8"
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm font-medium appearance-none cursor-pointer hover:border-purple-300 transition-colors"
                 >
                   <option value="all">All Colleges</option>
                   {["IIT", "NIT", "AIIMS", "IIM", "BITS"].map((c) => (
@@ -608,72 +600,127 @@ export default function MentorsPage() {
                 </select>
               </div>
 
-              <div className="relative hidden md:block">
+              {/* Stream Card */}
+              <div className="bg-white rounded-2xl p-4 border-2 border-gray-100 hover:border-green-300 shadow-sm hover:shadow-md transition-all duration-300 group">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="p-2 bg-green-100 rounded-lg group-hover:bg-green-200 transition-colors">
+                    <BookOpen className="w-4 h-4 text-green-600" />
+                  </div>
+                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    Stream
+                  </label>
+                </div>
                 <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="px-4 py-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm appearance-none cursor-pointer pr-8"
+                  value={streamFilter}
+                  onChange={(e) => setStreamFilter(e.target.value)}
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm font-medium appearance-none cursor-pointer hover:border-green-300 transition-colors"
                 >
-                  <option value="rating">Highest Rating</option>
-                  <option value="sessions">Most Sessions</option>
-                  <option value="price_low">Price: Low to High</option>
-                  <option value="price_high">Price: High to Low</option>
+                  <option value="all">All Streams</option>
+                  {["Engineering", "Medical", "Commerce", "MBA"].map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
                 </select>
               </div>
 
-              <div className="relative">
-                <input
-                  type="range"
-                  min="0"
-                  max="500"
-                  step="50"
-                  value={priceRange[1]}
-                  onChange={(e) =>
-                    setPriceRange([priceRange[0], parseInt(e.target.value)])
-                  }
-                  className="w-48 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                />
-                <div className="text-xs text-gray-600 mt-1 text-center">
-                  Max: ₹{priceRange[1]}
+              {/* Location Card */}
+              <div className="bg-white rounded-2xl p-4 border-2 border-gray-100 hover:border-red-300 shadow-sm hover:shadow-md transition-all duration-300 group">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="p-2 bg-red-100 rounded-lg group-hover:bg-red-200 transition-colors">
+                    <MapPin className="w-4 h-4 text-red-600" />
+                  </div>
+                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    Location
+                  </label>
+                </div>
+                <select
+                  value={locationFilter}
+                  onChange={(e) => setLocationFilter(e.target.value)}
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm font-medium appearance-none cursor-pointer hover:border-red-300 transition-colors"
+                >
+                  <option value="all">All Locations</option>
+                  {[
+                    "Delhi",
+                    "Tamil Nadu",
+                    "Gujarat",
+                    "Rajasthan",
+                    "Bangalore",
+                    "Mumbai",
+                  ].map((l) => (
+                    <option key={l} value={l}>
+                      {l}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Price Range Card */}
+              <div className="bg-white rounded-2xl p-4 border-2 border-gray-100 hover:border-orange-300 shadow-sm hover:shadow-md transition-all duration-300 group">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="p-2 bg-orange-100 rounded-lg group-hover:bg-orange-200 transition-colors">
+                    <Calendar className="w-4 h-4 text-orange-600" />
+                  </div>
+                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    Max Price
+                  </label>
+                </div>
+                <div className="space-y-2">
+                  <input
+                    type="range"
+                    min="0"
+                    max="500"
+                    step="50"
+                    value={priceRange[1]}
+                    onChange={(e) =>
+                      setPriceRange([priceRange[0], parseInt(e.target.value)])
+                    }
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-600"
+                  />
+                  <div className="text-center">
+                    <span className="text-sm font-bold text-gray-900">
+                      ₹{priceRange[1]}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-
-            <div className="flex items-center gap-3">
-              <span className="text-gray-700 font-medium">
-                {filteredMentors.length} mentors
-              </span>
-              {activeFiltersCount > 0 && (
-                <button
-                  onClick={clearAllFilters}
-                  className="px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                >
-                  Clear filters
-                </button>
-              )}
-            </div>
           </div>
 
-          {/* Active Filters */}
-          {activeFiltersCount > 0 && (
-            <div className="mb-6 p-3 bg-blue-50 rounded-lg border border-blue-100 flex items-center justify-between">
-              <span className="text-sm text-blue-900">
-                <strong>{activeFiltersCount}</strong> filter
-                {activeFiltersCount > 1 ? "s" : ""} applied
-              </span>
+          {/* Results and Clear Filters */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8 p-4 bg-white rounded-2xl border-2 border-gray-100">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg">
+                <Users className="w-5 h-5 text-blue-600" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Found</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {filteredMentors.length}
+                  <span className="text-sm font-semibold text-gray-600 ml-2">
+                    mentors
+                  </span>
+                </p>
+              </div>
             </div>
-          )}
-        </div>
-      </section>
 
-      {/* Mentors Grid */}
-      <section>
-        <div className="max-w-7xl mx-auto">
+            {activeFiltersCount > 0 && (
+              <button
+                onClick={clearAllFilters}
+                className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-50 to-purple-50 hover:from-blue-100 hover:to-purple-100 text-blue-700 font-semibold rounded-xl border-2 border-blue-200 hover:border-blue-300 transition-all duration-300 group"
+              >
+                <X className="w-4 h-4 group-hover:rotate-90 transition-transform" />
+                Clear Filters
+              </button>
+            )}
+          </div>
+
+          {/* Mentors Grid */}
           {filteredMentors.length > 0 ? (
             <>
               <div
                 ref={cardsRef}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8"
               >
                 {pagedMentors.map((mentor) => (
                   <div
@@ -847,8 +894,6 @@ export default function MentorsPage() {
           )}
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 }
