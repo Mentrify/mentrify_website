@@ -330,10 +330,15 @@ function FilterChip({
   return (
     <div ref={dropdownRef} className="relative">
       <button
-        onClick={onToggle}
+        type="button"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onToggle();
+        }}
         className={`
           inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium
-          transition-all duration-200 ease-out whitespace-nowrap
+          transition-all duration-200 ease-out whitespace-nowrap cursor-pointer
           ${
             isActive
               ? "bg-slate-900 text-white"
@@ -348,19 +353,22 @@ function FilterChip({
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-100 py-1.5 min-w-[180px] z-50 overflow-hidden">
+        <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 min-w-[180px] z-[100] overflow-hidden">
           {options.map((option) => (
             <button
+              type="button"
               key={option.value}
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 onChange(option.value);
                 onToggle();
               }}
               className={`
-                w-full text-left px-4 py-2.5 text-sm transition-colors
+                w-full text-left px-4 py-2.5 text-sm transition-colors cursor-pointer
                 ${
                   value === option.value
-                    ? "bg-slate-50 text-slate-900 font-medium"
+                    ? "bg-slate-100 text-slate-900 font-medium"
                     : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                 }
               `}
@@ -387,7 +395,7 @@ function MentorCard({ mentor }: { mentor: (typeof mentors)[0] }) {
 
   return (
     <Link href={`/booking/${mentor.id}`}>
-      <div className="group bg-white rounded-2xl border border-slate-100 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/50 hover:border-slate-200 hover:-translate-y-1 h-full flex flex-col">
+      <div className="group bg-white rounded-2xl border border-slate-100 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/50 hover:border-slate-200 hover:-translate-y-1 h-full flex flex-col">
         {/* Subtle gradient header */}
         <div className="h-14 bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5" />
@@ -448,20 +456,20 @@ function MentorCard({ mentor }: { mentor: (typeof mentors)[0] }) {
               </span>
             ))}
             {mentor.specialties.length > 2 && (
-              <span className="px-2 py-1 text-slate-400 text-xs">
-                +{mentor.specialties.length - 2}
-              </span>
+              <div className="relative group/tooltip">
+                <span className="px-2 py-1 text-slate-400 text-xs cursor-pointer hover:text-slate-600 transition-colors">
+                  +{mentor.specialties.length - 2}
+                </span>
+                <div className="absolute top-full left-0 mt-1 px-3 py-2 bg-slate-900 text-white text-xs rounded-lg opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all duration-200 z-50 shadow-lg pointer-events-none max-w-[180px]">
+                  {mentor.specialties.slice(2).join(", ")}
+                  <div className="absolute bottom-full left-3 border-4 border-transparent border-b-slate-900" />
+                </div>
+              </div>
             )}
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-            <div>
-              <span className="text-lg font-semibold text-slate-900">
-                ₹{mentor.price}
-              </span>
-              <span className="text-slate-400 text-sm ml-1">/session</span>
-            </div>
+          <div className="flex items-center justify-end pt-4 border-t border-slate-100">
             <span className="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg group-hover:bg-blue-600 transition-colors">
               Book
             </span>
@@ -492,7 +500,8 @@ export default function FindMentorsPage() {
         mentor.course.toLowerCase().includes(search);
 
       const matchesCollege =
-        collegeFilter === "all" || mentor.college.includes(collegeFilter);
+        collegeFilter === "all" ||
+        mentor.college.toLowerCase().includes(collegeFilter.toLowerCase());
       const matchesStream =
         streamFilter === "all" ||
         mentor.specialties.some((specialty) =>
@@ -564,6 +573,8 @@ export default function FindMentorsPage() {
     { value: "AIIMS", label: "AIIMS" },
     { value: "IIM", label: "IIM" },
     { value: "BITS", label: "BITS" },
+    { value: "IISc", label: "IISc" },
+    { value: "Delhi University", label: "Delhi University" },
   ];
 
   const streamOptions = [
@@ -572,6 +583,9 @@ export default function FindMentorsPage() {
     { value: "Medical", label: "Medical" },
     { value: "Commerce", label: "Commerce" },
     { value: "MBA", label: "MBA" },
+    { value: "Law", label: "Law" },
+    { value: "Research", label: "Research" },
+    { value: "AI", label: "AI / Tech" },
   ];
 
   const locationOptions = [
@@ -579,8 +593,12 @@ export default function FindMentorsPage() {
     { value: "Delhi", label: "Delhi" },
     { value: "Mumbai", label: "Mumbai" },
     { value: "Bangalore", label: "Bangalore" },
+    { value: "Chennai", label: "Chennai" },
+    { value: "Hyderabad", label: "Hyderabad" },
+    { value: "Kolkata", label: "Kolkata" },
     { value: "Tamil Nadu", label: "Tamil Nadu" },
     { value: "Gujarat", label: "Gujarat" },
+    { value: "Rajasthan", label: "Rajasthan" },
   ];
 
   const sortOptions = [
@@ -701,7 +719,7 @@ export default function FindMentorsPage() {
           <>
             <div
               ref={cardsRef}
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
             >
               {pagedMentors.map((mentor) => (
                 <div key={mentor.id} className="mentor-card opacity-0">
