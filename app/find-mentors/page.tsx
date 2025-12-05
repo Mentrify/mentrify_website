@@ -374,8 +374,17 @@ function FilterChip({
   );
 }
 
+// Helper function to generate avatar URL
+function getAvatarUrl(name: string) {
+  const colors = ['6366f1', '8b5cf6', 'ec4899', 'f43f5e', 'f97316', '14b8a6', '06b6d4', '3b82f6'];
+  const colorIndex = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % colors.length;
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${colors[colorIndex]}&color=fff&size=120&bold=true`;
+}
+
 // Premium Mentor Card Component
 function MentorCard({ mentor }: { mentor: (typeof mentors)[0] }) {
+  const avatarUrl = getAvatarUrl(mentor.name);
+
   return (
     <Link href={`/booking/${mentor.id}`}>
       <div className="group bg-white rounded-2xl border border-slate-100 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/50 hover:border-slate-200 hover:-translate-y-1 h-full flex flex-col">
@@ -388,13 +397,14 @@ function MentorCard({ mentor }: { mentor: (typeof mentors)[0] }) {
         <div className="px-5 pb-5 flex-1 flex flex-col -mt-7">
           {/* Profile section */}
           <div className="flex items-start gap-3 mb-4">
-            <div className="relative flex-shrink-0">
+            <div className="relative flex-shrink-0 w-[52px] h-[52px]">
               <Image
-                src={mentor.image}
+                src={avatarUrl}
                 alt={mentor.name}
                 width={52}
                 height={52}
-                className="rounded-xl object-cover ring-2 ring-white shadow-md"
+                className="w-[52px] h-[52px] rounded-xl object-cover ring-2 ring-white shadow-md"
+                unoptimized
               />
               {mentor.verified && (
                 <div className="absolute -bottom-0.5 -right-0.5 w-4.5 h-4.5 bg-blue-500 rounded-full flex items-center justify-center ring-2 ring-white">
@@ -402,11 +412,11 @@ function MentorCard({ mentor }: { mentor: (typeof mentors)[0] }) {
                 </div>
               )}
             </div>
-            <div className="flex-1 min-w-0 pt-1">
-              <h3 className="font-semibold text-slate-900 text-[15px] truncate group-hover:text-blue-600 transition-colors">
+            <div className="flex-1 min-w-0 pt-8">
+              <h3 className="font-bold text-slate-900 text-base leading-tight group-hover:text-blue-600 transition-colors">
                 {mentor.name}
               </h3>
-              <p className="text-[13px] text-slate-500 truncate">
+              <p className="text-[13px] text-slate-500 truncate mt-0.5">
                 {mentor.college}
               </p>
             </div>
@@ -581,47 +591,29 @@ export default function FindMentorsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50/50">
+    <div className="min-h-screen">
       <Navigation />
 
       {/* Header */}
-      <header className="pt-20 bg-white border-b border-slate-100">
+      <header className="pt-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="py-6">
             {/* Title Row */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-              <div>
-                <h1 className="text-2xl font-semibold text-slate-900 tracking-tight">
-                  Find a Mentor
-                </h1>
-                <p className="text-slate-500 text-sm mt-1">
-                  {filteredMentors.length} mentors available
-                </p>
-              </div>
-
-              {/* Search */}
-              <div className="relative w-full sm:w-80">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 h-4 w-4" />
-                <input
-                  type="text"
-                  placeholder="Search mentors..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-11 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
-                />
-                {searchTerm && (
-                  <button
-                    onClick={() => setSearchTerm("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                )}
-              </div>
+            <div className="mb-6">
+              <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
+                Find a{" "}
+                <span className="bg-gradient-to-r from-primary-900 via-violet-500 to-pink-400 bg-clip-text text-transparent">
+                  Mentor
+                </span>
+              </h1>
+              <p className="text-gray-600 mt-3">
+                {filteredMentors.length} mentors available
+              </p>
             </div>
 
-            {/* Filter Bar */}
-            <div className="flex items-center gap-2 pb-1 overflow-x-auto scrollbar-hide">
+            {/* Filter Bar with Search */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 pb-1">
+              <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide flex-shrink-0">
               <FilterChip
                 label="College"
                 value={collegeFilter}
@@ -677,6 +669,27 @@ export default function FindMentorsPage() {
                   Clear all
                 </button>
               )}
+              </div>
+
+              {/* Search */}
+              <div className="relative w-full sm:w-72 sm:ml-auto">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 h-4 w-4" />
+                <input
+                  type="text"
+                  placeholder="Search mentors..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-11 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
+                />
+                {searchTerm && (
+                  <button
+                    onClick={() => setSearchTerm("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
