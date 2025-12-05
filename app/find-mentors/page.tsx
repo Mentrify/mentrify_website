@@ -4,19 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { SimplePagination } from "@/components/ui/pagination";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  Search,
-  Filter,
-  MapPin,
-  Calendar,
-  Verified,
-  Star,
-  X,
-  ChevronDown,
-  Users,
-  Award,
-  BookOpen,
-} from "lucide-react";
+import { Search, MapPin, Star, X, ChevronDown, BadgeCheck } from "lucide-react";
 import Navigation from "../../components/Navigation";
 
 const mentors = [
@@ -29,12 +17,10 @@ const mentors = [
     rating: 4.9,
     sessions: 45,
     image: "/placeholder.svg?height=120&width=120",
-    languages: ["Hindi", "English"],
     specialties: ["Engineering", "Coding", "Campus Life", "Placements"],
     location: "Delhi",
     price: 100,
     verified: true,
-    bio: "Passionate about helping juniors navigate their engineering journey with practical insights.",
   },
   {
     id: 2,
@@ -45,12 +31,10 @@ const mentors = [
     rating: 4.8,
     sessions: 32,
     image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Gujarati"],
     specialties: ["Medical", "NEET", "Study Tips", "Research"],
     location: "Delhi",
     price: 100,
     verified: true,
-    bio: "Medical student passionate about guiding aspiring doctors through their journey.",
   },
   {
     id: 3,
@@ -61,12 +45,10 @@ const mentors = [
     rating: 4.7,
     sessions: 28,
     image: "/placeholder.svg?height=120&width=120",
-    languages: ["Hindi", "English"],
     specialties: ["Commerce", "Economics", "DU Life", "Finance"],
     location: "Delhi",
     price: 100,
     verified: true,
-    bio: "Economics enthusiast helping students understand commerce and finance better.",
   },
   {
     id: 4,
@@ -77,12 +59,10 @@ const mentors = [
     rating: 4.9,
     sessions: 38,
     image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Tamil"],
     specialties: ["Engineering", "NIT Life", "Placements", "Research"],
     location: "Tamil Nadu",
     price: 100,
     verified: true,
-    bio: "Mechanical engineering student with expertise in placements and research opportunities.",
   },
   {
     id: 5,
@@ -93,12 +73,10 @@ const mentors = [
     rating: 4.6,
     sessions: 22,
     image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Hindi"],
     specialties: ["MBA", "CAT Prep", "Business", "Consulting"],
     location: "Gujarat",
     price: 100,
     verified: true,
-    bio: "MBA student helping aspirants crack CAT and understand business school life.",
   },
   {
     id: 6,
@@ -109,12 +87,10 @@ const mentors = [
     rating: 4.8,
     sessions: 41,
     image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Telugu"],
     specialties: ["Engineering", "BITS Life", "Research", "Internships"],
     location: "Rajasthan",
     price: 100,
     verified: true,
-    bio: "Final year student with extensive experience in research and internships.",
   },
   {
     id: 7,
@@ -125,12 +101,10 @@ const mentors = [
     rating: 4.7,
     sessions: 30,
     image: "/placeholder.svg?height=120&width=120",
-    languages: ["Hindi", "English"],
     specialties: ["Engineering", "Projects", "Startups", "Internships"],
     location: "Mumbai",
     price: 120,
     verified: true,
-    bio: "Focused on guiding students about projects, internships, and startup culture.",
   },
   {
     id: 8,
@@ -141,12 +115,10 @@ const mentors = [
     rating: 4.8,
     sessions: 36,
     image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Hindi"],
     specialties: ["Medical", "NEET", "Clinical Skills", "Campus Life"],
     location: "Delhi",
     price: 110,
     verified: true,
-    bio: "Helping future doctors excel in academics and clinical exposure.",
   },
   {
     id: 9,
@@ -157,12 +129,10 @@ const mentors = [
     rating: 4.9,
     sessions: 50,
     image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Malayalam"],
     specialties: ["Research", "Physics", "Academics", "Higher Studies Abroad"],
     location: "Bangalore",
     price: 150,
     verified: true,
-    bio: "Research scholar mentoring students interested in science and higher studies.",
   },
   {
     id: 10,
@@ -173,12 +143,10 @@ const mentors = [
     rating: 4.6,
     sessions: 20,
     image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Punjabi"],
     specialties: ["Psychology", "Mental Health", "Study Tips", "DU Life"],
     location: "Delhi",
     price: 90,
     verified: true,
-    bio: "Passionate about mental health awareness and student well-being.",
   },
   {
     id: 11,
@@ -189,12 +157,10 @@ const mentors = [
     rating: 4.8,
     sessions: 44,
     image: "/placeholder.svg?height=120&width=120",
-    languages: ["Telugu", "English", "Hindi"],
     specialties: ["Engineering", "Placements", "Research", "GATE Prep"],
     location: "Telangana",
     price: 100,
     verified: true,
-    bio: "Civil engineer guiding peers in placements, projects, and GATE preparation.",
   },
   {
     id: 12,
@@ -205,12 +171,10 @@ const mentors = [
     rating: 4.7,
     sessions: 18,
     image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Hindi"],
     specialties: ["Law", "Judiciary Prep", "Research", "Internships"],
     location: "Delhi",
     price: 95,
     verified: true,
-    bio: "Law student mentoring juniors in legal studies and internships.",
   },
   {
     id: 13,
@@ -221,12 +185,10 @@ const mentors = [
     rating: 4.9,
     sessions: 40,
     image: "/placeholder.svg?height=120&width=120",
-    languages: ["Gujarati", "English"],
     specialties: ["Engineering", "Placements", "Projects", "Higher Studies"],
     location: "Chennai",
     price: 130,
     verified: true,
-    bio: "Aerospace enthusiast mentoring students for research and placements.",
   },
   {
     id: 14,
@@ -237,12 +199,10 @@ const mentors = [
     rating: 4.5,
     sessions: 16,
     image: "/placeholder.svg?height=120&width=120",
-    languages: ["Hindi", "English"],
     specialties: ["Architecture", "Design", "Campus Life", "Creative Careers"],
     location: "Roorkee",
     price: 85,
     verified: true,
-    bio: "Architecture student passionate about design and guiding peers.",
   },
   {
     id: 15,
@@ -253,12 +213,10 @@ const mentors = [
     rating: 4.7,
     sessions: 34,
     image: "/placeholder.svg?height=120&width=120",
-    languages: ["Urdu", "English", "Hindi"],
     specialties: ["Engineering", "Internships", "Placements", "Projects"],
     location: "Uttar Pradesh",
     price: 100,
     verified: true,
-    bio: "Mechanical student mentoring juniors on internships and projects.",
   },
   {
     id: 16,
@@ -269,12 +227,10 @@ const mentors = [
     rating: 4.8,
     sessions: 25,
     image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Bengali"],
     specialties: ["Literature", "Academics", "Creative Writing", "Campus Life"],
     location: "Kolkata",
     price: 90,
     verified: true,
-    bio: "Literature student helping peers in creative writing and academics.",
   },
   {
     id: 17,
@@ -285,12 +241,10 @@ const mentors = [
     rating: 4.9,
     sessions: 39,
     image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Hindi"],
     specialties: ["MBA", "Case Studies", "Consulting", "Placements"],
     location: "Bangalore",
     price: 140,
     verified: true,
-    bio: "MBA student providing insights into consulting and placements.",
   },
   {
     id: 18,
@@ -301,12 +255,10 @@ const mentors = [
     rating: 4.6,
     sessions: 27,
     image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Hindi"],
     specialties: ["Engineering", "Placements", "Research", "Projects"],
     location: "Kanpur",
     price: 110,
     verified: true,
-    bio: "Passionate about chemical engineering and guiding juniors for research.",
   },
   {
     id: 19,
@@ -317,12 +269,10 @@ const mentors = [
     rating: 4.5,
     sessions: 15,
     image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Kannada"],
     specialties: ["Business", "Management", "Campus Life", "Internships"],
     location: "Bangalore",
     price: 85,
     verified: true,
-    bio: "Helping juniors with management studies and campus guidance.",
   },
   {
     id: 20,
@@ -333,32 +283,198 @@ const mentors = [
     rating: 4.7,
     sessions: 19,
     image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Hindi", "Telugu"],
     specialties: ["AI", "Coding", "Projects", "Research"],
     location: "Hyderabad",
     price: 120,
     verified: true,
-    bio: "AI student passionate about coding, projects, and guiding aspirants.",
   },
 ];
 
-const MENTORS_PER_PAGE = 9;
+const MENTORS_PER_PAGE = 12;
 
-export default function MentorsPage() {
+// Premium Filter Chip Component
+function FilterChip({
+  label,
+  value,
+  options,
+  onChange,
+  isOpen,
+  onToggle,
+}: {
+  label: string;
+  value: string;
+  options: { value: string; label: string }[];
+  onChange: (value: string) => void;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        if (isOpen) onToggle();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen, onToggle]);
+
+  const selectedOption = options.find((o) => o.value === value);
+  const isActive = value !== "all" && value !== "rating";
+  const displayText = isActive ? selectedOption?.label : label;
+
+  return (
+    <div ref={dropdownRef} className="relative">
+      <button
+        onClick={onToggle}
+        className={`
+          inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium
+          transition-all duration-200 ease-out whitespace-nowrap
+          ${
+            isActive
+              ? "bg-slate-900 text-white"
+              : "bg-white text-slate-700 border border-slate-200 hover:border-slate-300 hover:shadow-sm"
+          }
+        `}
+      >
+        <span>{displayText}</span>
+        <ChevronDown
+          className={`w-3.5 h-3.5 transition-transform duration-200 ${isOpen ? "rotate-180" : ""} ${isActive ? "text-slate-300" : "text-slate-400"}`}
+        />
+      </button>
+
+      {isOpen && (
+        <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-100 py-1.5 min-w-[180px] z-50 overflow-hidden">
+          {options.map((option) => (
+            <button
+              key={option.value}
+              onClick={() => {
+                onChange(option.value);
+                onToggle();
+              }}
+              className={`
+                w-full text-left px-4 py-2.5 text-sm transition-colors
+                ${
+                  value === option.value
+                    ? "bg-slate-50 text-slate-900 font-medium"
+                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                }
+              `}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Premium Mentor Card Component
+function MentorCard({ mentor }: { mentor: (typeof mentors)[0] }) {
+  return (
+    <Link href={`/booking/${mentor.id}`}>
+      <div className="group bg-white rounded-2xl border border-slate-100 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/50 hover:border-slate-200 hover:-translate-y-1 h-full flex flex-col">
+        {/* Subtle gradient header */}
+        <div className="h-14 bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5" />
+        </div>
+
+        {/* Content */}
+        <div className="px-5 pb-5 flex-1 flex flex-col -mt-7">
+          {/* Profile section */}
+          <div className="flex items-start gap-3 mb-4">
+            <div className="relative flex-shrink-0">
+              <Image
+                src={mentor.image}
+                alt={mentor.name}
+                width={52}
+                height={52}
+                className="rounded-xl object-cover ring-2 ring-white shadow-md"
+              />
+              {mentor.verified && (
+                <div className="absolute -bottom-0.5 -right-0.5 w-4.5 h-4.5 bg-blue-500 rounded-full flex items-center justify-center ring-2 ring-white">
+                  <BadgeCheck className="h-3 w-3 text-white" />
+                </div>
+              )}
+            </div>
+            <div className="flex-1 min-w-0 pt-1">
+              <h3 className="font-semibold text-slate-900 text-[15px] truncate group-hover:text-blue-600 transition-colors">
+                {mentor.name}
+              </h3>
+              <p className="text-[13px] text-slate-500 truncate">
+                {mentor.college}
+              </p>
+            </div>
+          </div>
+
+          {/* Stats */}
+          <div className="flex items-center gap-3 text-[13px] text-slate-500 mb-4">
+            <span className="inline-flex items-center gap-1">
+              <Star className="h-3.5 w-3.5 text-amber-400 fill-amber-400" />
+              <span className="font-medium text-slate-700">{mentor.rating}</span>
+            </span>
+            <span className="w-1 h-1 rounded-full bg-slate-300" />
+            <span>{mentor.sessions} sessions</span>
+            <span className="w-1 h-1 rounded-full bg-slate-300" />
+            <span className="inline-flex items-center gap-0.5">
+              <MapPin className="h-3 w-3" />
+              {mentor.location.split(" ")[0]}
+            </span>
+          </div>
+
+          {/* Tags */}
+          <div className="flex flex-wrap gap-1.5 mb-4 flex-1">
+            {mentor.specialties.slice(0, 2).map((specialty, idx) => (
+              <span
+                key={idx}
+                className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md text-xs font-medium"
+              >
+                {specialty}
+              </span>
+            ))}
+            {mentor.specialties.length > 2 && (
+              <span className="px-2 py-1 text-slate-400 text-xs">
+                +{mentor.specialties.length - 2}
+              </span>
+            )}
+          </div>
+
+          {/* Footer */}
+          <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+            <div>
+              <span className="text-lg font-semibold text-slate-900">
+                ₹{mentor.price}
+              </span>
+              <span className="text-slate-400 text-sm ml-1">/session</span>
+            </div>
+            <span className="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg group-hover:bg-blue-600 transition-colors">
+              Book
+            </span>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+export default function FindMentorsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [collegeFilter, setCollegeFilter] = useState("all");
   const [streamFilter, setStreamFilter] = useState("all");
   const [locationFilter, setLocationFilter] = useState("all");
-  const [priceRange, setPriceRange] = useState([0, 500]);
   const [sortBy, setSortBy] = useState("rating");
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [page, setPage] = useState(1);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
 
   const filteredMentors = mentors
     .filter((mentor) => {
       const search = searchTerm.trim().toLowerCase();
-      // If search is empty, always match
       const matchesSearch =
         !search ||
         mentor.name.toLowerCase().includes(search) ||
@@ -375,15 +491,9 @@ export default function MentorsPage() {
       const matchesLocation =
         locationFilter === "all" ||
         mentor.location.toLowerCase().includes(locationFilter.toLowerCase());
-      const matchesPrice =
-        mentor.price >= priceRange[0] && mentor.price <= priceRange[1];
 
       return (
-        matchesSearch &&
-        matchesCollege &&
-        matchesStream &&
-        matchesLocation &&
-        matchesPrice
+        matchesSearch && matchesCollege && matchesStream && matchesLocation
       );
     })
     .sort((a, b) => {
@@ -401,19 +511,10 @@ export default function MentorsPage() {
       }
     });
 
-  // Reset to first page if filters/search change
   useEffect(() => {
     setPage(1);
-  }, [
-    searchTerm,
-    collegeFilter,
-    streamFilter,
-    locationFilter,
-    priceRange,
-    sortBy,
-  ]);
+  }, [searchTerm, collegeFilter, streamFilter, locationFilter, sortBy]);
 
-  // Animate mentor cards on every render of filteredMentors
   useEffect(() => {
     if (cardsRef.current) {
       const cards = cardsRef.current.querySelectorAll(".mentor-card");
@@ -422,478 +523,211 @@ export default function MentorsPage() {
         card.classList.remove("opacity-0");
         setTimeout(() => {
           card.classList.add("animate-fade-in-up");
-        }, idx * 100);
+        }, idx * 40);
       });
     }
-  }, [filteredMentors]);
+  }, [filteredMentors, page]);
 
   const clearAllFilters = () => {
     setSearchTerm("");
     setCollegeFilter("all");
     setStreamFilter("all");
     setLocationFilter("all");
-    setPriceRange([0, 500]);
     setSortBy("rating");
-    // Focus the search input for better UX
-    setTimeout(() => {
-      const input = document.querySelector(
-        'input[placeholder="Search mentors..."]'
-      ) as HTMLInputElement;
-      if (input) input.focus();
-    }, 100);
   };
 
   const activeFiltersCount =
-    (searchTerm ? 1 : 0) +
     (collegeFilter !== "all" ? 1 : 0) +
     (streamFilter !== "all" ? 1 : 0) +
-    (locationFilter !== "all" ? 1 : 0) +
-    (priceRange[0] > 0 || priceRange[1] < 500 ? 1 : 0);
+    (locationFilter !== "all" ? 1 : 0);
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredMentors.length / MENTORS_PER_PAGE);
   const pagedMentors = filteredMentors.slice(
     (page - 1) * MENTORS_PER_PAGE,
     page * MENTORS_PER_PAGE
   );
 
+  const collegeOptions = [
+    { value: "all", label: "All Colleges" },
+    { value: "IIT", label: "IIT" },
+    { value: "NIT", label: "NIT" },
+    { value: "AIIMS", label: "AIIMS" },
+    { value: "IIM", label: "IIM" },
+    { value: "BITS", label: "BITS" },
+  ];
+
+  const streamOptions = [
+    { value: "all", label: "All Streams" },
+    { value: "Engineering", label: "Engineering" },
+    { value: "Medical", label: "Medical" },
+    { value: "Commerce", label: "Commerce" },
+    { value: "MBA", label: "MBA" },
+  ];
+
+  const locationOptions = [
+    { value: "all", label: "All Locations" },
+    { value: "Delhi", label: "Delhi" },
+    { value: "Mumbai", label: "Mumbai" },
+    { value: "Bangalore", label: "Bangalore" },
+    { value: "Tamil Nadu", label: "Tamil Nadu" },
+    { value: "Gujarat", label: "Gujarat" },
+  ];
+
+  const sortOptions = [
+    { value: "rating", label: "Highest Rated" },
+    { value: "sessions", label: "Most Sessions" },
+    { value: "price_low", label: "Price: Low → High" },
+    { value: "price_high", label: "Price: High → Low" },
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-white">
+    <div className="min-h-screen bg-slate-50/50">
       <Navigation />
 
-      {/* Hero Banner Section */}
-      <section className="pt-32 pb-12 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center gap-12">
-            <div className="flex-1 text-center lg:text-left">
-              <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-50 to-purple-50 rounded-full border border-blue-100 mb-6">
-                <Verified className="w-4 h-4 mr-2 text-green-600" />
-                <span className="text-sm font-semibold text-gray-700">
-                  Verified Mentors
-                </span>
-              </div>
-              <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-                Find Your Perfect{" "}
-                <span className="apple-gradient-text">Mentor</span>
-              </h1>
-              <p className="text-xl text-gray-600 mb-8 max-w-2xl">
-                Connect with experienced college seniors for personalized
-                guidance on academics, placements, internships, and campus life.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 items-center lg:items-start">
-                <div className="flex items-center space-x-4">
-                  <div className="flex -space-x-2">
-                    {[1, 2, 3].map((i) => (
-                      <div
-                        key={i}
-                        className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 border-2 border-white flex items-center justify-center text-white text-sm font-bold"
-                      >
-                        {i}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    <p className="font-semibold text-gray-900">
-                      {mentors.length}+ Mentors
-                    </p>
-                    <p className="text-gray-500">Ready to help</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex-1">
-              <div className="relative">
-                <div className="absolute -inset-4 bg-gradient-to-r from-blue-300 to-purple-300 rounded-3xl blur-3xl opacity-20"></div>
-                <div className="relative bg-white rounded-3xl p-8 shadow-2xl border border-gray-100">
-                  <div className="space-y-4">
-                    <div className="relative">
-                      <Search className="absolute left-4 top-4 text-gray-400 h-5 w-5" />
-                      <input
-                        type="text"
-                        placeholder="Search by name or course..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
-                      />
-                    </div>
-
-                    <div className="pt-2 border-t border-gray-100">
-                      <div className="grid grid-cols-3 gap-2 text-center">
-                        <div>
-                          <p className="text-2xl font-bold text-blue-600">
-                            {filteredMentors.length}
-                          </p>
-                          <p className="text-xs text-gray-600">Available</p>
-                        </div>
-                        <div>
-                          <p className="text-2xl font-bold text-green-600">
-                            4.8
-                          </p>
-                          <p className="text-xs text-gray-600">Avg Rating</p>
-                        </div>
-                        <div>
-                          <p className="text-2xl font-bold text-purple-600">
-                            ₹100
-                          </p>
-                          <p className="text-xs text-gray-600">From</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Filters and Results Section */}
-      <section className="py-12 px-4 bg-gradient-to-b from-white via-blue-50/30 to-white">
-        <div className="max-w-7xl mx-auto">
-          {/* Modern Filter Cards */}
-          <div className="mb-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-              {/* Sort By Card */}
-              <div className="bg-white rounded-2xl p-4 border-2 border-gray-100 hover:border-blue-300 shadow-sm hover:shadow-md transition-all duration-300 group">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="p-2 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
-                    <Star className="w-4 h-4 text-blue-600" />
-                  </div>
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                    Sort By
-                  </label>
-                </div>
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium appearance-none cursor-pointer hover:border-blue-300 transition-colors"
-                >
-                  <option value="rating">Highest Rating</option>
-                  <option value="sessions">Most Sessions</option>
-                  <option value="price_low">Price: Low to High</option>
-                  <option value="price_high">Price: High to Low</option>
-                </select>
-              </div>
-
-              {/* College Type Card */}
-              <div className="bg-white rounded-2xl p-4 border-2 border-gray-100 hover:border-purple-300 shadow-sm hover:shadow-md transition-all duration-300 group">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="p-2 bg-purple-100 rounded-lg group-hover:bg-purple-200 transition-colors">
-                    <Award className="w-4 h-4 text-purple-600" />
-                  </div>
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                    College
-                  </label>
-                </div>
-                <select
-                  value={collegeFilter}
-                  onChange={(e) => setCollegeFilter(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm font-medium appearance-none cursor-pointer hover:border-purple-300 transition-colors"
-                >
-                  <option value="all">All Colleges</option>
-                  {["IIT", "NIT", "AIIMS", "IIM", "BITS"].map((c) => (
-                    <option key={c} value={c}>
-                      {c}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Stream Card */}
-              <div className="bg-white rounded-2xl p-4 border-2 border-gray-100 hover:border-green-300 shadow-sm hover:shadow-md transition-all duration-300 group">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="p-2 bg-green-100 rounded-lg group-hover:bg-green-200 transition-colors">
-                    <BookOpen className="w-4 h-4 text-green-600" />
-                  </div>
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                    Stream
-                  </label>
-                </div>
-                <select
-                  value={streamFilter}
-                  onChange={(e) => setStreamFilter(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm font-medium appearance-none cursor-pointer hover:border-green-300 transition-colors"
-                >
-                  <option value="all">All Streams</option>
-                  {["Engineering", "Medical", "Commerce", "MBA"].map((s) => (
-                    <option key={s} value={s}>
-                      {s}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Location Card */}
-              <div className="bg-white rounded-2xl p-4 border-2 border-gray-100 hover:border-red-300 shadow-sm hover:shadow-md transition-all duration-300 group">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="p-2 bg-red-100 rounded-lg group-hover:bg-red-200 transition-colors">
-                    <MapPin className="w-4 h-4 text-red-600" />
-                  </div>
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                    Location
-                  </label>
-                </div>
-                <select
-                  value={locationFilter}
-                  onChange={(e) => setLocationFilter(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm font-medium appearance-none cursor-pointer hover:border-red-300 transition-colors"
-                >
-                  <option value="all">All Locations</option>
-                  {[
-                    "Delhi",
-                    "Tamil Nadu",
-                    "Gujarat",
-                    "Rajasthan",
-                    "Bangalore",
-                    "Mumbai",
-                  ].map((l) => (
-                    <option key={l} value={l}>
-                      {l}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Price Range Card */}
-              <div className="bg-white rounded-2xl p-4 border-2 border-gray-100 hover:border-orange-300 shadow-sm hover:shadow-md transition-all duration-300 group">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="p-2 bg-orange-100 rounded-lg group-hover:bg-orange-200 transition-colors">
-                    <Calendar className="w-4 h-4 text-orange-600" />
-                  </div>
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                    Max Price
-                  </label>
-                </div>
-                <div className="space-y-2">
-                  <input
-                    type="range"
-                    min="0"
-                    max="500"
-                    step="50"
-                    value={priceRange[1]}
-                    onChange={(e) =>
-                      setPriceRange([priceRange[0], parseInt(e.target.value)])
-                    }
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-600"
-                  />
-                  <div className="text-center">
-                    <span className="text-sm font-bold text-gray-900">
-                      ₹{priceRange[1]}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Results and Clear Filters */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8 p-4 bg-white rounded-2xl border-2 border-gray-100">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg">
-                <Users className="w-5 h-5 text-blue-600" />
-              </div>
+      {/* Header */}
+      <header className="pt-20 bg-white border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="py-6">
+            {/* Title Row */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
               <div>
-                <p className="text-sm text-gray-600">Found</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {filteredMentors.length}
-                  <span className="text-sm font-semibold text-gray-600 ml-2">
-                    mentors
-                  </span>
+                <h1 className="text-2xl font-semibold text-slate-900 tracking-tight">
+                  Find a Mentor
+                </h1>
+                <p className="text-slate-500 text-sm mt-1">
+                  {filteredMentors.length} mentors available
                 </p>
               </div>
-            </div>
 
-            {activeFiltersCount > 0 && (
-              <button
-                onClick={clearAllFilters}
-                className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-50 to-purple-50 hover:from-blue-100 hover:to-purple-100 text-blue-700 font-semibold rounded-xl border-2 border-blue-200 hover:border-blue-300 transition-all duration-300 group"
-              >
-                <X className="w-4 h-4 group-hover:rotate-90 transition-transform" />
-                Clear Filters
-              </button>
-            )}
-          </div>
-
-          {/* Mentors Grid */}
-          {filteredMentors.length > 0 ? (
-            <>
-              <div
-                ref={cardsRef}
-                className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8"
-              >
-                {pagedMentors.map((mentor) => (
-                  <div
-                    key={mentor.id}
-                    className="mentor-card opacity-0 bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl border border-gray-100 hover:border-gray-300 transition-all duration-300 group cursor-pointer transform hover:-translate-y-2 flex flex-col hover:bg-gradient-to-b hover:from-white hover:to-gray-50"
+              {/* Search */}
+              <div className="relative w-full sm:w-80">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 h-4 w-4" />
+                <input
+                  type="text"
+                  placeholder="Search mentors..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-11 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
+                />
+                {searchTerm && (
+                  <button
+                    onClick={() => setSearchTerm("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors"
                   >
-                    {/* Header with animated gradient background */}
-                    <div className="relative h-28 bg-gradient-to-135 from-blue-500 via-blue-400 to-purple-500 overflow-hidden">
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-20 bg-white transition-opacity duration-300"></div>
-                      <div className="absolute -top-2 -right-2 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500"></div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="px-6 pb-6 flex-1 flex flex-col">
-                      {/* Profile Section */}
-                      <div className="flex items-start gap-4 -mt-16 mb-5 relative z-10">
-                        <div className="relative">
-                          <Image
-                            src={mentor.image || "/placeholder.svg"}
-                            alt={mentor.name}
-                            width={90}
-                            height={90}
-                            className="rounded-2xl border-4 border-white shadow-lg object-cover group-hover:shadow-xl transition-shadow duration-300"
-                          />
-                          {mentor.verified && (
-                            <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center border-3 border-white shadow-md animate-pulse">
-                              <Verified className="h-4 w-4 text-white" />
-                            </div>
-                          )}
-                        </div>
-                        <div className="flex-1 pt-2">
-                          <h3 className="font-bold text-gray-900 text-lg group-hover:text-blue-600 transition-colors duration-200 leading-tight">
-                            {mentor.name}
-                          </h3>
-                          <p className="text-sm text-gray-600 font-medium mt-0.5">
-                            {mentor.college}
-                          </p>
-                          <div className="flex items-center gap-1.5 mt-1.5">
-                            <BookOpen className="h-3.5 w-3.5 text-blue-500" />
-                            <p className="text-xs text-blue-600 font-semibold">
-                              {mentor.course.split(" ")[0]} • {mentor.year}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Stats with enhanced design */}
-                      <div className="grid grid-cols-3 gap-3 mb-5 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl border border-gray-200 group-hover:from-blue-50 group-hover:to-purple-50 group-hover:border-blue-200 transition-all duration-300">
-                        <div className="text-center">
-                          <div className="flex items-center justify-center gap-1 text-yellow-500 mb-1.5 group-hover:scale-110 transition-transform duration-200">
-                            <Star className="h-4 w-4 fill-current" />
-                            <span className="font-bold text-gray-900 text-sm">
-                              {mentor.rating}
-                            </span>
-                          </div>
-                          <p className="text-xs text-gray-600 font-medium">
-                            Rating
-                          </p>
-                        </div>
-                        <div className="text-center">
-                          <div className="font-bold text-gray-900 mb-1.5 text-sm flex items-center justify-center">
-                            <Users className="h-4 w-4 text-purple-500 mr-1" />
-                            {mentor.sessions}
-                          </div>
-                          <p className="text-xs text-gray-600 font-medium">
-                            Sessions
-                          </p>
-                        </div>
-                        <div className="text-center">
-                          <div className="font-bold text-gray-900 mb-1.5 text-sm flex items-center justify-center">
-                            <MapPin className="h-4 w-4 text-red-500" />
-                            <span className="ml-0.5">
-                              {mentor.location.split(" ")[0]}
-                            </span>
-                          </div>
-                          <p className="text-xs text-gray-600 font-medium">
-                            Location
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Bio */}
-                      <p className="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-2 flex-1 group-hover:text-gray-700 transition-colors">
-                        {mentor.bio}
-                      </p>
-
-                      {/* Specialties with enhanced styling */}
-                      <div className="mb-4">
-                        <div className="flex flex-wrap gap-2">
-                          {mentor.specialties
-                            .slice(0, 2)
-                            .map((specialty, idx) => (
-                              <span
-                                key={idx}
-                                className="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-xs font-semibold border border-blue-200 group-hover:bg-blue-100 group-hover:border-blue-300 transition-all duration-200"
-                              >
-                                {specialty}
-                              </span>
-                            ))}
-                          {mentor.specialties.length > 2 && (
-                            <span className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-xs font-semibold border border-gray-300 group-hover:bg-gray-200 transition-all duration-200">
-                              +{mentor.specialties.length - 2}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Languages */}
-                      <div className="mb-6 flex gap-2 flex-wrap">
-                        {mentor.languages.map((language, idx) => (
-                          <span
-                            key={idx}
-                            className="px-2.5 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-lg border border-gray-300 group-hover:bg-gray-200 group-hover:border-gray-400 transition-all duration-200"
-                          >
-                            {language}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* CTA Footer with enhanced design */}
-                      <div className="border-t border-gray-200 pt-5 flex items-center justify-between">
-                        <div className="flex flex-col">
-                          <span className="text-2xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                            ₹{mentor.price}
-                          </span>
-                          <span className="text-gray-500 text-xs font-medium">
-                            per session
-                          </span>
-                        </div>
-                        <Link href={`/booking/${mentor.id}`}>
-                          <button className="apple-button px-6 py-2.5 text-sm font-semibold group-hover:scale-110 transition-all duration-200 shadow-md hover:shadow-lg">
-                            Book Now
-                          </button>
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
               </div>
-
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="mt-12">
-                  <SimplePagination
-                    page={page}
-                    totalPages={totalPages}
-                    onPageChange={setPage}
-                  />
-                </div>
-              )}
-            </>
-          ) : (
-            <div className="text-center py-24">
-              <div className="w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-8">
-                <Search className="h-16 w-16 text-gray-400" />
-              </div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-4">
-                No mentors found
-              </h3>
-              <p className="text-gray-600 mb-8 max-w-md mx-auto">
-                Try adjusting your filters or search criteria to find more
-                mentors that match your needs.
-              </p>
-              <button
-                onClick={clearAllFilters}
-                className="apple-button px-8 py-3 text-base font-semibold"
-              >
-                Clear All Filters
-              </button>
             </div>
-          )}
+
+            {/* Filter Bar */}
+            <div className="flex items-center gap-2 pb-1 overflow-x-auto scrollbar-hide">
+              <FilterChip
+                label="College"
+                value={collegeFilter}
+                options={collegeOptions}
+                onChange={setCollegeFilter}
+                isOpen={openDropdown === "college"}
+                onToggle={() =>
+                  setOpenDropdown(openDropdown === "college" ? null : "college")
+                }
+              />
+              <FilterChip
+                label="Stream"
+                value={streamFilter}
+                options={streamOptions}
+                onChange={setStreamFilter}
+                isOpen={openDropdown === "stream"}
+                onToggle={() =>
+                  setOpenDropdown(openDropdown === "stream" ? null : "stream")
+                }
+              />
+              <FilterChip
+                label="Location"
+                value={locationFilter}
+                options={locationOptions}
+                onChange={setLocationFilter}
+                isOpen={openDropdown === "location"}
+                onToggle={() =>
+                  setOpenDropdown(
+                    openDropdown === "location" ? null : "location"
+                  )
+                }
+              />
+
+              <div className="h-5 w-px bg-slate-200 mx-1" />
+
+              <FilterChip
+                label="Sort: Highest Rated"
+                value={sortBy}
+                options={sortOptions}
+                onChange={setSortBy}
+                isOpen={openDropdown === "sort"}
+                onToggle={() =>
+                  setOpenDropdown(openDropdown === "sort" ? null : "sort")
+                }
+              />
+
+              {activeFiltersCount > 0 && (
+                <button
+                  onClick={clearAllFilters}
+                  className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-full transition-colors whitespace-nowrap"
+                >
+                  <X className="w-3.5 h-3.5" />
+                  Clear all
+                </button>
+              )}
+            </div>
+          </div>
         </div>
-      </section>
+      </header>
+
+      {/* Grid */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {filteredMentors.length > 0 ? (
+          <>
+            <div
+              ref={cardsRef}
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"
+            >
+              {pagedMentors.map((mentor) => (
+                <div key={mentor.id} className="mentor-card opacity-0">
+                  <MentorCard mentor={mentor} />
+                </div>
+              ))}
+            </div>
+
+            {totalPages > 1 && (
+              <div className="mt-12 flex justify-center">
+                <SimplePagination
+                  page={page}
+                  totalPages={totalPages}
+                  onPageChange={setPage}
+                />
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="text-center py-20">
+            <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <Search className="h-8 w-8 text-slate-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">
+              No mentors found
+            </h3>
+            <p className="text-slate-500 mb-6 text-sm max-w-sm mx-auto">
+              Try adjusting your search or filters to find what you&apos;re
+              looking for.
+            </p>
+            <button
+              onClick={clearAllFilters}
+              className="px-5 py-2.5 bg-slate-900 text-white text-sm font-medium rounded-xl hover:bg-slate-800 transition-colors"
+            >
+              Clear all filters
+            </button>
+          </div>
+        )}
+      </main>
     </div>
   );
 }

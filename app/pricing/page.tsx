@@ -1,80 +1,65 @@
 "use client";
 
-import { useState } from "react";
-import { Check, Star, Crown, Rocket } from "lucide-react";
+import { Check, Star, Crown, Users } from "lucide-react";
 import Link from "next/link";
 
-type Phase = "early" | "post";
-
-const features = {
-  base: [
-    "1 mentorship call included",
-    "Access to Discord (Basic)",
-    "Free resource on booking",
-  ],
-  membership: [
-    "2 mentorship calls (2nd at ₹99)",
-    "Premium Discord access",
-    "2 free webinars/workshops",
-    "Career path materials",
-    "Priority to apply as Mentor (from 2nd year)",
-  ],
-};
-
-// Renamed per SS
-const plans = {
-  early: [
-    {
-      name: "Early Unlock Pass",
-      icon: Rocket,
-      price: 99,
-      cta: "Grab Early Access",
-      perks: features.base,
-      highlight: false,
-    },
-    {
-      name: "Standard Access Pass",
-      icon: Star,
-      price: 199,
-      cta: "Upgrade Plan",
-      perks: features.base,
-      highlight: true, // Popular
-    },
-  ],
-  post: [
-    {
-      name: "Early Unlock Pass",
-      icon: Rocket,
-      price: 199,
-      cta: "Start Now",
-      perks: features.base,
-      highlight: false,
-    },
-    {
-      name: "Standard Access Pass",
-      icon: Star,
-      price: 299,
-      cta: "Go Standard",
-      perks: features.base,
-      highlight: true,
-    },
-  ],
-  membership: [
-    {
-      name: "Power Access Pass (Membership)",
-      icon: Crown,
-      price: 299, // launch price
-      cta: "Become a Member",
-      perks: [...features.base, ...features.membership],
-      highlight: true,
-    },
-  ],
-};
+const plans = [
+  {
+    name: "Normal Studs Mate",
+    subtitle: "For Students",
+    icon: Star,
+    price: 199,
+    priceLabel: "/ Call",
+    tagline: "Perfect for individual learners",
+    cta: "Book Your Session",
+    perks: [
+      "1:1 expert session",
+      "Career, projects & portfolio guidance",
+      "Doubts + roadmap support",
+      "Includes session notes & follow-ups",
+      "Optional student discount: 5–10%",
+    ],
+    highlight: false,
+  },
+  {
+    name: "Business / Organisation Pack",
+    icon: Users,
+    price: 119,
+    originalPrice: 199,
+    priceLabel: "/ Call",
+    discount: "40% OFF with code: PW25X",
+    cta: "Get Business Access",
+    perks: [
+      "Tailored sessions for teams",
+      "Skill training, upskilling & project help",
+      "On-demand expert access",
+      "Custom reporting for orgs",
+      "Invoice + GST support",
+      "Priority response time",
+    ],
+    highlight: true,
+  },
+  {
+    name: "Membership Model",
+    icon: Crown,
+    price: 299,
+    priceLabel: "/ Month",
+    tagline: "All-inclusive access for power users",
+    cta: "Become a Member",
+    perks: [
+      "Unlimited chat support",
+      "Priority 1:1 calls (discounted/limited)",
+      "Career roadmap + monthly review",
+      "Templates, guides & exclusive resources",
+      "Access to all student + business benefits",
+      "Member-only updates & perks",
+    ],
+    highlight: false,
+    ribbon: "Best Value",
+  },
+];
 
 export default function Pricing() {
-  const [phase, setPhase] = useState<Phase>("early");
-  const active = phase === "early" ? plans.early : plans.post;
-
   return (
     <section className="relative py-20">
       {/* background */}
@@ -95,40 +80,13 @@ export default function Pricing() {
           <p className="mt-3 text-gray-600">
             Pick a plan that matches where you are. Upgrade anytime.
           </p>
-
-          {/* phase toggle */}
-          <div className="mt-6 inline-flex items-center rounded-full bg-white/70 ring-1 ring-black/10 backdrop-blur p-1">
-            <button
-              onClick={() => setPhase("early")}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition
-                ${
-                  phase === "early"
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-sm"
-                    : "text-gray-700 hover:bg-white"
-                }`}
-            >
-              Early Bird
-            </button>
-            <button
-              onClick={() => setPhase("post")}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition
-                ${
-                  phase === "post"
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-sm"
-                    : "text-gray-700 hover:bg-white"
-                }`}
-            >
-              Post Early
-            </button>
-          </div>
         </div>
 
         {/* cards */}
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
-          {active.map((p, i) => (
+          {plans.map((p, i) => (
             <PricingCard key={i} {...p} />
           ))}
-          <PricingCard {...plans.membership[0]} ribbon="Best Value" />
         </div>
 
         <p className="mt-6 text-center text-xs text-gray-500">
@@ -141,16 +99,26 @@ export default function Pricing() {
 
 function PricingCard({
   name,
+  subtitle,
   icon: Icon,
   price,
+  originalPrice,
+  priceLabel,
+  tagline,
+  discount,
   cta,
   perks,
   highlight,
   ribbon,
 }: {
   name: string;
+  subtitle?: string;
   icon: any;
   price: number;
+  originalPrice?: number;
+  priceLabel: string;
+  tagline?: string;
+  discount?: string;
   cta: string;
   perks: string[];
   highlight?: boolean;
@@ -182,14 +150,30 @@ function PricingCard({
           <div className="h-12 w-12 grid place-items-center rounded-xl bg-violet-50 ring-1 ring-violet-200 text-violet-600">
             <Icon className="h-6 w-6" />
           </div>
-          <h3 className="text-xl font-semibold">{name}</h3>
+          <div>
+            <h3 className="text-xl font-semibold">{name}</h3>
+            {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
+          </div>
         </div>
 
-        <div className="mt-4 flex items-baseline gap-1">
-          <span className="text-4xl font-extrabold tracking-tight">
-            ₹{price}
-          </span>
-          <span className="text-gray-500 text-sm">/ one-time</span>
+        <div className="mt-4">
+          <div className="flex items-baseline gap-2">
+            {originalPrice && (
+              <span className="text-xl text-gray-400 line-through">
+                ₹{originalPrice}
+              </span>
+            )}
+            <span className="text-4xl font-extrabold tracking-tight">
+              ₹{price}
+            </span>
+            <span className="text-gray-500 text-sm">{priceLabel}</span>
+          </div>
+          {discount && (
+            <p className="mt-1 text-sm font-medium text-emerald-600">{discount}</p>
+          )}
+          {tagline && (
+            <p className="mt-1 text-sm text-gray-600">{tagline}</p>
+          )}
         </div>
 
         {/* grow keeps button aligned across cards */}
@@ -210,11 +194,6 @@ function PricingCard({
         >
           {cta}
         </Link>
-
-        <div className="mt-3 text-[11px] text-gray-500">
-          Includes free resource on booking. Calls after the included ones use
-          standard pricing.
-        </div>
       </div>
     </div>
   );
