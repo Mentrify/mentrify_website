@@ -1,11 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { SimplePagination } from "@/components/ui/pagination";
-import Link from "next/link";
-import Image from "next/image";
-import { Search, MapPin, Star, X, ChevronDown, BadgeCheck } from "lucide-react";
-import Navigation from "../../components/Navigation";
+import { createPortal } from "react-dom";
+import { Search, MapPin, Star, X, ChevronDown, CheckCircle2 } from "lucide-react";
 
 const mentors = [
   {
@@ -16,7 +13,7 @@ const mentors = [
     year: "3rd Year",
     rating: 4.9,
     sessions: 45,
-    image: "/placeholder.svg?height=120&width=120",
+    image: "https://media.licdn.com/dms/image/v2/D5603AQFXOknykDex6A/profile-displayphoto-scale_400_400/B56Zl1BCzTJ0Ag-/0/1758604833750?e=1766620800&v=beta&t=O6QGLeJCe9Z9khAZpGbJiO45obUDHvrTkv3Hylgmz0U",
     specialties: ["Engineering", "Coding", "Campus Life", "Placements"],
     location: "Delhi",
     price: 100,
@@ -28,9 +25,9 @@ const mentors = [
     college: "AIIMS Delhi",
     course: "MBBS",
     year: "4th Year",
-    rating: 4.8,
+    rating: 5,
     sessions: 32,
-    image: "/placeholder.svg?height=120&width=120",
+    image: "https://media.licdn.com/dms/image/v2/D4D03AQFGHyz25GD-1w/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1716278455382?e=1766620800&v=beta&t=lRc_LJgXQZeYwoViw-mBiNjN2mvA3jZiWclwcj3w4aU",
     specialties: ["Medical", "NEET", "Study Tips", "Research"],
     location: "Delhi",
     price: 100,
@@ -44,7 +41,7 @@ const mentors = [
     year: "2nd Year",
     rating: 4.7,
     sessions: 28,
-    image: "/placeholder.svg?height=120&width=120",
+    image: "https://images.unsplash.com/photo-1584999734482-0361f5fcf5c6",
     specialties: ["Commerce", "Economics", "DU Life", "Finance"],
     location: "Delhi",
     price: 100,
@@ -58,7 +55,7 @@ const mentors = [
     year: "3rd Year",
     rating: 4.9,
     sessions: 38,
-    image: "/placeholder.svg?height=120&width=120",
+    image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde",
     specialties: ["Engineering", "NIT Life", "Placements", "Research"],
     location: "Tamil Nadu",
     price: 100,
@@ -72,7 +69,7 @@ const mentors = [
     year: "1st Year",
     rating: 4.6,
     sessions: 22,
-    image: "/placeholder.svg?height=120&width=120",
+    image: "https://images.unsplash.com/photo-1589578527966-10c1976020d6",
     specialties: ["MBA", "CAT Prep", "Business", "Consulting"],
     location: "Gujarat",
     price: 100,
@@ -86,7 +83,7 @@ const mentors = [
     year: "4th Year",
     rating: 4.8,
     sessions: 41,
-    image: "/placeholder.svg?height=120&width=120",
+    image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce",
     specialties: ["Engineering", "BITS Life", "Research", "Internships"],
     location: "Rajasthan",
     price: 100,
@@ -290,7 +287,41 @@ const mentors = [
   },
 ];
 
-const MENTORS_PER_PAGE = 12;
+
+const MENTORS_PER_PAGE = 9;
+
+// Simple Pagination Component
+function SimplePagination({
+  page,
+  totalPages,
+  onPageChange,
+}: {
+  page: number;
+  totalPages: number;
+  onPageChange: (p: number) => void;
+}) {
+  return (
+    <div className="flex items-center gap-2">
+      <button
+        onClick={() => onPageChange(Math.max(1, page - 1))}
+        disabled={page === 1}
+        className="px-4 py-2 rounded-lg bg-white border border-slate-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
+      >
+        Previous
+      </button>
+      <span className="px-4 py-2 text-sm text-slate-600">
+        Page {page} of {totalPages}
+      </span>
+      <button
+        onClick={() => onPageChange(Math.min(totalPages, page + 1))}
+        disabled={page === totalPages}
+        className="px-4 py-2 rounded-lg bg-white border border-slate-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
+      >
+        Next
+      </button>
+    </div>
+  );
+}
 
 // Premium Filter Chip Component
 function FilterChip({
@@ -304,23 +335,53 @@ function FilterChip({
   label: string;
   value: string;
   options: { value: string; label: string }[];
-  onChange: (value: string) => void;
+  onChange: (v: string) => void;
   isOpen: boolean;
   onToggle: () => void;
 }) {
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({});
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node | null;
+      // if click is outside both the button and the menu, close
       if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
+        isOpen &&
+        target &&
+        !buttonRef.current?.contains(target as Node) &&
+        !menuRef.current?.contains(target as Node)
       ) {
-        if (isOpen) onToggle();
+        onToggle();
       }
     };
+
+    const updatePosition = () => {
+      const btn = buttonRef.current;
+      if (!btn) return;
+      const rect = btn.getBoundingClientRect();
+      setMenuStyle({
+        position: "fixed",
+        top: rect.bottom + window.scrollY + 8,
+        left: rect.left + window.scrollX,
+        minWidth: Math.max(180, rect.width),
+        zIndex: 9999,
+      });
+    };
+
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    window.addEventListener("resize", updatePosition);
+    window.addEventListener("scroll", updatePosition, true);
+    // update once when open
+    if (isOpen) updatePosition();
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("scroll", updatePosition, true);
+    };
   }, [isOpen, onToggle]);
 
   const selectedOption = options.find((o) => o.value === value);
@@ -330,6 +391,7 @@ function FilterChip({
   return (
     <div ref={dropdownRef} className="relative">
       <button
+        ref={buttonRef}
         type="button"
         onClick={(e) => {
           e.preventDefault();
@@ -352,133 +414,130 @@ function FilterChip({
         />
       </button>
 
-      {isOpen && (
-        <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 min-w-[180px] z-[100] overflow-hidden">
-          {options.map((option) => (
-            <button
-              type="button"
-              key={option.value}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                onChange(option.value);
-                onToggle();
-              }}
-              className={`
-                w-full text-left px-4 py-2.5 text-sm transition-colors cursor-pointer
-                ${
-                  value === option.value
-                    ? "bg-slate-100 text-slate-900 font-medium"
-                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                }
-              `}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
-      )}
+      {isOpen &&
+        createPortal(
+          <div
+            ref={menuRef}
+            style={menuStyle}
+            className="bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-[9999] overflow-hidden"
+          >
+            {options.map((option) => (
+              <button
+                type="button"
+                key={option.value}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onChange(option.value);
+                  onToggle();
+                }}
+                className={`
+                  w-full text-left px-4 py-2.5 text-sm transition-colors cursor-pointer
+                  ${
+                    value === option.value
+                      ? "bg-slate-100 text-slate-900 font-medium"
+                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                  }
+                `}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>,
+          document.body
+        )}
     </div>
   );
 }
 
-// Helper function to generate avatar URL
-function getAvatarUrl(name: string) {
-  const colors = ['6366f1', '8b5cf6', 'ec4899', 'f43f5e', 'f97316', '14b8a6', '06b6d4', '3b82f6'];
-  const colorIndex = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % colors.length;
-  return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${colors[colorIndex]}&color=fff&size=120&bold=true`;
-}
-
-// Premium Mentor Card Component
-function MentorCard({ mentor }: { mentor: (typeof mentors)[0] }) {
-  const avatarUrl = getAvatarUrl(mentor.name);
-
+function MentorCard({ mentor }: { mentor: any }) {
   return (
-    <Link href={`/booking/${mentor.id}`}>
-      <div className="group bg-white rounded-2xl border border-slate-100 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/50 hover:border-slate-200 hover:-translate-y-1 h-full flex flex-col">
-        {/* Subtle gradient header */}
-        <div className="h-14 bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5" />
+    <div className="group cursor-pointer">
+      <div className="
+        relative rounded-[28px] overflow-hidden
+        bg-white shadow-[0_8px_40px_rgba(0,0,0,0.06)]
+        transition-all duration-500
+        hover:shadow-[0_12px_48px_rgba(0,0,0,0.12)] hover:scale-[1.015]
+      ">
+        
+        {/* Image */}
+        <div className="relative h-[360px] overflow-hidden">
+          <img
+            src={mentor.image}
+            alt={mentor.name}
+            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-[1.06]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-white/10 to-transparent" />
         </div>
 
-        {/* Content */}
-        <div className="px-5 pb-5 flex-1 flex flex-col -mt-7">
-          {/* Profile section */}
-          <div className="flex items-start gap-3 mb-4">
-            <div className="relative flex-shrink-0 w-[52px] h-[52px]">
-              <Image
-                src={avatarUrl}
-                alt={mentor.name}
-                width={52}
-                height={52}
-                className="w-[52px] h-[52px] rounded-xl object-cover ring-2 ring-white shadow-md"
-                unoptimized
-              />
-              {mentor.verified && (
-                <div className="absolute -bottom-0.5 -right-0.5 w-4.5 h-4.5 bg-blue-500 rounded-full flex items-center justify-center ring-2 ring-white">
-                  <BadgeCheck className="h-3 w-3 text-white" />
-                </div>
-              )}
-            </div>
-            <div className="flex-1 min-w-0 pt-8">
-              <h3 className="font-bold text-slate-900 text-base leading-tight group-hover:text-blue-600 transition-colors">
-                {mentor.name}
-              </h3>
-              <p className="text-[13px] text-slate-500 truncate mt-0.5">
-                {mentor.college}
-              </p>
-            </div>
-          </div>
+        {/* Info */}
+        <div className="px-7 pt-5 pb-8 -mt-10 relative">
 
-          {/* Stats */}
-          <div className="flex items-center gap-3 text-[13px] text-slate-500 mb-4">
-            <span className="inline-flex items-center gap-1">
-              <Star className="h-3.5 w-3.5 text-amber-400 fill-amber-400" />
-              <span className="font-medium text-slate-700">{mentor.rating}</span>
-            </span>
-            <span className="w-1 h-1 rounded-full bg-slate-300" />
-            <span>{mentor.sessions} sessions</span>
-            <span className="w-1 h-1 rounded-full bg-slate-300" />
-            <span className="inline-flex items-center gap-0.5">
-              <MapPin className="h-3 w-3" />
-              {mentor.location.split(" ")[0]}
-            </span>
-          </div>
+          {/* Name Row */}
+          <div className="flex items-center gap-2">
+            <h3 className="text-[26px] font-semibold text-slate-900 tracking-tight">
+              {mentor.name}
+            </h3>
 
-          {/* Tags */}
-          <div className="flex flex-wrap gap-1.5 mb-4 flex-1">
-            {mentor.specialties.slice(0, 2).map((specialty, idx) => (
-              <span
-                key={idx}
-                className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md text-xs font-medium"
-              >
-                {specialty}
-              </span>
-            ))}
-            {mentor.specialties.length > 2 && (
-              <div className="relative group/tooltip">
-                <span className="px-2 py-1 text-slate-400 text-xs cursor-pointer hover:text-slate-600 transition-colors">
-                  +{mentor.specialties.length - 2}
-                </span>
-                <div className="absolute top-full left-0 mt-1 px-3 py-2 bg-slate-900 text-white text-xs rounded-lg opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all duration-200 z-50 shadow-lg pointer-events-none max-w-[180px]">
-                  {mentor.specialties.slice(2).join(", ")}
-                  <div className="absolute bottom-full left-3 border-4 border-transparent border-b-slate-900" />
-                </div>
+            {mentor.verified && (
+              <div className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center shadow-md">
+                <CheckCircle2 className="w-4 h-4 text-white" strokeWidth={2.5} />
               </div>
             )}
           </div>
 
-          {/* Footer */}
-          <div className="flex items-center justify-end pt-4 border-t border-slate-100">
-            <span className="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg group-hover:bg-blue-600 transition-colors">
-              Book
-            </span>
+          {/* College Info */}
+          <p className="text-[16px] text-slate-700 mt-1 font-medium">
+            {mentor.college}
+          </p>
+
+          {/* Course + Year */}
+          <p className="text-[14px] text-slate-500 leading-tight mt-0.5">
+            {mentor.course} • {mentor.year}
+          </p>
+
+          {/* Location */}
+          <p className="text-[13px] text-slate-400 mt-1.5">
+            {mentor.location}
+          </p>
+
+          {/* Divider */}
+          <div className="h-px w-full bg-slate-200/60 my-5" />
+
+          {/* Stats */}
+          <div className="flex items-center gap-5 text-sm">
+            <div className="flex items-center gap-1.5">
+              <span className="text-lg">⭐</span>
+              <span className="font-medium text-slate-700">{mentor.rating}</span>
+            </div>
+
+            <div className="flex items-center gap-1.5">
+              <span className="text-lg">🎧</span>
+              <span className="font-medium text-slate-700">
+                {mentor.sessions} sessions
+              </span>
+            </div>
           </div>
+
+          {/* CTA */}
+          <button
+            className="
+              w-full mt-6 py-3 rounded-full 
+              bg-slate-900 text-white text-[16px] 
+              font-semibold tracking-tight
+              transition-all duration-300
+              hover:bg-black
+            "
+          >
+            Schedule Session
+          </button>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
+
+
 
 export default function FindMentorsPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -488,8 +547,15 @@ export default function FindMentorsPage() {
   const [sortBy, setSortBy] = useState("rating");
   const [page, setPage] = useState(1);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
 
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Fixed filtering logic
   const filteredMentors = mentors
     .filter((mentor) => {
       const search = searchTerm.trim().toLowerCase();
@@ -499,21 +565,24 @@ export default function FindMentorsPage() {
         mentor.college.toLowerCase().includes(search) ||
         mentor.course.toLowerCase().includes(search);
 
+      // Fixed college filter - check if mentor's college contains the filter value
       const matchesCollege =
         collegeFilter === "all" ||
         mentor.college.toLowerCase().includes(collegeFilter.toLowerCase());
+
+      // Fixed stream filter - check specialties array
       const matchesStream =
         streamFilter === "all" ||
         mentor.specialties.some((specialty) =>
           specialty.toLowerCase().includes(streamFilter.toLowerCase())
         );
+
+      // Fixed location filter
       const matchesLocation =
         locationFilter === "all" ||
         mentor.location.toLowerCase().includes(locationFilter.toLowerCase());
 
-      return (
-        matchesSearch && matchesCollege && matchesStream && matchesLocation
-      );
+      return matchesSearch && matchesCollege && matchesStream && matchesLocation;
     })
     .sort((a, b) => {
       switch (sortBy) {
@@ -533,19 +602,6 @@ export default function FindMentorsPage() {
   useEffect(() => {
     setPage(1);
   }, [searchTerm, collegeFilter, streamFilter, locationFilter, sortBy]);
-
-  useEffect(() => {
-    if (cardsRef.current) {
-      const cards = cardsRef.current.querySelectorAll(".mentor-card");
-      cards.forEach((card, idx) => {
-        card.classList.remove("animate-fade-in-up");
-        card.classList.remove("opacity-0");
-        setTimeout(() => {
-          card.classList.add("animate-fade-in-up");
-        }, idx * 40);
-      });
-    }
-  }, [filteredMentors, page]);
 
   const clearAllFilters = () => {
     setSearchTerm("");
@@ -573,8 +629,7 @@ export default function FindMentorsPage() {
     { value: "AIIMS", label: "AIIMS" },
     { value: "IIM", label: "IIM" },
     { value: "BITS", label: "BITS" },
-    { value: "IISc", label: "IISc" },
-    { value: "Delhi University", label: "Delhi University" },
+    { value: "SRCC", label: "SRCC" },
   ];
 
   const streamOptions = [
@@ -583,19 +638,12 @@ export default function FindMentorsPage() {
     { value: "Medical", label: "Medical" },
     { value: "Commerce", label: "Commerce" },
     { value: "MBA", label: "MBA" },
-    { value: "Law", label: "Law" },
     { value: "Research", label: "Research" },
-    { value: "AI", label: "AI / Tech" },
   ];
 
   const locationOptions = [
     { value: "all", label: "All Locations" },
     { value: "Delhi", label: "Delhi" },
-    { value: "Mumbai", label: "Mumbai" },
-    { value: "Bangalore", label: "Bangalore" },
-    { value: "Chennai", label: "Chennai" },
-    { value: "Hyderabad", label: "Hyderabad" },
-    { value: "Kolkata", label: "Kolkata" },
     { value: "Tamil Nadu", label: "Tamil Nadu" },
     { value: "Gujarat", label: "Gujarat" },
     { value: "Rajasthan", label: "Rajasthan" },
@@ -609,84 +657,90 @@ export default function FindMentorsPage() {
   ];
 
   return (
-    <div className="min-h-screen">
-      <Navigation />
-
-      {/* Header */}
-      <header className="pt-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="py-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
+      {/* Floating Header with Glassmorphism */}
+      <header className="fixed top-20 left-0 right-0 z-40 flex justify-center px-4 pt-4">
+        <div
+          className={`w-full max-w-6xl transition-all duration-700 ease-out rounded-3xl ${
+            isScrolled
+              ? "backdrop-blur-3xl bg-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.2)] border border-white/50"
+              : "backdrop-blur-2xl bg-white/50 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] border border-white/60"
+          }`}
+          style={{
+            backdropFilter: "blur(24px) saturate(200%)",
+            WebkitBackdropFilter: "blur(24px) saturate(200%)",
+          }}
+        >
+          <div className="px-6 lg:px-8 py-6">
             {/* Title Row */}
-            <div className="mb-6">
-              <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
+            <div className="mb-0">
+              {/* <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">
                 Find a{" "}
-                <span className="bg-gradient-to-r from-primary-900 via-violet-500 to-pink-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-blue-600 via-violet-500 to-pink-500 bg-clip-text text-transparent">
                   Mentor
                 </span>
-              </h1>
-              <p className="text-gray-600 mt-3">
+              </h1> */}
+              {/* <p className="text-slate-600 mt-2 text-sm">
                 {filteredMentors.length} mentors available
-              </p>
+              </p> */}
             </div>
 
             {/* Filter Bar with Search */}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 pb-1">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
               <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide flex-shrink-0">
-              <FilterChip
-                label="College"
-                value={collegeFilter}
-                options={collegeOptions}
-                onChange={setCollegeFilter}
-                isOpen={openDropdown === "college"}
-                onToggle={() =>
-                  setOpenDropdown(openDropdown === "college" ? null : "college")
-                }
-              />
-              <FilterChip
-                label="Stream"
-                value={streamFilter}
-                options={streamOptions}
-                onChange={setStreamFilter}
-                isOpen={openDropdown === "stream"}
-                onToggle={() =>
-                  setOpenDropdown(openDropdown === "stream" ? null : "stream")
-                }
-              />
-              <FilterChip
-                label="Location"
-                value={locationFilter}
-                options={locationOptions}
-                onChange={setLocationFilter}
-                isOpen={openDropdown === "location"}
-                onToggle={() =>
-                  setOpenDropdown(
-                    openDropdown === "location" ? null : "location"
-                  )
-                }
-              />
+                <FilterChip
+                  label="College"
+                  value={collegeFilter}
+                  options={collegeOptions}
+                  onChange={setCollegeFilter}
+                  isOpen={openDropdown === "college"}
+                  onToggle={() =>
+                    setOpenDropdown(openDropdown === "college" ? null : "college")
+                  }
+                />
+                <FilterChip
+                  label="Stream"
+                  value={streamFilter}
+                  options={streamOptions}
+                  onChange={setStreamFilter}
+                  isOpen={openDropdown === "stream"}
+                  onToggle={() =>
+                    setOpenDropdown(openDropdown === "stream" ? null : "stream")
+                  }
+                />
+                <FilterChip
+                  label="Location"
+                  value={locationFilter}
+                  options={locationOptions}
+                  onChange={setLocationFilter}
+                  isOpen={openDropdown === "location"}
+                  onToggle={() =>
+                    setOpenDropdown(openDropdown === "location" ? null : "location")
+                  }
+                />
 
-              <div className="h-5 w-px bg-slate-200 mx-1" />
+                <div className="h-5 w-px bg-slate-300/50 mx-1" />
 
-              <FilterChip
-                label="Sort: Highest Rated"
-                value={sortBy}
-                options={sortOptions}
-                onChange={setSortBy}
-                isOpen={openDropdown === "sort"}
-                onToggle={() =>
-                  setOpenDropdown(openDropdown === "sort" ? null : "sort")
-                }
-              />
+                <FilterChip
+                  label="Sort: Highest Rated"
+                  value={sortBy}
+                  options={sortOptions}
+                  onChange={setSortBy}
+                  isOpen={openDropdown === "sort"}
+                  onToggle={() =>
+                    setOpenDropdown(openDropdown === "sort" ? null : "sort")
+                  }
+                />
 
-              {activeFiltersCount > 0 && (
-                <button
-                  onClick={clearAllFilters}
-                  className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-full transition-colors whitespace-nowrap"
-                >
-                  <X className="w-3.5 h-3.5" />
-                  Clear all
-                </button>
-              )}
+                {activeFiltersCount > 0 && (
+                  <button
+                    onClick={clearAllFilters}
+                    className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-white/70 rounded-full transition-colors whitespace-nowrap"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                    Clear all
+                  </button>
+                )}
               </div>
 
               {/* Search */}
@@ -697,12 +751,16 @@ export default function FindMentorsPage() {
                   placeholder="Search mentors..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-11 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
+                  className="w-full pl-11 pr-10 py-2.5 bg-white/80 backdrop-blur-sm border border-slate-200/60 rounded-full text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-all"
+                  style={{
+                    backdropFilter: "blur(12px)",
+                    WebkitBackdropFilter: "blur(12px)",
+                  }}
                 />
                 {searchTerm && (
                   <button
                     onClick={() => setSearchTerm("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded-full hover:bg-white/70 transition-colors"
                   >
                     <X className="h-4 w-4" />
                   </button>
@@ -713,18 +771,13 @@ export default function FindMentorsPage() {
         </div>
       </header>
 
-      {/* Grid */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Grid with top padding for fixed header */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-56 pb-12">
         {filteredMentors.length > 0 ? (
           <>
-            <div
-              ref={cardsRef}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
-            >
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {pagedMentors.map((mentor) => (
-                <div key={mentor.id} className="mentor-card opacity-0">
-                  <MentorCard mentor={mentor} />
-                </div>
+                <MentorCard key={mentor.id} mentor={mentor} />
               ))}
             </div>
 
@@ -747,8 +800,7 @@ export default function FindMentorsPage() {
               No mentors found
             </h3>
             <p className="text-slate-500 mb-6 text-sm max-w-sm mx-auto">
-              Try adjusting your search or filters to find what you&apos;re
-              looking for.
+              Try adjusting your search or filters to find what you're looking for.
             </p>
             <button
               onClick={clearAllFilters}
