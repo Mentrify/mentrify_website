@@ -14,7 +14,8 @@ const mentors = [
     year: "3rd Year",
     rating: 4.9,
     sessions: 45,
-    image: "https://media.licdn.com/dms/image/v2/D5603AQFXOknykDex6A/profile-displayphoto-scale_400_400/B56Zl1BCzTJ0Ag-/0/1758604833750?e=1766620800&v=beta&t=O6QGLeJCe9Z9khAZpGbJiO45obUDHvrTkv3Hylgmz0U",
+    image:
+      "https://media.licdn.com/dms/image/v2/D5603AQFXOknykDex6A/profile-displayphoto-scale_400_400/B56Zl1BCzTJ0Ag-/0/1758604833750?e=1766620800&v=beta&t=O6QGLeJCe9Z9khAZpGbJiO45obUDHvrTkv3Hylgmz0U",
     specialties: ["Engineering", "Coding", "Campus Life", "Placements"],
     location: "Delhi",
     price: 100,
@@ -28,7 +29,8 @@ const mentors = [
     year: "4th Year",
     rating: 5,
     sessions: 32,
-    image: "https://media.licdn.com/dms/image/v2/D4D03AQFGHyz25GD-1w/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1716278455382?e=1766620800&v=beta&t=lRc_LJgXQZeYwoViw-mBiNjN2mvA3jZiWclwcj3w4aU",
+    image:
+      "https://media.licdn.com/dms/image/v2/D4D03AQFGHyz25GD-1w/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1716278455382?e=1766620800&v=beta&t=lRc_LJgXQZeYwoViw-mBiNjN2mvA3jZiWclwcj3w4aU",
     specialties: ["Medical", "NEET", "Study Tips", "Research"],
     location: "Delhi",
     price: 100,
@@ -288,7 +290,6 @@ const mentors = [
   },
 ];
 
-
 const MENTORS_PER_PAGE = 9;
 
 // Simple Pagination Component
@@ -415,7 +416,9 @@ function FilterChip({
       >
         <span>{displayText}</span>
         <ChevronDown
-          className={`w-3.5 h-3.5 transition-transform duration-200 ${isOpen ? "rotate-180" : ""} ${isActive ? "text-slate-300" : "text-slate-400"}`}
+          className={`w-3.5 h-3.5 transition-transform duration-200 ${
+            isOpen ? "rotate-180" : ""
+          } ${isActive ? "text-slate-300" : "text-slate-400"}`}
         />
       </button>
 
@@ -458,14 +461,15 @@ function FilterChip({
 function MentorCard({ mentor }: { mentor: any }) {
   return (
     <div className="group cursor-pointer">
-      <div className="
+      <div
+        className="
         relative rounded-[24px] overflow-hidden
         bg-white shadow-[0_4px_24px_rgba(0,0,0,0.08)]
         transition-all duration-500
         hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)] hover:scale-[1.01]
         border border-gray-100
-      ">
-
+      "
+      >
         {/* Image */}
         <div className="relative h-[280px] overflow-hidden">
           <img
@@ -477,24 +481,40 @@ function MentorCard({ mentor }: { mentor: any }) {
 
           {/* Verified Badge */}
           {mentor.verified && (
-            <div className="absolute top-4 right-4 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center shadow-lg">
+            <div className="absolute top-4 right-4 w-8 h-8 bg-gradient-to-r from-primary-900 via-violet-500 to-pink-400 rounded-full flex items-center justify-center shadow-lg">
               <CheckCircle2 className="w-5 h-5 text-white" strokeWidth={2.5} />
             </div>
           )}
 
           {/* Location Badge */}
           <div className="absolute bottom-4 left-4 flex items-center gap-1.5 px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full shadow-sm">
-            <svg className="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            <svg
+              className="w-3.5 h-3.5 text-gray-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+              />
             </svg>
-            <span className="text-xs font-medium text-gray-700">{mentor.location}</span>
+            <span className="text-xs font-medium text-gray-700">
+              {mentor.location}
+            </span>
           </div>
         </div>
 
         {/* Info */}
         <div className="px-6 pt-5 pb-6">
-
           {/* Name */}
           <h3 className="text-xl font-semibold text-gray-900 tracking-tight">
             {mentor.name}
@@ -513,17 +533,35 @@ function MentorCard({ mentor }: { mentor: any }) {
           {/* Stats Pills */}
           <div className="flex items-center gap-2 mt-4">
             <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 rounded-full">
-              <svg className="w-3.5 h-3.5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+              <svg
+                className="w-3.5 h-3.5 text-amber-500"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
               </svg>
-              <span className="text-xs font-semibold text-amber-700">{mentor.rating}</span>
+              <span className="text-xs font-semibold text-amber-700">
+                {mentor.rating}
+              </span>
             </div>
 
             <div className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 rounded-full">
-              <svg className="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+              <svg
+                className="w-3.5 h-3.5 text-blue-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
+                />
               </svg>
-              <span className="text-xs font-semibold text-blue-700">{mentor.sessions}</span>
+              <span className="text-xs font-semibold text-blue-700">
+                {mentor.sessions}
+              </span>
             </div>
           </div>
 
@@ -545,8 +583,6 @@ function MentorCard({ mentor }: { mentor: any }) {
     </div>
   );
 }
-
-
 
 export default function FindMentorsPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -591,7 +627,9 @@ export default function FindMentorsPage() {
         locationFilter === "all" ||
         mentor.location.toLowerCase().includes(locationFilter.toLowerCase());
 
-      return matchesSearch && matchesCollege && matchesStream && matchesLocation;
+      return (
+        matchesSearch && matchesCollege && matchesStream && matchesLocation
+      );
     })
     .sort((a, b) => {
       switch (sortBy) {
@@ -704,7 +742,9 @@ export default function FindMentorsPage() {
                   onChange={setCollegeFilter}
                   isOpen={openDropdown === "college"}
                   onToggle={() =>
-                    setOpenDropdown(openDropdown === "college" ? null : "college")
+                    setOpenDropdown(
+                      openDropdown === "college" ? null : "college"
+                    )
                   }
                 />
                 <FilterChip
@@ -724,7 +764,9 @@ export default function FindMentorsPage() {
                   onChange={setLocationFilter}
                   isOpen={openDropdown === "location"}
                   onToggle={() =>
-                    setOpenDropdown(openDropdown === "location" ? null : "location")
+                    setOpenDropdown(
+                      openDropdown === "location" ? null : "location"
+                    )
                   }
                 />
 
@@ -809,7 +851,8 @@ export default function FindMentorsPage() {
               No mentors found
             </h3>
             <p className="text-slate-500 mb-6 text-sm max-w-sm mx-auto">
-              Try adjusting your search or filters to find what you're looking for.
+              Try adjusting your search or filters to find what you're looking
+              for.
             </p>
             <button
               onClick={clearAllFilters}
