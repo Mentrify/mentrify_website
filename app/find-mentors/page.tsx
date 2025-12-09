@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { Search, MapPin, Star, X, ChevronDown, CheckCircle2 } from "lucide-react";
+import Link from "next/link";
+import { Search, X, ChevronDown, CheckCircle2 } from "lucide-react";
 
 const mentors = [
   {
@@ -364,23 +365,27 @@ function FilterChip({
       const rect = btn.getBoundingClientRect();
       setMenuStyle({
         position: "fixed",
-        top: rect.bottom + window.scrollY + 8,
-        left: rect.left + window.scrollX,
+        top: rect.bottom + 8,
+        left: rect.left,
         minWidth: Math.max(180, rect.width),
         zIndex: 9999,
       });
     };
 
+    const handleScroll = () => {
+      if (isOpen) onToggle();
+    };
+
     document.addEventListener("mousedown", handleClickOutside);
     window.addEventListener("resize", updatePosition);
-    window.addEventListener("scroll", updatePosition, true);
+    window.addEventListener("scroll", handleScroll, true);
     // update once when open
     if (isOpen) updatePosition();
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       window.removeEventListener("resize", updatePosition);
-      window.removeEventListener("scroll", updatePosition, true);
+      window.removeEventListener("scroll", handleScroll, true);
     };
   }, [isOpen, onToggle]);
 
@@ -454,83 +459,84 @@ function MentorCard({ mentor }: { mentor: any }) {
   return (
     <div className="group cursor-pointer">
       <div className="
-        relative rounded-[28px] overflow-hidden
-        bg-white shadow-[0_8px_40px_rgba(0,0,0,0.06)]
+        relative rounded-[24px] overflow-hidden
+        bg-white shadow-[0_4px_24px_rgba(0,0,0,0.08)]
         transition-all duration-500
-        hover:shadow-[0_12px_48px_rgba(0,0,0,0.12)] hover:scale-[1.015]
+        hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)] hover:scale-[1.01]
+        border border-gray-100
       ">
-        
+
         {/* Image */}
-        <div className="relative h-[360px] overflow-hidden">
+        <div className="relative h-[280px] overflow-hidden">
           <img
             src={mentor.image}
             alt={mentor.name}
-            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-[1.06]"
+            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-[1.04]"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-white via-white/10 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
+
+          {/* Verified Badge */}
+          {mentor.verified && (
+            <div className="absolute top-4 right-4 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center shadow-lg">
+              <CheckCircle2 className="w-5 h-5 text-white" strokeWidth={2.5} />
+            </div>
+          )}
         </div>
 
         {/* Info */}
-        <div className="px-7 pt-5 pb-8 -mt-10 relative">
+        <div className="px-6 pt-4 pb-6">
 
-          {/* Name Row */}
-          <div className="flex items-center gap-2">
-            <h3 className="text-[26px] font-semibold text-slate-900 tracking-tight">
-              {mentor.name}
-            </h3>
-
-            {mentor.verified && (
-              <div className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center shadow-md">
-                <CheckCircle2 className="w-4 h-4 text-white" strokeWidth={2.5} />
-              </div>
-            )}
-          </div>
+          {/* Name */}
+          <h3 className="text-xl font-semibold text-gray-900 tracking-tight">
+            {mentor.name}
+          </h3>
 
           {/* College Info */}
-          <p className="text-[16px] text-slate-700 mt-1 font-medium">
+          <p className="text-[15px] text-gray-700 mt-1 font-medium">
             {mentor.college}
           </p>
 
           {/* Course + Year */}
-          <p className="text-[14px] text-slate-500 leading-tight mt-0.5">
+          <p className="text-sm text-gray-500 mt-0.5">
             {mentor.course} • {mentor.year}
           </p>
 
           {/* Location */}
-          <p className="text-[13px] text-slate-400 mt-1.5">
-            {mentor.location}
+          <p className="text-xs text-gray-400 mt-1">
+            📍 {mentor.location}
           </p>
 
           {/* Divider */}
-          <div className="h-px w-full bg-slate-200/60 my-5" />
+          <div className="h-px w-full bg-gray-100 my-4" />
 
           {/* Stats */}
-          <div className="flex items-center gap-5 text-sm">
-            <div className="flex items-center gap-1.5">
-              <span className="text-lg">⭐</span>
-              <span className="font-medium text-slate-700">{mentor.rating}</span>
+          <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center gap-1">
+              <span>⭐</span>
+              <span className="font-medium text-gray-700">{mentor.rating}</span>
             </div>
 
-            <div className="flex items-center gap-1.5">
-              <span className="text-lg">🎧</span>
-              <span className="font-medium text-slate-700">
+            <div className="flex items-center gap-1">
+              <span>🎧</span>
+              <span className="font-medium text-gray-700">
                 {mentor.sessions} sessions
               </span>
             </div>
           </div>
 
           {/* CTA */}
-          <button
+          <Link
+            href={`/mentor/${mentor.id}`}
             className="
-              w-full mt-6 py-3 rounded-full 
-              bg-slate-900 text-white text-[16px] 
-              font-semibold tracking-tight
+              block w-full mt-5 py-3 rounded-xl text-center
+              bg-gray-900 text-white text-[15px]
+              font-semibold
               transition-all duration-300
               hover:bg-black
             "
           >
             Schedule Session
-          </button>
+          </Link>
         </div>
       </div>
     </div>
@@ -657,7 +663,7 @@ export default function FindMentorsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
+    <div className="min-h-screen bg-white">
       {/* Floating Header with Glassmorphism */}
       <header className="fixed top-20 left-0 right-0 z-40 flex justify-center px-4 pt-4">
         <div

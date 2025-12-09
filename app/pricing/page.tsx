@@ -1,58 +1,53 @@
 "use client";
 
 import { Check, Star, Crown, Users } from "lucide-react";
-import Link from "next/link";
 
 const plans = [
   {
-    name: "Normal Studs Mate",
+    name: "Student Plan",
     subtitle: "For Students",
     icon: Star,
     price: 199,
-    priceLabel: "/ Call",
+    priceLabel: "/ Session",
     tagline: "Perfect for individual learners",
-    cta: "Book Your Session",
     perks: [
-      "1:1 expert session",
-      "Career, projects & portfolio guidance",
-      "Doubts + roadmap support",
-      "Includes session notes & follow-ups",
-      "Optional student discount: 5–10%",
+      "1:1 mentorship session",
+      "College & career guidance",
+      "Honest reviews & insider tips",
+      "Session summary & action items",
+      "Chat support for follow-ups",
     ],
     highlight: false,
   },
   {
-    name: "Business / Organisation Pack",
+    name: "B2B / Organisation",
     icon: Users,
     price: 119,
-    originalPrice: 199,
-    priceLabel: "/ Call",
-    discount: "40% OFF with code: PW25X",
-    cta: "Get Business Access",
+    priceLabel: "/ Session",
+    tagline: "+ Annual subscription charges",
     perks: [
-      "Tailored sessions for teams",
-      "Skill training, upskilling & project help",
-      "On-demand expert access",
-      "Custom reporting for orgs",
-      "Invoice + GST support",
-      "Priority response time",
+      "Bulk session booking for teams",
+      "Dedicated account manager",
+      "Custom mentor matching",
+      "Analytics & reporting dashboard",
+      "Invoice & GST billing",
+      "Priority support",
     ],
     highlight: true,
   },
   {
-    name: "Membership Model",
+    name: "Premium Membership",
     icon: Crown,
     price: 299,
     priceLabel: "/ Month",
-    tagline: "All-inclusive access for power users",
-    cta: "Become a Member",
+    tagline: "Unlimited access for power users",
     perks: [
-      "Unlimited chat support",
-      "Priority 1:1 calls (discounted/limited)",
-      "Career roadmap + monthly review",
-      "Templates, guides & exclusive resources",
-      "Access to all student + business benefits",
-      "Member-only updates & perks",
+      "Unlimited mentorship sessions",
+      "Priority booking slots",
+      "Exclusive mentor access",
+      "Monthly progress reviews",
+      "Resources & study materials",
+      "Community access",
     ],
     highlight: false,
     ribbon: "Best Value",
@@ -106,7 +101,6 @@ function PricingCard({
   priceLabel,
   tagline,
   discount,
-  cta,
   perks,
   highlight,
   ribbon,
@@ -119,7 +113,6 @@ function PricingCard({
   priceLabel: string;
   tagline?: string;
   discount?: string;
-  cta: string;
   perks: string[];
   highlight?: boolean;
   ribbon?: string;
@@ -176,7 +169,7 @@ function PricingCard({
           )}
         </div>
 
-        {/* grow keeps button aligned across cards */}
+        {/* perks list */}
         <ul className="mt-5 space-y-2 text-sm grow">
           {perks.map((f) => (
             <li key={f} className="flex gap-2">
@@ -185,15 +178,6 @@ function PricingCard({
             </li>
           ))}
         </ul>
-
-        <Link
-          href="/find-mentors"
-          className="mt-6 block rounded-xl text-center text-sm font-medium px-4 py-3
-            bg-black text-white hover:opacity-90 transition
-            focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0"
-        >
-          {cta}
-        </Link>
       </div>
     </div>
   );

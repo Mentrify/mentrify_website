@@ -12,12 +12,10 @@ type Logo = {
 export function CollegeCarousel({ useGrey = false }: { useGrey?: boolean }) {
   const logos: Logo[] = useMemo(
     () => [
-      { src: "/logo/iit_bombay.png", alt: "IIT Bombay" },
       { src: "/logo/iit_delhi.png", alt: "IIT Delhi" },
-      { src: "/logo/iit_kanpur.png", alt: "IIT Kanpur" },
+      { src: "/logo/iit_bombay.png", alt: "IIT Bombay" },
       { src: "/logo/iit_madras.png", alt: "IIT Madras" },
-      { src: "/logo/iit_gandhinagar.png", alt: "IIT Gandhinagar" },
-      // add more logos here
+      { src: "/logo/iit_kanpur.png", alt: "IIT Kanpur" },
     ],
     []
   );
