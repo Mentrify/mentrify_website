@@ -422,7 +422,7 @@ export default function MentorProfilePage() {
 
   if (!mentor) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-semibold text-gray-900 mb-2">Mentor not found</h1>
           <p className="text-gray-500 mb-6">The mentor you&apos;re looking for doesn&apos;t exist.</p>
@@ -439,22 +439,22 @@ export default function MentorProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-24">
+    <div className="min-h-screen pt-24">
       {/* Header */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div className="">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
           <Link
             href="/find-mentors"
             className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span className="text-sm font-medium">Back to Mentors</span>
+            <span className="text-base font-medium">Back to Mentors</span>
           </Link>
         </div>
       </div>
 
       {/* Profile Content */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Profile Info */}
           <div className="lg:col-span-2 space-y-6">
