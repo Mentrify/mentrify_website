@@ -12,10 +12,25 @@ type Logo = {
 export function CollegeCarousel({ useGrey = false }: { useGrey?: boolean }) {
   const logos: Logo[] = useMemo(
     () => [
-      { src: "/logo/iit_delhi.png", alt: "IIT Delhi" },
-      { src: "/logo/iit_bombay.png", alt: "IIT Bombay" },
-      { src: "/logo/iit_madras.png", alt: "IIT Madras" },
-      { src: "/logo/iit_kanpur.png", alt: "IIT Kanpur" },
+      { src: "/clg-logos/iit_delhi.png", alt: "IIT Delhi" },
+      { src: "/clg-logos/iit_bombay.png", alt: "IIT Bombay" },
+      { src: "/clg-logos/iit_madras.png", alt: "IIT Madras" },
+      { src: "/clg-logos/iit_kanpur.png", alt: "IIT Kanpur" },
+      { src: "/clg-logos/iit_gandhinagar.png", alt: "IIT Gandhinagar" },
+      { src: "/clg-logos/image.png", alt: "NIT Trichy" },
+      { src: "/clg-logos/image (1).png", alt: "NIT Warangal" },
+      { src: "/clg-logos/image (2).png", alt: "NIT Surathkal" },
+      { src: "/clg-logos/image (3).png", alt: "BITS Pilani" },
+      { src: "/clg-logos/image (4).png", alt: "VIT Vellore" },
+      { src: "/clg-logos/image (5).png", alt: "SRM University" },
+      { src: "/clg-logos/image (6).png", alt: "DTU Delhi" },
+      { src: "/clg-logos/image (7).png", alt: "NSUT Delhi" },
+      { src: "/clg-logos/image (8).png", alt: "IIIT Hyderabad" },
+      { src: "/clg-logos/image (9).png", alt: "IIIT Delhi" },
+      { src: "/clg-logos/image (10).png", alt: "PEC Chandigarh" },
+      { src: "/clg-logos/image(11).png", alt: "IISER Pune" },
+      { src: "/clg-logos/image (12).png", alt: "ISM Dhanbad" },
+      { src: "/clg-logos/image (111).png", alt: "IIIT Bangalore" },
     ],
     []
   );
