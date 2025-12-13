@@ -395,7 +395,7 @@ function FilterChip({
   const displayText = isActive ? selectedOption?.label : label;
 
   return (
-    <div ref={dropdownRef} className="relative">
+    <div ref={dropdownRef} className="relative flex-shrink-0">
       <button
         ref={buttonRef}
         type="button"
@@ -405,7 +405,7 @@ function FilterChip({
           onToggle();
         }}
         className={`
-          inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium
+          inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-medium
           transition-all duration-200 ease-out whitespace-nowrap cursor-pointer
           ${
             isActive
@@ -733,8 +733,9 @@ export default function FindMentorsPage() {
             </div>
 
             {/* Filter Bar with Search */}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-              <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide flex-shrink-0">
+            <div className="flex flex-col gap-4">
+              {/* Filters Row - horizontal scroll on mobile */}
+              <div className="flex items-center gap-3 overflow-x-auto pb-2 -mb-2 scrollbar-hide">
                 <FilterChip
                   label="College"
                   value={collegeFilter}
@@ -770,7 +771,7 @@ export default function FindMentorsPage() {
                   }
                 />
 
-                <div className="h-5 w-px bg-slate-300/50 mx-1" />
+                <div className="h-5 w-px bg-slate-300/50 mx-1 flex-shrink-0" />
 
                 <FilterChip
                   label="Sort: Highest Rated"
@@ -786,7 +787,7 @@ export default function FindMentorsPage() {
                 {activeFiltersCount > 0 && (
                   <button
                     onClick={clearAllFilters}
-                    className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-white/70 rounded-full transition-colors whitespace-nowrap"
+                    className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-white/70 rounded-full transition-colors whitespace-nowrap flex-shrink-0"
                   >
                     <X className="w-3.5 h-3.5" />
                     Clear all
@@ -795,7 +796,7 @@ export default function FindMentorsPage() {
               </div>
 
               {/* Search */}
-              <div className="relative w-full sm:w-72 sm:ml-auto">
+              <div className="relative w-full sm:max-w-sm">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 h-4 w-4" />
                 <input
                   type="text"
@@ -823,7 +824,7 @@ export default function FindMentorsPage() {
       </header>
 
       {/* Grid with top padding for fixed header */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-56 pb-12">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-80 sm:pt-60 pb-12">
         {filteredMentors.length > 0 ? (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">

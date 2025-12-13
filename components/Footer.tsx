@@ -62,27 +62,10 @@ export default function Footer() {
                   {/* Socials */}
                   <div className="flex items-center gap-4 mt-6 text-gray-500">
                     <a
-                      aria-label="X"
-                      href="https://x.com"
-                      className="hover:text-gray-900"
-                    >
-                      <svg
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                      >
-                        <path
-                          d="M4 4l16 16M20 4L4 20"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                    </a>
-                    <a
                       aria-label="Instagram"
-                      href="https://instagram.com"
+                      href="https://www.instagram.com/mentrify/"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="hover:text-gray-900"
                     >
                       <svg
@@ -112,38 +95,18 @@ export default function Footer() {
                     </a>
                     <a
                       aria-label="LinkedIn"
-                      href="https://linkedin.com"
+                      href="https://www.linkedin.com/company/mentrify/"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="hover:text-gray-900"
                     >
                       <svg
                         width="18"
                         height="18"
                         viewBox="0 0 24 24"
-                        fill="none"
+                        fill="currentColor"
                       >
-                        <path
-                          d="M6 9v9M6 6.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM10 18v-6.2c0-2.3 3-2.5 3-0.2V18M13 11.8C13 9.5 16 9.3 16 11.6V18"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                    </a>
-                    <a
-                      aria-label="GitHub"
-                      href="https://github.com"
-                      className="hover:text-gray-900"
-                    >
-                      <svg
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                      >
-                        <path
-                          d="M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.71-2.78.6-3.37-1.2-3.37-1.2-.45-1.13-1.1-1.43-1.1-1.43-.9-.62.07-.61.07-.61 1 .07 1.54 1.04 1.54 1.04.89 1.53 2.33 1.09 2.9.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.03A9.56 9.56 0 0112 6.8c.85 0 1.7.12 2.5.34 1.9-1.3 2.74-1.03 2.74-1.03.56 1.38.21 2.4.11 2.65.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85 0 1.33-.01 2.41-.01 2.74 0 .27.18.58.69.48A10 10 0 0012 2z"
-                          fill="currentColor"
-                        />
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                       </svg>
                     </a>
                   </div>

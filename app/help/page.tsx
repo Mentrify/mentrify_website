@@ -155,9 +155,8 @@ export default function HelpPage() {
 
         {/* CATEGORY TABS */}
         <section className="max-w-4xl mx-auto px-4 mb-8 mt-2">
-          <div className="flex flex-wrap gap-3 justify-center">
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 sm:gap-3 sm:justify-center">
             {faqs.map((f, i) => {
-              const activeTab = i === active;
               return (
                 <button
                   key={f.title}
@@ -166,8 +165,8 @@ export default function HelpPage() {
                     setOpenIndex(null);
                   }}
                   className={[
-                    "px-5 py-2.5 rounded-full transition shadow-sm ring-1",
-                    "focus:outline-none focus:ring-0 focus-visible:outline-none", // ← add this
+                    "px-4 sm:px-5 py-2.5 rounded-full transition shadow-sm ring-1 text-sm sm:text-base",
+                    "focus:outline-none focus:ring-0 focus-visible:outline-none",
                     i === active
                       ? "bg-primary-900 text-white ring-primary-900"
                       : "bg-white text-gray-700 hover:text-gray-900 ring-black/10 hover:ring-black/20",

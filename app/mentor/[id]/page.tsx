@@ -3,7 +3,19 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle2, MapPin, Star, Calendar, Clock, MessageCircle, ChevronLeft, ChevronRight, Check, Lock } from "lucide-react";
+import {
+  ArrowLeft,
+  CheckCircle2,
+  MapPin,
+  Star,
+  Calendar,
+  Clock,
+  MessageCircle,
+  ChevronLeft,
+  ChevronRight,
+  Check,
+  Lock,
+} from "lucide-react";
 
 const mentors = [
   {
@@ -14,7 +26,8 @@ const mentors = [
     year: "3rd Year",
     rating: 4.9,
     sessions: 45,
-    image: "https://media.licdn.com/dms/image/v2/D5603AQFXOknykDex6A/profile-displayphoto-scale_400_400/B56Zl1BCzTJ0Ag-/0/1758604833750?e=1766620800&v=beta&t=O6QGLeJCe9Z9khAZpGbJiO45obUDHvrTkv3Hylgmz0U",
+    image:
+      "https://media.licdn.com/dms/image/v2/D5603AQFXOknykDex6A/profile-displayphoto-scale_400_400/B56Zl1BCzTJ0Ag-/0/1758604833750?e=1766620800&v=beta&t=O6QGLeJCe9Z9khAZpGbJiO45obUDHvrTkv3Hylgmz0U",
     specialties: ["Engineering", "Coding", "Campus Life", "Placements"],
     location: "Delhi",
     price: 100,
@@ -31,7 +44,8 @@ const mentors = [
     year: "4th Year",
     rating: 5,
     sessions: 32,
-    image: "https://media.licdn.com/dms/image/v2/D4D03AQFGHyz25GD-1w/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1716278455382?e=1766620800&v=beta&t=lRc_LJgXQZeYwoViw-mBiNjN2mvA3jZiWclwcj3w4aU",
+    image:
+      "https://media.licdn.com/dms/image/v2/D4D03AQFGHyz25GD-1w/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1716278455382?e=1766620800&v=beta&t=lRc_LJgXQZeYwoViw-mBiNjN2mvA3jZiWclwcj3w4aU",
     specialties: ["Medical", "NEET", "Study Tips", "Research"],
     location: "Delhi",
     price: 100,
@@ -381,7 +395,11 @@ const getNextDays = (startDate: Date, count: number) => {
 };
 
 const formatDate = (date: Date) => {
-  return date.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+  return date.toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  });
 };
 
 const formatDayName = (date: Date) => {
@@ -424,8 +442,12 @@ export default function MentorProfilePage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-semibold text-gray-900 mb-2">Mentor not found</h1>
-          <p className="text-gray-500 mb-6">The mentor you&apos;re looking for doesn&apos;t exist.</p>
+          <h1 className="text-2xl font-semibold text-gray-900 mb-2">
+            Mentor not found
+          </h1>
+          <p className="text-gray-500 mb-6">
+            The mentor you&apos;re looking for doesn&apos;t exist.
+          </p>
           <Link
             href="/find-mentors"
             className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-xl hover:bg-black transition-colors"
@@ -470,8 +492,11 @@ export default function MentorProfilePage() {
                       className="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl object-cover"
                     />
                     {mentor.verified && (
-                      <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center shadow-lg">
-                        <CheckCircle2 className="w-5 h-5 text-white" strokeWidth={2.5} />
+                      <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-r from-primary-900 via-violet-500 to-pink-400 rounded-full flex items-center justify-center shadow-lg">
+                        <CheckCircle2
+                          className="w-5 h-5 text-white"
+                          strokeWidth={2.5}
+                        />
                       </div>
                     )}
                   </div>
@@ -495,12 +520,16 @@ export default function MentorProfilePage() {
                     <div className="flex items-center gap-4 mt-4">
                       <div className="flex items-center gap-1.5">
                         <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
-                        <span className="font-semibold text-gray-900">{mentor.rating}</span>
+                        <span className="font-semibold text-gray-900">
+                          {mentor.rating}
+                        </span>
                         <span className="text-gray-500">rating</span>
                       </div>
                       <div className="w-px h-4 bg-gray-200" />
                       <div className="flex items-center gap-1.5">
-                        <span className="font-semibold text-gray-900">{mentor.sessions}</span>
+                        <span className="font-semibold text-gray-900">
+                          {mentor.sessions}
+                        </span>
                         <span className="text-gray-500">sessions</span>
                       </div>
                     </div>
@@ -516,13 +545,19 @@ export default function MentorProfilePage() {
 
             {/* About Section */}
             <div className="bg-white rounded-2xl border border-gray-100 p-5">
-              <h2 className="text-base font-semibold text-gray-900 mb-2">About</h2>
-              <p className="text-gray-600 leading-relaxed text-sm">{mentor.bio}</p>
+              <h2 className="text-base font-semibold text-gray-900 mb-2">
+                About
+              </h2>
+              <p className="text-gray-600 leading-relaxed text-sm">
+                {mentor.bio}
+              </p>
             </div>
 
             {/* Specialties */}
             <div className="bg-white rounded-2xl border border-gray-100 p-5">
-              <h2 className="text-base font-semibold text-gray-900 mb-2">Can help you with</h2>
+              <h2 className="text-base font-semibold text-gray-900 mb-2">
+                Can help you with
+              </h2>
               <div className="flex flex-wrap gap-2">
                 {mentor.specialties.map((specialty) => (
                   <span
@@ -537,7 +572,9 @@ export default function MentorProfilePage() {
 
             {/* Languages */}
             <div className="bg-white rounded-2xl border border-gray-100 p-5">
-              <h2 className="text-base font-semibold text-gray-900 mb-2">Languages</h2>
+              <h2 className="text-base font-semibold text-gray-900 mb-2">
+                Languages
+              </h2>
               <div className="flex flex-wrap gap-2">
                 {mentor.languages.map((lang) => (
                   <span
@@ -558,22 +595,22 @@ export default function MentorProfilePage() {
               <div className="blur-[6px] pointer-events-none select-none">
                 {/* Price */}
                 <div className="text-center mb-6">
-                  <div className="text-3xl font-bold text-gray-900">₹{mentor.price}</div>
+                  <div className="text-3xl font-bold text-gray-900">
+                    ₹{mentor.price}
+                  </div>
                   <p className="text-gray-500 text-sm">per session</p>
                 </div>
 
                 {/* Session Duration */}
                 <div className="mb-6">
-                  <h3 className="text-sm font-medium text-gray-700 mb-3">Session Duration</h3>
+                  <h3 className="text-sm font-medium text-gray-700 mb-3">
+                    Session Duration
+                  </h3>
                   <div className="flex gap-2">
-                    <button
-                      className="flex-1 py-2.5 rounded-xl text-sm font-medium bg-gray-900 text-white"
-                    >
+                    <button className="flex-1 py-2.5 rounded-xl text-sm font-medium bg-gray-900 text-white">
                       30 min
                     </button>
-                    <button
-                      className="flex-1 py-2.5 rounded-xl text-sm font-medium bg-gray-100 text-gray-700"
-                    >
+                    <button className="flex-1 py-2.5 rounded-xl text-sm font-medium bg-gray-100 text-gray-700">
                       45 min
                     </button>
                   </div>
@@ -582,7 +619,9 @@ export default function MentorProfilePage() {
                 {/* Date Selection */}
                 <div className="mb-6">
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-sm font-medium text-gray-700">Select Date</h3>
+                    <h3 className="text-sm font-medium text-gray-700">
+                      Select Date
+                    </h3>
                     <div className="flex items-center gap-1">
                       <button className="p-1 rounded-lg">
                         <ChevronLeft className="w-4 h-4 text-gray-600" />
@@ -597,10 +636,16 @@ export default function MentorProfilePage() {
                       <button
                         key={index}
                         className={`flex flex-col items-center py-2 rounded-xl ${
-                          index === 0 ? "bg-gray-900 text-white" : "text-gray-700"
+                          index === 0
+                            ? "bg-gray-900 text-white"
+                            : "text-gray-700"
                         }`}
                       >
-                        <span className={`text-[10px] uppercase ${index === 0 ? "text-gray-300" : "text-gray-500"}`}>
+                        <span
+                          className={`text-[10px] uppercase ${
+                            index === 0 ? "text-gray-300" : "text-gray-500"
+                          }`}
+                        >
                           {formatDayName(date)}
                         </span>
                         <span className="text-sm font-semibold">
@@ -616,13 +661,17 @@ export default function MentorProfilePage() {
 
                 {/* Time Slots */}
                 <div className="mb-6">
-                  <h3 className="text-sm font-medium text-gray-700 mb-3">Available Times</h3>
+                  <h3 className="text-sm font-medium text-gray-700 mb-3">
+                    Available Times
+                  </h3>
                   <div className="grid grid-cols-3 gap-2">
                     {timeSlots.slice(0, 6).map((slot, index) => (
                       <button
                         key={index}
                         className={`py-2 px-2 rounded-lg text-xs font-medium ${
-                          index === 0 ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-700"
+                          index === 0
+                            ? "bg-gray-900 text-white"
+                            : "bg-gray-100 text-gray-700"
                         }`}
                       >
                         {slot.time}
@@ -642,7 +691,9 @@ export default function MentorProfilePage() {
                 <div className="w-16 h-16 rounded-full bg-gradient-to-br from-violet-100 to-purple-100 flex items-center justify-center mb-4 shadow-lg">
                   <Lock className="w-7 h-7 text-violet-600" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Coming Soon</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Coming Soon
+                </h3>
                 <p className="text-sm text-gray-500 text-center px-6">
                   Stay tuned for booking sessions with your favorite mentors!
                 </p>
@@ -660,7 +711,9 @@ export default function MentorProfilePage() {
               <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Check className="w-8 h-8 text-emerald-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Booking Confirmed!</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                Booking Confirmed!
+              </h3>
               <p className="text-gray-500 text-sm mb-6">
                 Your session with {mentor.name} has been scheduled.
               </p>
@@ -680,11 +733,15 @@ export default function MentorProfilePage() {
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-gray-400" />
-                    <span className="text-gray-700">{formatDate(selectedDate)}</span>
+                    <span className="text-gray-700">
+                      {formatDate(selectedDate)}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Clock className="w-4 h-4 text-gray-400" />
-                    <span className="text-gray-700">{selectedTime} ({selectedDuration} min)</span>
+                    <span className="text-gray-700">
+                      {selectedTime} ({selectedDuration} min)
+                    </span>
                   </div>
                 </div>
               </div>
