@@ -364,11 +364,25 @@ function FilterChip({
       const btn = buttonRef.current;
       if (!btn) return;
       const rect = btn.getBoundingClientRect();
+
+      // prefer the button width, but allow shrinking to fit the viewport
+      const preferredW = Math.max(180, rect.width);
+      const maxViewportW = Math.max(180, window.innerWidth - 32);
+      const menuWidth = Math.min(preferredW, maxViewportW);
+
+      // anchor to the button's left by default, but shift if it would overflow
+      let left = rect.left;
+      const minLeft = 16; // keep 16px gutter on both sides
+      const maxLeft = Math.max(minLeft, window.innerWidth - menuWidth - 16);
+
+      if (left > maxLeft) left = maxLeft;
+      if (left < minLeft) left = minLeft;
+
       setMenuStyle({
         position: "fixed",
         top: rect.bottom + 8,
-        left: rect.left,
-        minWidth: Math.max(180, rect.width),
+        left,
+        width: menuWidth,
         zIndex: 9999,
       });
     };
@@ -408,13 +422,38 @@ function FilterChip({
           inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-medium
           transition-all duration-200 ease-out whitespace-nowrap cursor-pointer
           ${
-            isActive
+            isOpen
+              ? "border-2 border-black bg-white text-slate-900"
+              : isActive
               ? "bg-slate-900 text-white"
               : "bg-white text-slate-700 border border-slate-200 hover:border-slate-300 hover:shadow-sm"
           }
         `}
       >
-        <span>{displayText}</span>
+        {/* show text on medium+ screens, icon only on small screens */}
+        <span className="hidden sm:inline">{displayText}</span>
+        <span className="inline sm:hidden">
+          {label === "College" ? (
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 2l8 4-8 4-8-4 8-4z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 10v6a8 8 0 008 8 8 8 0 008-8v-6" />
+            </svg>
+          ) : label === "Stream" ? (
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 7v10a1 1 0 001 1h16a1 1 0 001-1V7" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 7v-2a2 2 0 012-2h6a2 2 0 012 2v2" />
+            </svg>
+          ) : label === "Location" ? (
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1118 0z" />
+              <circle cx="12" cy="10" r="3" strokeWidth={1.5} />
+            </svg>
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h10M4 18h7" />
+            </svg>
+          )}
+        </span>
         <ChevronDown
           className={`w-3.5 h-3.5 transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
@@ -732,91 +771,89 @@ export default function FindMentorsPage() {
               </p> */}
             </div>
 
-            {/* Filter Bar with Search */}
-            <div className="flex flex-col gap-4">
-              {/* Filters Row - horizontal scroll on mobile */}
-              <div className="flex items-center gap-3 overflow-x-auto pb-2 -mb-2 scrollbar-hide">
-                <FilterChip
-                  label="College"
-                  value={collegeFilter}
-                  options={collegeOptions}
-                  onChange={setCollegeFilter}
-                  isOpen={openDropdown === "college"}
-                  onToggle={() =>
-                    setOpenDropdown(
-                      openDropdown === "college" ? null : "college"
-                    )
-                  }
-                />
-                <FilterChip
-                  label="Stream"
-                  value={streamFilter}
-                  options={streamOptions}
-                  onChange={setStreamFilter}
-                  isOpen={openDropdown === "stream"}
-                  onToggle={() =>
-                    setOpenDropdown(openDropdown === "stream" ? null : "stream")
-                  }
-                />
-                <FilterChip
-                  label="Location"
-                  value={locationFilter}
-                  options={locationOptions}
-                  onChange={setLocationFilter}
-                  isOpen={openDropdown === "location"}
-                  onToggle={() =>
-                    setOpenDropdown(
-                      openDropdown === "location" ? null : "location"
-                    )
-                  }
-                />
+            {/* Filter Bar with Search - single line on desktop, stacked on mobile */}
+            <div className="flex flex-col sm:flex-row items-center justify-center">
+              <div className="w-full flex flex-col sm:flex-row items-center gap-4">
+                {/* Filters (compact on small screens) */}
+                <div className="flex items-center gap-3 flex-shrink-0 overflow-x-auto sm:overflow-visible pb-2 -mb-2 sm:pb-0 sm:mb-0">
+                  <FilterChip
+                    label="College"
+                    value={collegeFilter}
+                    options={collegeOptions}
+                    onChange={setCollegeFilter}
+                    isOpen={openDropdown === "college"}
+                    onToggle={() =>
+                      setOpenDropdown(openDropdown === "college" ? null : "college")
+                    }
+                  />
+                  <FilterChip
+                    label="Stream"
+                    value={streamFilter}
+                    options={streamOptions}
+                    onChange={setStreamFilter}
+                    isOpen={openDropdown === "stream"}
+                    onToggle={() =>
+                      setOpenDropdown(openDropdown === "stream" ? null : "stream")
+                    }
+                  />
+                  <FilterChip
+                    label="Location"
+                    value={locationFilter}
+                    options={locationOptions}
+                    onChange={setLocationFilter}
+                    isOpen={openDropdown === "location"}
+                    onToggle={() =>
+                      setOpenDropdown(openDropdown === "location" ? null : "location")
+                    }
+                  />
 
-                <div className="h-5 w-px bg-slate-300/50 mx-1 flex-shrink-0" />
+                  <div className="h-5 w-px bg-slate-300/50 mx-1 flex-shrink-0" />
 
-                <FilterChip
-                  label="Sort: Highest Rated"
-                  value={sortBy}
-                  options={sortOptions}
-                  onChange={setSortBy}
-                  isOpen={openDropdown === "sort"}
-                  onToggle={() =>
-                    setOpenDropdown(openDropdown === "sort" ? null : "sort")
-                  }
-                />
+                  <FilterChip
+                    label="Sort"
+                    value={sortBy}
+                    options={sortOptions}
+                    onChange={setSortBy}
+                    isOpen={openDropdown === "sort"}
+                    onToggle={() => setOpenDropdown(openDropdown === "sort" ? null : "sort")}
+                  />
 
-                {activeFiltersCount > 0 && (
-                  <button
-                    onClick={clearAllFilters}
-                    className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-white/70 rounded-full transition-colors whitespace-nowrap flex-shrink-0"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                    Clear all
-                  </button>
-                )}
-              </div>
+                  {activeFiltersCount > 0 && (
+                    <button
+                      onClick={clearAllFilters}
+                      className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-white/70 rounded-full transition-colors whitespace-nowrap flex-shrink-0"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">Clear all</span>
+                    </button>
+                  )}
+                </div>
 
-              {/* Search */}
-              <div className="relative w-full sm:max-w-sm">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 h-4 w-4" />
-                <input
-                  type="text"
-                  placeholder="Search mentors..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-11 pr-10 py-2.5 bg-white/80 backdrop-blur-sm border border-slate-200/60 rounded-full text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-all"
-                  style={{
-                    backdropFilter: "blur(12px)",
-                    WebkitBackdropFilter: "blur(12px)",
-                  }}
-                />
-                {searchTerm && (
-                  <button
-                    onClick={() => setSearchTerm("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded-full hover:bg-white/70 transition-colors"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                )}
+                {/* Search - on mobile it sits below filters; on sm+ it stays to the right */}
+                <div className="flex-1 min-w-0 mt-3 sm:mt-0">
+                  <div className="relative w-full sm:max-w-md">
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 h-4 w-4" />
+                    <input
+                      type="text"
+                      placeholder="Search mentors..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full pl-11 pr-10 py-2.5 bg-white/80 backdrop-blur-sm border border-slate-200/60 rounded-full text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-all"
+                      style={{
+                        backdropFilter: "blur(12px)",
+                        WebkitBackdropFilter: "blur(12px)",
+                      }}
+                    />
+                    {searchTerm && (
+                      <button
+                        onClick={() => setSearchTerm("")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded-full hover:bg-white/70 transition-colors"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -197,7 +197,7 @@ export default function Footer() {
             </div>
 
             {/* Divider + legal row */}
-            <div className="border-t border-gray-200 px-8 md:px-12 py-6">
+            <div className="px-8 md:px-12 py-6">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <p className="text-xs text-gray-500">
                   © {new Date().getFullYear()} Mentrify. All rights reserved.
