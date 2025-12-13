@@ -9,13 +9,20 @@ const plans = [
     icon: Star,
     price: 199,
     priceLabel: "/ Session",
-    tagline: "Perfect for individual learners",
+    tagline: "",
     perks: [
-      "Bespoke 1:1 Mentorship — Tailored guidance curated to your academic and career aspirations",
-      "Strategic College & Career Roadmapping — Structured pathways, insider insights, and actionable next steps",
-      "Unfiltered Expert Reviews — Candid, mentor-backed advice to help you make smarter decisions",
-      "Action-Driven Session Reports — Every interaction ends with a clear roadmap and defined objectives",
-      "Always-On Chat Assistance — Seamless follow-up support to ensure your momentum never breaks",
+      {
+        title: "1 Mentorship Call Included",
+        desc: "One-on-one guidance with a verified mentor",
+      },
+      {
+        title: "Access to Discord (Basic)",
+        desc: "Join the student community for discussions and updates",
+      },
+      {
+        title: "Free Booking Resource",
+        desc: "Step-by-step guide to help you prepare for your session",
+      },
     ],
     highlight: false,
   },
@@ -26,12 +33,22 @@ const plans = [
     priceLabel: "/ Session",
     tagline: "+ Annual subscription charges",
     perks: [
-      "Bulk Mentorship Deployment — Effortless scheduling of sessions across large student or employee cohorts",
-      "Dedicated Success Manager — A single point of contact ensuring smooth coordination and maximum value delivery",
-      "Precision Mentor Matching — Intelligent pairing algorithms for optimal mentor–mentee compatibility",
-      "Advanced Analytics Dashboard — Deep insights into usage, performance, outcomes, and engagement metrics",
-      "Seamless GST-Compliant Billing — Hassle-free invoicing designed for organisational finance workflows",
-      "Priority Resolution Channel — Fast-track support for urgent queries and session-related escalations",
+      {
+        title: "Customised Mentorship Plan",
+        desc: "Designed based on your institution's or organisation's goals",
+      },
+      {
+        title: "Flexible Session-Based Pricing",
+        desc: "Starts at ₹119 per session, scalable across cohorts",
+      },
+      {
+        title: "Dedicated Coordination Support",
+        desc: "Smooth scheduling and communication for students and admins",
+      },
+      {
+        title: "Career & Skill Development",
+        desc: "Tailored support aligned with employability and growth outcomes",
+      },
     ],
     highlight: true,
   },
@@ -39,15 +56,25 @@ const plans = [
     name: "Premium Membership",
     icon: Crown,
     price: 299,
-    priceLabel: "/ Month",
-    tagline: "Unlimited access for power users",
+    priceLabel: "/ One Time",
+    tagline: "Everything in the Student Plan, plus:",
     perks: [
-      "Unlimited Mentorship Access — Connect as often as needed—no restrictions, no boundaries",
-      "VIP Booking Privileges — Priority scheduling ensures you lock in your preferred mentor and time instantly",
-      "Elite Mentor Circle — Gain entry to a curated pool of top-tier mentors available only to premium users",
-      "Monthly Progress Audits — Comprehensive performance reviews to track your growth and refine your strategy",
-      "Premium Learning Vault — Exclusive study resources, frameworks, and curated materials for continuous skill expansion",
-      "Community Access — Engage with a driven peer group, participate in private forums, and learn collaboratively",
+      {
+        title: "2 Mentorship Calls",
+        desc: "1 included, 2nd at ₹99 flat (subsequent at normal rates)",
+      },
+      {
+        title: "Premium Discord Access",
+        desc: "Private channels, mentor interactions, and focused peer groups",
+      },
+      {
+        title: "Career Path Materials",
+        desc: "Curated roadmaps, frameworks, and learning resources",
+      },
+      {
+        title: "Priority to Apply as Mentor",
+        desc: "Early eligibility to apply from 2nd year onwards",
+      },
     ],
     highlight: false,
     ribbon: "Best Value",
@@ -113,7 +140,7 @@ function PricingCard({
   priceLabel: string;
   tagline?: string;
   discount?: string;
-  perks: string[];
+  perks: { title: string; desc: string }[];
   highlight?: boolean;
   ribbon?: string;
 }) {
@@ -162,19 +189,22 @@ function PricingCard({
             <span className="text-gray-500 text-sm">{priceLabel}</span>
           </div>
           {discount && (
-            <p className="mt-1 text-sm font-medium text-emerald-600">{discount}</p>
+            <p className="mt-1 text-sm font-medium text-emerald-600">
+              {discount}
+            </p>
           )}
-          {tagline && (
-            <p className="mt-1 text-sm text-gray-600">{tagline}</p>
-          )}
+          {tagline && <p className="mt-1 text-sm text-gray-600">{tagline}</p>}
         </div>
 
         {/* perks list */}
-        <ul className="mt-5 space-y-2 text-sm grow">
-          {perks.map((f) => (
-            <li key={f} className="flex gap-2">
-              <Check className="h-4 w-4 mt-0.5 text-emerald-600" />
-              <span className="text-gray-700">{f}</span>
+        <ul className="mt-5 space-y-3 text-sm grow">
+          {perks.map((perk) => (
+            <li key={perk.title} className="flex gap-2">
+              <Check className="h-4 w-4 mt-0.5 text-emerald-600 shrink-0" />
+              <div>
+                <span className="font-medium text-gray-900">{perk.title}</span>
+                <p className="text-gray-500 text-xs mt-0.5">{perk.desc}</p>
+              </div>
             </li>
           ))}
         </ul>

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle2, MapPin, Star, Calendar, Clock, MessageCircle, ChevronLeft, ChevronRight, Check } from "lucide-react";
+import { ArrowLeft, CheckCircle2, MapPin, Star, Calendar, Clock, MessageCircle, ChevronLeft, ChevronRight, Check, Lock } from "lucide-react";
 
 const mentors = [
   {
@@ -457,7 +457,7 @@ export default function MentorProfilePage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Profile Info */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-3">
             {/* Main Profile Card */}
             <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
               <div className="p-6 sm:p-8">
@@ -515,19 +515,19 @@ export default function MentorProfilePage() {
             </div>
 
             {/* About Section */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">About</h2>
-              <p className="text-gray-600 leading-relaxed">{mentor.bio}</p>
+            <div className="bg-white rounded-2xl border border-gray-100 p-5">
+              <h2 className="text-base font-semibold text-gray-900 mb-2">About</h2>
+              <p className="text-gray-600 leading-relaxed text-sm">{mentor.bio}</p>
             </div>
 
             {/* Specialties */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Can help you with</h2>
+            <div className="bg-white rounded-2xl border border-gray-100 p-5">
+              <h2 className="text-base font-semibold text-gray-900 mb-2">Can help you with</h2>
               <div className="flex flex-wrap gap-2">
                 {mentor.specialties.map((specialty) => (
                   <span
                     key={specialty}
-                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium"
+                    className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm font-medium"
                   >
                     {specialty}
                   </span>
@@ -536,13 +536,13 @@ export default function MentorProfilePage() {
             </div>
 
             {/* Languages */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Languages</h2>
+            <div className="bg-white rounded-2xl border border-gray-100 p-5">
+              <h2 className="text-base font-semibold text-gray-900 mb-2">Languages</h2>
               <div className="flex flex-wrap gap-2">
                 {mentor.languages.map((lang) => (
                   <span
                     key={lang}
-                    className="px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium"
+                    className="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium"
                   >
                     {lang}
                   </span>
@@ -553,147 +553,100 @@ export default function MentorProfilePage() {
 
           {/* Right Column - Booking Card */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 sticky top-28">
-              {/* Price */}
-              <div className="text-center mb-6">
-                <div className="text-3xl font-bold text-gray-900">₹{mentor.price}</div>
-                <p className="text-gray-500 text-sm">per session</p>
-              </div>
-
-              {/* Session Duration */}
-              <div className="mb-6">
-                <h3 className="text-sm font-medium text-gray-700 mb-3">Session Duration</h3>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setSelectedDuration(30)}
-                    className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                      selectedDuration === 30
-                        ? "bg-gray-900 text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    30 min
-                  </button>
-                  <button
-                    onClick={() => setSelectedDuration(45)}
-                    className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                      selectedDuration === 45
-                        ? "bg-gray-900 text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    45 min
-                  </button>
+            <div className="bg-white rounded-2xl border border-gray-100 p-6 sticky top-28 relative overflow-hidden">
+              {/* Blurred Content */}
+              <div className="blur-[6px] pointer-events-none select-none">
+                {/* Price */}
+                <div className="text-center mb-6">
+                  <div className="text-3xl font-bold text-gray-900">₹{mentor.price}</div>
+                  <p className="text-gray-500 text-sm">per session</p>
                 </div>
-              </div>
 
-              {/* Date Selection */}
-              <div className="mb-6">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-medium text-gray-700">Select Date</h3>
-                  <div className="flex items-center gap-1">
+                {/* Session Duration */}
+                <div className="mb-6">
+                  <h3 className="text-sm font-medium text-gray-700 mb-3">Session Duration</h3>
+                  <div className="flex gap-2">
                     <button
-                      onClick={() => setWeekOffset(Math.max(0, weekOffset - 1))}
-                      disabled={weekOffset === 0}
-                      className="p-1 rounded-lg hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                      className="flex-1 py-2.5 rounded-xl text-sm font-medium bg-gray-900 text-white"
                     >
-                      <ChevronLeft className="w-4 h-4 text-gray-600" />
+                      30 min
                     </button>
                     <button
-                      onClick={() => setWeekOffset(weekOffset + 1)}
-                      disabled={weekOffset >= 3}
-                      className="p-1 rounded-lg hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                      className="flex-1 py-2.5 rounded-xl text-sm font-medium bg-gray-100 text-gray-700"
                     >
-                      <ChevronRight className="w-4 h-4 text-gray-600" />
+                      45 min
                     </button>
                   </div>
                 </div>
-                <div className="grid grid-cols-7 gap-1">
-                  {days.map((date, index) => {
-                    const isSelected = selectedDate.toDateString() === date.toDateString();
-                    const isPast = date < new Date(new Date().setHours(0, 0, 0, 0));
-                    return (
+
+                {/* Date Selection */}
+                <div className="mb-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-medium text-gray-700">Select Date</h3>
+                    <div className="flex items-center gap-1">
+                      <button className="p-1 rounded-lg">
+                        <ChevronLeft className="w-4 h-4 text-gray-600" />
+                      </button>
+                      <button className="p-1 rounded-lg">
+                        <ChevronRight className="w-4 h-4 text-gray-600" />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-7 gap-1">
+                    {days.map((date, index) => (
                       <button
                         key={index}
-                        onClick={() => {
-                          setSelectedDate(date);
-                          setSelectedTime(null);
-                        }}
-                        disabled={isPast}
-                        className={`flex flex-col items-center py-2 rounded-xl transition-all ${
-                          isSelected
-                            ? "bg-gray-900 text-white"
-                            : isPast
-                            ? "text-gray-300 cursor-not-allowed"
-                            : "hover:bg-gray-100 text-gray-700"
+                        className={`flex flex-col items-center py-2 rounded-xl ${
+                          index === 0 ? "bg-gray-900 text-white" : "text-gray-700"
                         }`}
                       >
-                        <span className={`text-[10px] uppercase ${isSelected ? "text-gray-300" : "text-gray-500"}`}>
+                        <span className={`text-[10px] uppercase ${index === 0 ? "text-gray-300" : "text-gray-500"}`}>
                           {formatDayName(date)}
                         </span>
-                        <span className={`text-sm font-semibold ${isToday(date) && !isSelected ? "text-blue-600" : ""}`}>
+                        <span className="text-sm font-semibold">
                           {formatDayNumber(date)}
                         </span>
                       </button>
-                    );
-                  })}
+                    ))}
+                  </div>
+                  <p className="text-xs text-gray-500 mt-2 text-center">
+                    {formatDate(selectedDate)}
+                  </p>
                 </div>
-                <p className="text-xs text-gray-500 mt-2 text-center">
-                  {formatDate(selectedDate)}
+
+                {/* Time Slots */}
+                <div className="mb-6">
+                  <h3 className="text-sm font-medium text-gray-700 mb-3">Available Times</h3>
+                  <div className="grid grid-cols-3 gap-2">
+                    {timeSlots.slice(0, 6).map((slot, index) => (
+                      <button
+                        key={index}
+                        className={`py-2 px-2 rounded-lg text-xs font-medium ${
+                          index === 0 ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-700"
+                        }`}
+                      >
+                        {slot.time}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Book Button */}
+                <button className="w-full py-3.5 rounded-xl font-semibold bg-gray-900 text-white">
+                  Confirm Booking
+                </button>
+              </div>
+
+              {/* Lock Overlay */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/60 backdrop-blur-[2px]">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-violet-100 to-purple-100 flex items-center justify-center mb-4 shadow-lg">
+                  <Lock className="w-7 h-7 text-violet-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Coming Soon</h3>
+                <p className="text-sm text-gray-500 text-center px-6">
+                  Stay tuned for booking sessions with your favorite mentors!
                 </p>
               </div>
-
-              {/* Time Slots */}
-              <div className="mb-6">
-                <h3 className="text-sm font-medium text-gray-700 mb-3">Available Times</h3>
-                <div className="grid grid-cols-3 gap-2">
-                  {timeSlots.map((slot, index) => (
-                    <button
-                      key={index}
-                      onClick={() => slot.available && setSelectedTime(slot.time)}
-                      disabled={!slot.available}
-                      className={`py-2 px-2 rounded-lg text-xs font-medium transition-all ${
-                        selectedTime === slot.time
-                          ? "bg-gray-900 text-white"
-                          : slot.available
-                          ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                          : "bg-gray-50 text-gray-300 cursor-not-allowed line-through"
-                      }`}
-                    >
-                      {slot.time}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Info */}
-              <div className="space-y-3 mb-6 pt-4 border-t border-gray-100">
-                <div className="flex items-center gap-3 text-gray-600">
-                  <Clock className="w-4 h-4 text-gray-400" />
-                  <span className="text-xs">{mentor.responseTime}</span>
-                </div>
-                <div className="flex items-center gap-3 text-gray-600">
-                  <MessageCircle className="w-4 h-4 text-gray-400" />
-                  <span className="text-xs">Chat support included</span>
-                </div>
-              </div>
-
-              {/* Book Button */}
-              <button
-                onClick={handleBookSession}
-                disabled={!selectedTime}
-                className={`w-full py-3.5 rounded-xl font-semibold transition-all ${
-                  selectedTime
-                    ? "bg-gray-900 text-white hover:bg-black"
-                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
-                }`}
-              >
-                {selectedTime ? "Confirm Booking" : "Select a time slot"}
-              </button>
-
-              <p className="text-center text-xs text-gray-400 mt-4">
-                Free cancellation up to 24 hours before
-              </p>
             </div>
           </div>
         </div>

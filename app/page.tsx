@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle, Sparkles, Stars } from "lucide-react";
+import { ArrowRight, CheckCircle, Sparkles, Stars, Rocket, X } from "lucide-react";
 import { CollegeCarousel } from "@/components/CollegeCarousel";
 
 // ── Toggle this to switch the whole page look ──────────────────────────────────
@@ -11,8 +11,20 @@ const USE_GREY = false;
 // ───────────────────────────────────────────────────────────────────────────────
 
 export default function HomePage() {
+  // Beta modal state
+  const [showBetaModal, setShowBetaModal] = useState(false);
+
   // Use Element so refs can be <section> or <div>
   const sectionsRef = useRef<(Element | null)[]>([]);
+
+  useEffect(() => {
+    // Check if first-time visitor
+    const hasVisited = localStorage.getItem("mentrify_visited");
+    if (!hasVisited) {
+      setShowBetaModal(true);
+      localStorage.setItem("mentrify_visited", "true");
+    }
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -414,6 +426,57 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Beta Launch Modal */}
+      {showBetaModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="relative bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl animate-fade-in-up">
+            {/* Close button */}
+            <button
+              onClick={() => setShowBetaModal(false)}
+              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors"
+            >
+              <X className="w-5 h-5 text-gray-500" />
+            </button>
+
+            {/* Content */}
+            <div className="text-center">
+              {/* Icon */}
+              <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-violet-100 to-purple-100 flex items-center justify-center mb-5">
+                <Rocket className="w-8 h-8 text-violet-600" />
+              </div>
+
+              {/* Badge */}
+              <span className="inline-block px-3 py-1 rounded-full bg-violet-100 text-violet-700 text-xs font-semibold uppercase tracking-wide mb-4">
+                Beta Launch
+              </span>
+
+              {/* Title */}
+              <h2 className="text-2xl font-bold text-gray-900 mb-3">
+                Welcome to Mentrify!
+              </h2>
+
+              {/* Description */}
+              <p className="text-gray-600 mb-6">
+                You&apos;re experiencing our <span className="font-semibold text-violet-600">beta version</span>.
+                We&apos;re working hard to bring you the full experience soon with more mentors, features, and exciting updates!
+              </p>
+
+              {/* CTA */}
+              <button
+                onClick={() => setShowBetaModal(false)}
+                className="w-full py-3 px-6 bg-gradient-to-r from-violet-600 to-purple-600 text-white font-semibold rounded-xl hover:from-violet-700 hover:to-purple-700 transition-all shadow-lg shadow-violet-500/25"
+              >
+                Explore Beta
+              </button>
+
+              {/* Footer text */}
+              <p className="mt-4 text-xs text-gray-400">
+                Full launch coming soon!
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
