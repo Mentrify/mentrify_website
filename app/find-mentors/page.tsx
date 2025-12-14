@@ -3,292 +3,11 @@
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
+import Image from "next/image";
 import { Search, X, ChevronDown, CheckCircle2 } from "lucide-react";
+import mentorsData from "@/data/mentors.json";
 
-const mentors = [
-  {
-    id: 1,
-    name: "Vyom Padalia",
-    college: "IIT Delhi",
-    course: "Computer Science & Engineering",
-    year: "3rd Year",
-    rating: 4.9,
-    sessions: 45,
-    image:
-      "https://media.licdn.com/dms/image/v2/D5603AQFXOknykDex6A/profile-displayphoto-scale_400_400/B56Zl1BCzTJ0Ag-/0/1758604833750?e=1766620800&v=beta&t=O6QGLeJCe9Z9khAZpGbJiO45obUDHvrTkv3Hylgmz0U",
-    specialties: ["Engineering", "Coding", "Campus Life", "Placements"],
-    location: "Delhi",
-    price: 100,
-    verified: true,
-  },
-  {
-    id: 2,
-    name: "Sneha Patel",
-    college: "AIIMS Delhi",
-    course: "MBBS",
-    year: "4th Year",
-    rating: 5,
-    sessions: 32,
-    image:
-      "https://media.licdn.com/dms/image/v2/D4D03AQFGHyz25GD-1w/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1716278455382?e=1766620800&v=beta&t=lRc_LJgXQZeYwoViw-mBiNjN2mvA3jZiWclwcj3w4aU",
-    specialties: ["Medical", "NEET", "Study Tips", "Research"],
-    location: "Delhi",
-    price: 100,
-    verified: true,
-  },
-  {
-    id: 3,
-    name: "Rohit Sharma",
-    college: "SRCC Delhi",
-    course: "Economics (Hons)",
-    year: "2nd Year",
-    rating: 4.7,
-    sessions: 28,
-    image: "https://images.unsplash.com/photo-1584999734482-0361f5fcf5c6",
-    specialties: ["Commerce", "Economics", "DU Life", "Finance"],
-    location: "Delhi",
-    price: 100,
-    verified: true,
-  },
-  {
-    id: 4,
-    name: "Priya Singh",
-    college: "NIT Trichy",
-    course: "Mechanical Engineering",
-    year: "3rd Year",
-    rating: 4.9,
-    sessions: 38,
-    image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde",
-    specialties: ["Engineering", "NIT Life", "Placements", "Research"],
-    location: "Tamil Nadu",
-    price: 100,
-    verified: true,
-  },
-  {
-    id: 5,
-    name: "Karan Mehta",
-    college: "IIM Ahmedabad",
-    course: "MBA",
-    year: "1st Year",
-    rating: 4.6,
-    sessions: 22,
-    image: "https://images.unsplash.com/photo-1589578527966-10c1976020d6",
-    specialties: ["MBA", "CAT Prep", "Business", "Consulting"],
-    location: "Gujarat",
-    price: 100,
-    verified: true,
-  },
-  {
-    id: 6,
-    name: "Ananya Reddy",
-    college: "BITS Pilani",
-    course: "Electronics & Communication",
-    year: "4th Year",
-    rating: 4.8,
-    sessions: 41,
-    image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce",
-    specialties: ["Engineering", "BITS Life", "Research", "Internships"],
-    location: "Rajasthan",
-    price: 100,
-    verified: true,
-  },
-  {
-    id: 7,
-    name: "Mehul Jain",
-    college: "IIT Bombay",
-    course: "Electrical Engineering",
-    year: "2nd Year",
-    rating: 4.7,
-    sessions: 30,
-    image: "/placeholder.svg?height=120&width=120",
-    specialties: ["Engineering", "Projects", "Startups", "Internships"],
-    location: "Mumbai",
-    price: 120,
-    verified: true,
-  },
-  {
-    id: 8,
-    name: "Neha Verma",
-    college: "Lady Hardinge Medical College",
-    course: "MBBS",
-    year: "3rd Year",
-    rating: 4.8,
-    sessions: 36,
-    image: "/placeholder.svg?height=120&width=120",
-    specialties: ["Medical", "NEET", "Clinical Skills", "Campus Life"],
-    location: "Delhi",
-    price: 110,
-    verified: true,
-  },
-  {
-    id: 9,
-    name: "Arjun Nair",
-    college: "IISc Bangalore",
-    course: "Physics (Research)",
-    year: "PhD Scholar",
-    rating: 4.9,
-    sessions: 50,
-    image: "/placeholder.svg?height=120&width=120",
-    specialties: ["Research", "Physics", "Academics", "Higher Studies Abroad"],
-    location: "Bangalore",
-    price: 150,
-    verified: true,
-  },
-  {
-    id: 10,
-    name: "Simran Kaur",
-    college: "Delhi University",
-    course: "Psychology (Hons)",
-    year: "3rd Year",
-    rating: 4.6,
-    sessions: 20,
-    image: "/placeholder.svg?height=120&width=120",
-    specialties: ["Psychology", "Mental Health", "Study Tips", "DU Life"],
-    location: "Delhi",
-    price: 90,
-    verified: true,
-  },
-  {
-    id: 11,
-    name: "Ravi Kumar",
-    college: "NIT Warangal",
-    course: "Civil Engineering",
-    year: "4th Year",
-    rating: 4.8,
-    sessions: 44,
-    image: "/placeholder.svg?height=120&width=120",
-    specialties: ["Engineering", "Placements", "Research", "GATE Prep"],
-    location: "Telangana",
-    price: 100,
-    verified: true,
-  },
-  {
-    id: 12,
-    name: "Shivani Gupta",
-    college: "Jamia Millia Islamia",
-    course: "Law (LLB)",
-    year: "2nd Year",
-    rating: 4.7,
-    sessions: 18,
-    image: "/placeholder.svg?height=120&width=120",
-    specialties: ["Law", "Judiciary Prep", "Research", "Internships"],
-    location: "Delhi",
-    price: 95,
-    verified: true,
-  },
-  {
-    id: 13,
-    name: "Harsh Desai",
-    college: "IIT Madras",
-    course: "Aerospace Engineering",
-    year: "3rd Year",
-    rating: 4.9,
-    sessions: 40,
-    image: "/placeholder.svg?height=120&width=120",
-    specialties: ["Engineering", "Placements", "Projects", "Higher Studies"],
-    location: "Chennai",
-    price: 130,
-    verified: true,
-  },
-  {
-    id: 14,
-    name: "Pooja Sharma",
-    college: "IIT Roorkee",
-    course: "Architecture",
-    year: "2nd Year",
-    rating: 4.5,
-    sessions: 16,
-    image: "/placeholder.svg?height=120&width=120",
-    specialties: ["Architecture", "Design", "Campus Life", "Creative Careers"],
-    location: "Roorkee",
-    price: 85,
-    verified: true,
-  },
-  {
-    id: 15,
-    name: "Farhan Ali",
-    college: "AMU Aligarh",
-    course: "Mechanical Engineering",
-    year: "4th Year",
-    rating: 4.7,
-    sessions: 34,
-    image: "/placeholder.svg?height=120&width=120",
-    specialties: ["Engineering", "Internships", "Placements", "Projects"],
-    location: "Uttar Pradesh",
-    price: 100,
-    verified: true,
-  },
-  {
-    id: 16,
-    name: "Ishita Roy",
-    college: "Jadavpur University",
-    course: "English Literature",
-    year: "3rd Year",
-    rating: 4.8,
-    sessions: 25,
-    image: "/placeholder.svg?height=120&width=120",
-    specialties: ["Literature", "Academics", "Creative Writing", "Campus Life"],
-    location: "Kolkata",
-    price: 90,
-    verified: true,
-  },
-  {
-    id: 17,
-    name: "Aditya Prakash",
-    college: "IIM Bangalore",
-    course: "MBA",
-    year: "2nd Year",
-    rating: 4.9,
-    sessions: 39,
-    image: "/placeholder.svg?height=120&width=120",
-    specialties: ["MBA", "Case Studies", "Consulting", "Placements"],
-    location: "Bangalore",
-    price: 140,
-    verified: true,
-  },
-  {
-    id: 18,
-    name: "Ritika Sharma",
-    college: "IIT Kanpur",
-    course: "Chemical Engineering",
-    year: "3rd Year",
-    rating: 4.6,
-    sessions: 27,
-    image: "/placeholder.svg?height=120&width=120",
-    specialties: ["Engineering", "Placements", "Research", "Projects"],
-    location: "Kanpur",
-    price: 110,
-    verified: true,
-  },
-  {
-    id: 19,
-    name: "Sanjana Iyer",
-    college: "Christ University",
-    course: "BBA",
-    year: "2nd Year",
-    rating: 4.5,
-    sessions: 15,
-    image: "/placeholder.svg?height=120&width=120",
-    specialties: ["Business", "Management", "Campus Life", "Internships"],
-    location: "Bangalore",
-    price: 85,
-    verified: true,
-  },
-  {
-    id: 20,
-    name: "Mohammed Yusuf",
-    college: "IIT Hyderabad",
-    course: "Artificial Intelligence",
-    year: "1st Year",
-    rating: 4.7,
-    sessions: 19,
-    image: "/placeholder.svg?height=120&width=120",
-    specialties: ["AI", "Coding", "Projects", "Research"],
-    location: "Hyderabad",
-    price: 120,
-    verified: true,
-  },
-];
+const mentors = mentorsData;
 
 const MENTORS_PER_PAGE = 9;
 
@@ -434,23 +153,77 @@ function FilterChip({
         <span className="hidden sm:inline">{displayText}</span>
         <span className="inline sm:hidden">
           {label === "College" ? (
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 2l8 4-8 4-8-4 8-4z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 10v6a8 8 0 008 8 8 8 0 008-8v-6" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M12 2l8 4-8 4-8-4 8-4z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M4 10v6a8 8 0 008 8 8 8 0 008-8v-6"
+              />
             </svg>
           ) : label === "Stream" ? (
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 7v10a1 1 0 001 1h16a1 1 0 001-1V7" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 7v-2a2 2 0 012-2h6a2 2 0 012 2v2" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M3 7v10a1 1 0 001 1h16a1 1 0 001-1V7"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M7 7v-2a2 2 0 012-2h6a2 2 0 012 2v2"
+              />
             </svg>
           ) : label === "Location" ? (
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1118 0z" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1118 0z"
+              />
               <circle cx="12" cy="10" r="3" strokeWidth={1.5} />
             </svg>
           ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h10M4 18h7" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M4 6h16M4 12h10M4 18h7"
+              />
             </svg>
           )}
         </span>
@@ -511,11 +284,18 @@ function MentorCard({ mentor }: { mentor: any }) {
       >
         {/* Image */}
         <div className="relative h-[280px] overflow-hidden">
-          <img
-            src={mentor.image}
-            alt={mentor.name}
-            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-[1.04]"
-          />
+          {mentor.image ? (
+            <Image
+              src={mentor.image}
+              alt={mentor.name}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover transition-all duration-700 group-hover:scale-[1.04]"
+              loading="lazy"
+            />
+          ) : (
+            <div className="w-full h-full bg-gray-100" />
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
 
           {/* Verified Badge */}
@@ -712,27 +492,33 @@ export default function FindMentorsPage() {
     { value: "all", label: "All Colleges" },
     { value: "IIT", label: "IIT" },
     { value: "NIT", label: "NIT" },
-    { value: "AIIMS", label: "AIIMS" },
-    { value: "IIM", label: "IIM" },
-    { value: "BITS", label: "BITS" },
-    { value: "SRCC", label: "SRCC" },
+    { value: "IIIT", label: "IIIT" },
+    { value: "NID", label: "NID" },
+    { value: "Nirma", label: "Nirma" },
+    { value: "Dhirubhai Ambani", label: "DA-IICT" },
+    { value: "Charusat", label: "Charusat" },
+    { value: "VIT", label: "VIT" },
+    { value: "MIT", label: "MIT" },
   ];
 
   const streamOptions = [
     { value: "all", label: "All Streams" },
     { value: "Engineering", label: "Engineering" },
+    { value: "Design", label: "Design" },
     { value: "Medical", label: "Medical" },
-    { value: "Commerce", label: "Commerce" },
-    { value: "MBA", label: "MBA" },
+    { value: "Business", label: "Business" },
+    { value: "AI/ML", label: "AI/ML" },
     { value: "Research", label: "Research" },
   ];
 
   const locationOptions = [
     { value: "all", label: "All Locations" },
-    { value: "Delhi", label: "Delhi" },
-    { value: "Tamil Nadu", label: "Tamil Nadu" },
     { value: "Gujarat", label: "Gujarat" },
-    { value: "Rajasthan", label: "Rajasthan" },
+    { value: "Maharashtra", label: "Maharashtra" },
+    { value: "Chhattisgarh", label: "Chhattisgarh" },
+    { value: "West Bengal", label: "West Bengal" },
+    { value: "Tamil Nadu", label: "Tamil Nadu" },
+    { value: "Assam", label: "Assam" },
   ];
 
   const sortOptions = [
@@ -783,7 +569,9 @@ export default function FindMentorsPage() {
                     onChange={setCollegeFilter}
                     isOpen={openDropdown === "college"}
                     onToggle={() =>
-                      setOpenDropdown(openDropdown === "college" ? null : "college")
+                      setOpenDropdown(
+                        openDropdown === "college" ? null : "college"
+                      )
                     }
                   />
                   <FilterChip
@@ -793,7 +581,9 @@ export default function FindMentorsPage() {
                     onChange={setStreamFilter}
                     isOpen={openDropdown === "stream"}
                     onToggle={() =>
-                      setOpenDropdown(openDropdown === "stream" ? null : "stream")
+                      setOpenDropdown(
+                        openDropdown === "stream" ? null : "stream"
+                      )
                     }
                   />
                   <FilterChip
@@ -803,7 +593,9 @@ export default function FindMentorsPage() {
                     onChange={setLocationFilter}
                     isOpen={openDropdown === "location"}
                     onToggle={() =>
-                      setOpenDropdown(openDropdown === "location" ? null : "location")
+                      setOpenDropdown(
+                        openDropdown === "location" ? null : "location"
+                      )
                     }
                   />
 
@@ -815,7 +607,9 @@ export default function FindMentorsPage() {
                     options={sortOptions}
                     onChange={setSortBy}
                     isOpen={openDropdown === "sort"}
-                    onToggle={() => setOpenDropdown(openDropdown === "sort" ? null : "sort")}
+                    onToggle={() =>
+                      setOpenDropdown(openDropdown === "sort" ? null : "sort")
+                    }
                   />
 
                   {activeFiltersCount > 0 && (
