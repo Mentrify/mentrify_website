@@ -296,7 +296,7 @@ function MentorCard({ mentor }: { mentor: any }) {
               loading="lazy"
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+            <div className="w-full h-full bg-gradient-to-br from-primary-900 via-violet-500 to-pink-400 flex items-center justify-center">
               <span className="text-6xl font-bold text-white">
                 {mentor.name
                   .split(" ")
