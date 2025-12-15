@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import GoogleAnalytics from "../components/GoogleAnalytics";
@@ -64,6 +65,7 @@ export default function RootLayout({
 
         {/* Global footer */}
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
