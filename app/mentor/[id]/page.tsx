@@ -155,7 +155,16 @@ export default function MentorProfilePage() {
                         loading="lazy"
                       />
                     ) : (
-                      <div className="w-full h-full rounded-2xl bg-gray-100" />
+                      <div className="w-full h-full rounded-2xl bg-gradient-to-br from-primary-900 via-violet-500 to-pink-400 flex items-center justify-center">
+                        <span className="text-4xl sm:text-5xl font-bold text-white">
+                          {mentor.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")
+                            .toUpperCase()
+                            .slice(0, 2)}
+                        </span>
+                      </div>
                     )}
                     {mentor.verified && (
                       <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-r from-primary-900 via-violet-500 to-pink-400 rounded-full flex items-center justify-center shadow-lg">
@@ -396,7 +405,16 @@ export default function MentorProfilePage() {
                         className="rounded-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full rounded-full bg-gray-100" />
+                      <div className="w-full h-full rounded-full bg-gradient-to-br from-primary-900 via-violet-500 to-pink-400 flex items-center justify-center">
+                        <span className="text-base font-bold text-white">
+                          {mentor.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")
+                            .toUpperCase()
+                            .slice(0, 2)}
+                        </span>
+                      </div>
                     )}
                   </div>
                   <div>

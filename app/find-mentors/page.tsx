@@ -290,11 +290,22 @@ function MentorCard({ mentor }: { mentor: any }) {
               alt={mentor.name}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover transition-all duration-700 group-hover:scale-[1.04]"
+              className={`object-cover transition-all duration-700 group-hover:scale-[1.04] ${
+                mentor.imagePosition === "top" ? "object-top" : ""
+              }`}
               loading="lazy"
             />
           ) : (
-            <div className="w-full h-full bg-gray-100" />
+            <div className="w-full h-full bg-gradient-to-br from-primary-900 via-violet-500 to-pink-400 flex items-center justify-center">
+              <span className="text-6xl font-bold text-white">
+                {mentor.name
+                  .split(" ")
+                  .map((n: string) => n[0])
+                  .join("")
+                  .toUpperCase()
+                  .slice(0, 2)}
+              </span>
+            </div>
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
 
@@ -524,8 +535,8 @@ export default function FindMentorsPage() {
   const sortOptions = [
     { value: "rating", label: "Highest Rated" },
     { value: "sessions", label: "Most Sessions" },
-    { value: "price_low", label: "Price: Low → High" },
-    { value: "price_high", label: "Price: High → Low" },
+    //   { value: "price_low", label: "Price: Low → High" },
+    //   { value: "price_high", label: "Price: High → Low" },
   ];
 
   return (
