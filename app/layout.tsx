@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
-import GoogleAnalytics from "../components/GoogleAnalytics";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
+import AnalyticsTracker from "@/components/AnalyticsTracker";
 import "./globals.css";
-// import AuthHydrator from "@/components/AuthHydrator";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     siteName: "Mentrify",
     title: "Mentrify - Real Students. Real Advice.",
     description:
-      "Connect with verified college seniors for 1-on-1 guidance sessions. Get honest advice on courses, campuses, and careers from students who have been in your shoes.",
+      "Connect with verified college seniors for 1-on-1 guidance sessions.",
     images: [
       {
         url: "/og-image.png",
@@ -52,17 +52,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <GoogleAnalytics />
-      </head>
-      <body className={`min-h-screen bg-white ${inter.className}`}>
-        {/* Global header */}
-        <Navigation />
-        {/* <AuthHydrator /> */}
-        {/* Page content — padded so it doesn't sit under the fixed header */}
-        <main className="">{children}</main>
+      {/* Google Analytics */}
+      <GoogleAnalytics />
 
-        {/* Global footer */}
+      <body className={`min-h-screen bg-white ${inter.className}`}>
+        <AnalyticsTracker />
+        <Navigation />
+
+        <main>{children}</main>
+
         <Footer />
       </body>
     </html>
