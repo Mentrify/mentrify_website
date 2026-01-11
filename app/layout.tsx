@@ -57,7 +57,7 @@ export default function RootLayout({
       <GoogleAnalytics />
 
       <body className={`min-h-screen bg-white ${inter.className}`}>
-        {/* <AnalyticsTracker /> */}
+        <AnalyticsTracker />
         <Navigation />
 
         <main>{children}</main>

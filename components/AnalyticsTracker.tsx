@@ -1,24 +1,23 @@
 "use client";
 
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
-const GA_MEASUREMENT_ID = "G-5113YLN7N5";
+const GA_ID = "G-5113YLN7N5";
 
 export default function AnalyticsTracker() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
-    const url =
-      pathname + (searchParams.toString() ? `?${searchParams}` : "");
+    if (typeof window === "undefined") return;
 
-    if ((window as any).gtag) {
-      (window as any).gtag("config", GA_MEASUREMENT_ID, {
-        page_path: url,
-      });
-    }
-  }, [pathname, searchParams]);
+    const gtag = (window as any).gtag;
+    if (!gtag) return;
+
+    gtag("config", GA_ID, {
+      page_path: pathname,
+    });
+  }, [pathname]);
 
   return null;
 }
