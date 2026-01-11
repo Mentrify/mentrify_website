@@ -3,7 +3,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle, Sparkles, Stars, X } from "lucide-react";
+import { ArrowRight, CheckCircle, Sparkles, Stars, Rocket, X } from "lucide-react";
 import { CollegeCarousel } from "@/components/CollegeCarousel";
 
 // ── Toggle this to switch the whole page look ──────────────────────────────────
@@ -11,8 +11,20 @@ const USE_GREY = false;
 // ───────────────────────────────────────────────────────────────────────────────
 
 export default function HomePage() {
+  // Beta modal state
+  const [showBetaModal, setShowBetaModal] = useState(false);
+
   // Use Element so refs can be <section> or <div>
   const sectionsRef = useRef<(Element | null)[]>([]);
+
+  useEffect(() => {
+    // Check if first-time visitor
+    const hasVisited = localStorage.getItem("mentrify_visited");
+    if (!hasVisited) {
+      setShowBetaModal(true);
+      localStorage.setItem("mentrify_visited", "true");
+    }
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -31,7 +43,6 @@ export default function HomePage() {
 
   // HERO spotlight
   const heroSectionRef = useRef<HTMLElement | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const handleHeroMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     const el = heroSectionRef.current;
     if (!el) return;
@@ -166,15 +177,15 @@ export default function HomePage() {
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <button
-              onClick={() => setIsModalOpen(true)}
+            <Link
+              href="/find-mentors"
               className="apple-button text-base md:text-lg px-12 py-5 flex items-center justify-center group w-full max-w-md relative overflow-hidden"
             >
               <span className="absolute inset-0 bg-gradient-to-r from-primary-900/0 via-primary-800/20 to-primary-900/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
               <Sparkles className="mr-3 h-5 w-5 md:h-6 md:w-6 text-white group-hover:rotate-12 transition-transform" />
               <span className="font-semibold">Find Your Perfect Mentor</span>
               <ArrowRight className="ml-3 h-5 w-5 md:h-6 md:w-6 transition-transform group-hover:translate-x-1" />
-            </button>
+            </Link>
           </div>
 
           {/* Trust badges */}
@@ -198,64 +209,6 @@ export default function HomePage() {
 
       {/* Carousel for cllg logos */}
       <CollegeCarousel useGrey={USE_GREY} />
-
-      {isModalOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
-          onClick={() => setIsModalOpen(false)}
-        >
-          <div
-            className={`relative mx-4 w-full max-w-md rounded-2xl p-6 ${card}`}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              aria-label="Close modal"
-              onClick={() => setIsModalOpen(false)}
-              className={`absolute top-3 right-3 inline-flex items-center justify-center rounded-full p-2 ${
-                USE_GREY
-                  ? "bg-grey-1000/70 text-primaryPalette-200"
-                  : "bg-white text-grey-900"
-              }`}
-            >
-              <X className="h-4 w-4" />
-            </button>
-
-            <div className="flex flex-col items-center text-center">
-              <Sparkles className="h-8 w-8 text-primary-900 mb-3" />
-              <h3 className={`text-2xl font-semibold ${strong}`}>Coming Soon!</h3>
-              <p className={`mt-2 text-sm ${muted}`}>
-                We're currently building the Find Mentors page. In the meantime, explore these options:
-              </p>
-
-              <div className="mt-6 flex w-full gap-3 flex-col sm:flex-row">
-                <Link
-                  href="/"
-                  onClick={() => setIsModalOpen(false)}
-                  className={`inline-flex items-center justify-center w-full rounded-full px-4 py-2 text-sm font-medium ${
-                    USE_GREY
-                      ? "bg-grey-1000/70 text-primaryPalette-200 ring-1 ring-white/10 hover:ring-primary-900/50"
-                      : "bg-white text-grey-900 ring-1 ring-black/10 hover:ring-primary-900/30 shadow-sm"
-                  }`}
-                >
-                  Go to Home
-                </Link>
-
-                <Link
-                  href="/become-mentor"
-                  onClick={() => setIsModalOpen(false)}
-                  className={`inline-flex items-center justify-center w-full rounded-full px-4 py-2 text-sm font-medium ${
-                    USE_GREY
-                      ? "bg-primaryPalette-200 text-primaryPalette-900"
-                      : "bg-primary-900 text-white"
-                  }`}
-                >
-                  Become a Mentor
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Feature cards row (still part of landing) */}
       <section className="relative">
@@ -473,6 +426,57 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Beta Launch Modal */}
+      {showBetaModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="relative bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl animate-fade-in-up">
+            {/* Close button */}
+            <button
+              onClick={() => setShowBetaModal(false)}
+              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors"
+            >
+              <X className="w-5 h-5 text-gray-500" />
+            </button>
+
+            {/* Content */}
+            <div className="text-center">
+              {/* Icon */}
+              <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-violet-100 to-purple-100 flex items-center justify-center mb-5">
+                <Rocket className="w-8 h-8 text-violet-600" />
+              </div>
+
+              {/* Badge */}
+              <span className="inline-block px-3 py-1 rounded-full bg-violet-100 text-violet-700 text-xs font-semibold uppercase tracking-wide mb-4">
+                Beta Launch
+              </span>
+
+              {/* Title */}
+              <h2 className="text-2xl font-bold text-gray-900 mb-3">
+                Welcome to Mentrify!
+              </h2>
+
+              {/* Description */}
+              <p className="text-gray-600 mb-6">
+                You&apos;re experiencing our <span className="font-semibold text-violet-600">beta version</span>.
+                We&apos;re working hard to bring you the full experience soon with more mentors, features, and exciting updates!
+              </p>
+
+              {/* CTA */}
+              <button
+                onClick={() => setShowBetaModal(false)}
+                className="w-full py-3 px-6 bg-gradient-to-r from-violet-600 to-purple-600 text-white font-semibold rounded-xl hover:from-violet-700 hover:to-purple-700 transition-all shadow-lg shadow-violet-500/25"
+              >
+                Explore Beta
+              </button>
+
+              {/* Footer text */}
+              <p className="mt-4 text-xs text-gray-400">
+                Full launch coming soon!
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -76,6 +76,7 @@ export default function Navigation() {
                 </Link>
               ))}
 
+              {/* Sign In button - commented out
               <span className="mx-2 text-gray-300">|</span>
 
               <Link
@@ -95,6 +96,7 @@ export default function Navigation() {
                   }`}
                 />
               </Link>
+              */}
 
               <Link href="/find-mentors">
                 <button className="px-4 py-2 rounded-full bg-black text-white text-sm font-medium hover:opacity-90 transition-all duration-300 shadow-sm">
@@ -133,7 +135,7 @@ export default function Navigation() {
               { href: "/become-mentor", label: "Become a Mentor" },
               { href: "/about", label: "About" },
               { href: "/pricing", label: "Pricing" },
-              { href: "/signin", label: "Sign In" },
+              // { href: "/signin", label: "Sign In" }, // Sign In - commented out
             ].map((item) => (
               <Link
                 key={item.href}

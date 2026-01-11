@@ -1,80 +1,87 @@
 "use client";
 
-import { useState } from "react";
-import { Check, Star, Crown, Rocket } from "lucide-react";
-import Link from "next/link";
+import { Check, Star, Crown, Users } from "lucide-react";
 
-type Phase = "early" | "post";
-
-const features = {
-  base: [
-    "1 mentorship call included",
-    "Access to Discord (Basic)",
-    "Free resource on booking",
-  ],
-  membership: [
-    "2 mentorship calls (2nd at ₹99)",
-    "Premium Discord access",
-    "2 free webinars/workshops",
-    "Career path materials",
-    "Priority to apply as Mentor (from 2nd year)",
-  ],
-};
-
-// Renamed per SS
-const plans = {
-  early: [
-    {
-      name: "Early Unlock Pass",
-      icon: Rocket,
-      price: 99,
-      cta: "Grab Early Access",
-      perks: features.base,
-      highlight: false,
-    },
-    {
-      name: "Standard Access Pass",
-      icon: Star,
-      price: 199,
-      cta: "Upgrade Plan",
-      perks: features.base,
-      highlight: true, // Popular
-    },
-  ],
-  post: [
-    {
-      name: "Early Unlock Pass",
-      icon: Rocket,
-      price: 199,
-      cta: "Start Now",
-      perks: features.base,
-      highlight: false,
-    },
-    {
-      name: "Standard Access Pass",
-      icon: Star,
-      price: 299,
-      cta: "Go Standard",
-      perks: features.base,
-      highlight: true,
-    },
-  ],
-  membership: [
-    {
-      name: "Power Access Pass (Membership)",
-      icon: Crown,
-      price: 299, // launch price
-      cta: "Become a Member",
-      perks: [...features.base, ...features.membership],
-      highlight: true,
-    },
-  ],
-};
+const plans = [
+  {
+    name: "Student Plan",
+    subtitle: "For Students",
+    icon: Star,
+    price: 199,
+    priceLabel: "/ Session",
+    tagline: "",
+    perks: [
+      {
+        title: "1 Mentorship Call Included",
+        desc: "One-on-one guidance with a verified mentor",
+      },
+      {
+        title: "Access to Discord (Basic)",
+        desc: "Join the student community for discussions and updates",
+      },
+      {
+        title: "Free Booking Resource",
+        desc: "Step-by-step guide to help you prepare for your session",
+      },
+    ],
+    highlight: false,
+  },
+  {
+    name: "B2B / Organisation",
+    icon: Users,
+    price: 119,
+    priceLabel: "/ Session",
+    tagline: "+ Annual subscription charges",
+    perks: [
+      {
+        title: "Customised Mentorship Plan",
+        desc: "Designed based on your institution's or organisation's goals",
+      },
+      {
+        title: "Flexible Session-Based Pricing",
+        desc: "Starts at ₹119 per session, scalable across cohorts",
+      },
+      {
+        title: "Dedicated Coordination Support",
+        desc: "Smooth scheduling and communication for students and admins",
+      },
+      {
+        title: "Career & Skill Development",
+        desc: "Tailored support aligned with employability and growth outcomes",
+      },
+    ],
+    highlight: true,
+  },
+  {
+    name: "Premium Membership",
+    icon: Crown,
+    price: 299,
+    priceLabel: "/ One Time",
+    tagline: "Everything in the Student Plan, plus:",
+    perks: [
+      {
+        title: "2 Mentorship Calls",
+        desc: "1 included, 2nd at ₹99 flat (subsequent at normal rates)",
+      },
+      {
+        title: "Premium Discord Access",
+        desc: "Private channels, mentor interactions, and focused peer groups",
+      },
+      {
+        title: "Career Path Materials",
+        desc: "Curated roadmaps, frameworks, and learning resources",
+      },
+      {
+        title: "Priority to Apply as Mentor",
+        desc: "Early eligibility to apply from 2nd year onwards",
+      },
+    ],
+    highlight: false,
+    ribbon: "Best Value",
+  },
+];
 
 export default function Pricing() {
-  const [phase, setPhase] = useState<Phase>("early");
-  const active = phase === "early" ? plans.early : plans.post;
-
   return (
     <section className="relative py-20">
       {/* background */}
@@ -95,40 +102,13 @@ export default function Pricing() {
           <p className="mt-3 text-gray-600">
             Pick a plan that matches where you are. Upgrade anytime.
           </p>
-
-          {/* phase toggle */}
-          <div className="mt-6 inline-flex items-center rounded-full bg-white/70 ring-1 ring-black/10 backdrop-blur p-1">
-            <button
-              onClick={() => setPhase("early")}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition
-                ${
-                  phase === "early"
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-sm"
-                    : "text-gray-700 hover:bg-white"
-                }`}
-            >
-              Early Bird
-            </button>
-            <button
-              onClick={() => setPhase("post")}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition
-                ${
-                  phase === "post"
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-sm"
-                    : "text-gray-700 hover:bg-white"
-                }`}
-            >
-              Post Early
-            </button>
-          </div>
         </div>
 
         {/* cards */}
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
-          {active.map((p, i) => (
+          {plans.map((p, i) => (
             <PricingCard key={i} {...p} />
           ))}
-          <PricingCard {...plans.membership[0]} ribbon="Best Value" />
         </div>
 
         <p className="mt-6 text-center text-xs text-gray-500">
@@ -141,18 +121,26 @@ export default function Pricing() {
 
 function PricingCard({
   name,
+  subtitle,
   icon: Icon,
   price,
-  cta,
+  originalPrice,
+  priceLabel,
+  tagline,
+  discount,
   perks,
   highlight,
   ribbon,
 }: {
   name: string;
+  subtitle?: string;
   icon: any;
   price: number;
-  cta: string;
-  perks: string[];
+  originalPrice?: number;
+  priceLabel: string;
+  tagline?: string;
+  discount?: string;
+  perks: { title: string; desc: string }[];
   highlight?: boolean;
   ribbon?: string;
 }) {
@@ -182,39 +170,44 @@ function PricingCard({
           <div className="h-12 w-12 grid place-items-center rounded-xl bg-violet-50 ring-1 ring-violet-200 text-violet-600">
             <Icon className="h-6 w-6" />
           </div>
-          <h3 className="text-xl font-semibold">{name}</h3>
+          <div>
+            <h3 className="text-xl font-semibold">{name}</h3>
+            {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
+          </div>
         </div>
 
-        <div className="mt-4 flex items-baseline gap-1">
-          <span className="text-4xl font-extrabold tracking-tight">
-            ₹{price}
-          </span>
-          <span className="text-gray-500 text-sm">/ one-time</span>
+        <div className="mt-4">
+          <div className="flex items-baseline gap-2">
+            {originalPrice && (
+              <span className="text-xl text-gray-400 line-through">
+                ₹{originalPrice}
+              </span>
+            )}
+            <span className="text-4xl font-extrabold tracking-tight">
+              ₹{price}
+            </span>
+            <span className="text-gray-500 text-sm">{priceLabel}</span>
+          </div>
+          {discount && (
+            <p className="mt-1 text-sm font-medium text-emerald-600">
+              {discount}
+            </p>
+          )}
+          {tagline && <p className="mt-1 text-sm text-gray-600">{tagline}</p>}
         </div>
 
-        {/* grow keeps button aligned across cards */}
-        <ul className="mt-5 space-y-2 text-sm grow">
-          {perks.map((f) => (
-            <li key={f} className="flex gap-2">
-              <Check className="h-4 w-4 mt-0.5 text-emerald-600" />
-              <span className="text-gray-700">{f}</span>
+        {/* perks list */}
+        <ul className="mt-5 space-y-3 text-sm grow">
+          {perks.map((perk) => (
+            <li key={perk.title} className="flex gap-2">
+              <Check className="h-4 w-4 mt-0.5 text-emerald-600 shrink-0" />
+              <div>
+                <span className="font-medium text-gray-900">{perk.title}</span>
+                <p className="text-gray-500 text-xs mt-0.5">{perk.desc}</p>
+              </div>
             </li>
           ))}
         </ul>
-
-        <Link
-          href="/find-mentors"
-          className="mt-6 block rounded-xl text-center text-sm font-medium px-4 py-3
-            bg-black text-white hover:opacity-90 transition
-            focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0"
-        >
-          {cta}
-        </Link>
-
-        <div className="mt-3 text-[11px] text-gray-500">
-          Includes free resource on booking. Calls after the included ones use
-          standard pricing.
-        </div>
       </div>
     </div>
   );

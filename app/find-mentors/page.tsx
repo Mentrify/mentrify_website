@@ -1,389 +1,464 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { SimplePagination } from "@/components/ui/pagination";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  Search,
-  Filter,
-  MapPin,
-  Calendar,
-  Verified,
-  Star,
-  X,
-  ChevronDown,
-  Users,
-  Award,
-  BookOpen,
-} from "lucide-react";
-import Navigation from "../../components/Navigation";
+import { Search, X, ChevronDown, CheckCircle2 } from "lucide-react";
+import mentorsData from "@/data/mentors.json";
 
-const mentors = [
-  {
-    id: 1,
-    name: "Vyom Padalia",
-    college: "IIT Delhi",
-    course: "Computer Science & Engineering",
-    year: "3rd Year",
-    rating: 4.9,
-    sessions: 45,
-    image: "/placeholder.svg?height=120&width=120",
-    languages: ["Hindi", "English"],
-    specialties: ["Engineering", "Coding", "Campus Life", "Placements"],
-    location: "Delhi",
-    price: 100,
-    verified: true,
-    bio: "Passionate about helping juniors navigate their engineering journey with practical insights.",
-  },
-  {
-    id: 2,
-    name: "Sneha Patel",
-    college: "AIIMS Delhi",
-    course: "MBBS",
-    year: "4th Year",
-    rating: 4.8,
-    sessions: 32,
-    image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Gujarati"],
-    specialties: ["Medical", "NEET", "Study Tips", "Research"],
-    location: "Delhi",
-    price: 100,
-    verified: true,
-    bio: "Medical student passionate about guiding aspiring doctors through their journey.",
-  },
-  {
-    id: 3,
-    name: "Rohit Sharma",
-    college: "SRCC Delhi",
-    course: "Economics (Hons)",
-    year: "2nd Year",
-    rating: 4.7,
-    sessions: 28,
-    image: "/placeholder.svg?height=120&width=120",
-    languages: ["Hindi", "English"],
-    specialties: ["Commerce", "Economics", "DU Life", "Finance"],
-    location: "Delhi",
-    price: 100,
-    verified: true,
-    bio: "Economics enthusiast helping students understand commerce and finance better.",
-  },
-  {
-    id: 4,
-    name: "Priya Singh",
-    college: "NIT Trichy",
-    course: "Mechanical Engineering",
-    year: "3rd Year",
-    rating: 4.9,
-    sessions: 38,
-    image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Tamil"],
-    specialties: ["Engineering", "NIT Life", "Placements", "Research"],
-    location: "Tamil Nadu",
-    price: 100,
-    verified: true,
-    bio: "Mechanical engineering student with expertise in placements and research opportunities.",
-  },
-  {
-    id: 5,
-    name: "Karan Mehta",
-    college: "IIM Ahmedabad",
-    course: "MBA",
-    year: "1st Year",
-    rating: 4.6,
-    sessions: 22,
-    image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Hindi"],
-    specialties: ["MBA", "CAT Prep", "Business", "Consulting"],
-    location: "Gujarat",
-    price: 100,
-    verified: true,
-    bio: "MBA student helping aspirants crack CAT and understand business school life.",
-  },
-  {
-    id: 6,
-    name: "Ananya Reddy",
-    college: "BITS Pilani",
-    course: "Electronics & Communication",
-    year: "4th Year",
-    rating: 4.8,
-    sessions: 41,
-    image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Telugu"],
-    specialties: ["Engineering", "BITS Life", "Research", "Internships"],
-    location: "Rajasthan",
-    price: 100,
-    verified: true,
-    bio: "Final year student with extensive experience in research and internships.",
-  },
-  {
-    id: 7,
-    name: "Mehul Jain",
-    college: "IIT Bombay",
-    course: "Electrical Engineering",
-    year: "2nd Year",
-    rating: 4.7,
-    sessions: 30,
-    image: "/placeholder.svg?height=120&width=120",
-    languages: ["Hindi", "English"],
-    specialties: ["Engineering", "Projects", "Startups", "Internships"],
-    location: "Mumbai",
-    price: 120,
-    verified: true,
-    bio: "Focused on guiding students about projects, internships, and startup culture.",
-  },
-  {
-    id: 8,
-    name: "Neha Verma",
-    college: "Lady Hardinge Medical College",
-    course: "MBBS",
-    year: "3rd Year",
-    rating: 4.8,
-    sessions: 36,
-    image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Hindi"],
-    specialties: ["Medical", "NEET", "Clinical Skills", "Campus Life"],
-    location: "Delhi",
-    price: 110,
-    verified: true,
-    bio: "Helping future doctors excel in academics and clinical exposure.",
-  },
-  {
-    id: 9,
-    name: "Arjun Nair",
-    college: "IISc Bangalore",
-    course: "Physics (Research)",
-    year: "PhD Scholar",
-    rating: 4.9,
-    sessions: 50,
-    image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Malayalam"],
-    specialties: ["Research", "Physics", "Academics", "Higher Studies Abroad"],
-    location: "Bangalore",
-    price: 150,
-    verified: true,
-    bio: "Research scholar mentoring students interested in science and higher studies.",
-  },
-  {
-    id: 10,
-    name: "Simran Kaur",
-    college: "Delhi University",
-    course: "Psychology (Hons)",
-    year: "3rd Year",
-    rating: 4.6,
-    sessions: 20,
-    image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Punjabi"],
-    specialties: ["Psychology", "Mental Health", "Study Tips", "DU Life"],
-    location: "Delhi",
-    price: 90,
-    verified: true,
-    bio: "Passionate about mental health awareness and student well-being.",
-  },
-  {
-    id: 11,
-    name: "Ravi Kumar",
-    college: "NIT Warangal",
-    course: "Civil Engineering",
-    year: "4th Year",
-    rating: 4.8,
-    sessions: 44,
-    image: "/placeholder.svg?height=120&width=120",
-    languages: ["Telugu", "English", "Hindi"],
-    specialties: ["Engineering", "Placements", "Research", "GATE Prep"],
-    location: "Telangana",
-    price: 100,
-    verified: true,
-    bio: "Civil engineer guiding peers in placements, projects, and GATE preparation.",
-  },
-  {
-    id: 12,
-    name: "Shivani Gupta",
-    college: "Jamia Millia Islamia",
-    course: "Law (LLB)",
-    year: "2nd Year",
-    rating: 4.7,
-    sessions: 18,
-    image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Hindi"],
-    specialties: ["Law", "Judiciary Prep", "Research", "Internships"],
-    location: "Delhi",
-    price: 95,
-    verified: true,
-    bio: "Law student mentoring juniors in legal studies and internships.",
-  },
-  {
-    id: 13,
-    name: "Harsh Desai",
-    college: "IIT Madras",
-    course: "Aerospace Engineering",
-    year: "3rd Year",
-    rating: 4.9,
-    sessions: 40,
-    image: "/placeholder.svg?height=120&width=120",
-    languages: ["Gujarati", "English"],
-    specialties: ["Engineering", "Placements", "Projects", "Higher Studies"],
-    location: "Chennai",
-    price: 130,
-    verified: true,
-    bio: "Aerospace enthusiast mentoring students for research and placements.",
-  },
-  {
-    id: 14,
-    name: "Pooja Sharma",
-    college: "IIT Roorkee",
-    course: "Architecture",
-    year: "2nd Year",
-    rating: 4.5,
-    sessions: 16,
-    image: "/placeholder.svg?height=120&width=120",
-    languages: ["Hindi", "English"],
-    specialties: ["Architecture", "Design", "Campus Life", "Creative Careers"],
-    location: "Roorkee",
-    price: 85,
-    verified: true,
-    bio: "Architecture student passionate about design and guiding peers.",
-  },
-  {
-    id: 15,
-    name: "Farhan Ali",
-    college: "AMU Aligarh",
-    course: "Mechanical Engineering",
-    year: "4th Year",
-    rating: 4.7,
-    sessions: 34,
-    image: "/placeholder.svg?height=120&width=120",
-    languages: ["Urdu", "English", "Hindi"],
-    specialties: ["Engineering", "Internships", "Placements", "Projects"],
-    location: "Uttar Pradesh",
-    price: 100,
-    verified: true,
-    bio: "Mechanical student mentoring juniors on internships and projects.",
-  },
-  {
-    id: 16,
-    name: "Ishita Roy",
-    college: "Jadavpur University",
-    course: "English Literature",
-    year: "3rd Year",
-    rating: 4.8,
-    sessions: 25,
-    image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Bengali"],
-    specialties: ["Literature", "Academics", "Creative Writing", "Campus Life"],
-    location: "Kolkata",
-    price: 90,
-    verified: true,
-    bio: "Literature student helping peers in creative writing and academics.",
-  },
-  {
-    id: 17,
-    name: "Aditya Prakash",
-    college: "IIM Bangalore",
-    course: "MBA",
-    year: "2nd Year",
-    rating: 4.9,
-    sessions: 39,
-    image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Hindi"],
-    specialties: ["MBA", "Case Studies", "Consulting", "Placements"],
-    location: "Bangalore",
-    price: 140,
-    verified: true,
-    bio: "MBA student providing insights into consulting and placements.",
-  },
-  {
-    id: 18,
-    name: "Ritika Sharma",
-    college: "IIT Kanpur",
-    course: "Chemical Engineering",
-    year: "3rd Year",
-    rating: 4.6,
-    sessions: 27,
-    image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Hindi"],
-    specialties: ["Engineering", "Placements", "Research", "Projects"],
-    location: "Kanpur",
-    price: 110,
-    verified: true,
-    bio: "Passionate about chemical engineering and guiding juniors for research.",
-  },
-  {
-    id: 19,
-    name: "Sanjana Iyer",
-    college: "Christ University",
-    course: "BBA",
-    year: "2nd Year",
-    rating: 4.5,
-    sessions: 15,
-    image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Kannada"],
-    specialties: ["Business", "Management", "Campus Life", "Internships"],
-    location: "Bangalore",
-    price: 85,
-    verified: true,
-    bio: "Helping juniors with management studies and campus guidance.",
-  },
-  {
-    id: 20,
-    name: "Mohammed Yusuf",
-    college: "IIT Hyderabad",
-    course: "Artificial Intelligence",
-    year: "1st Year",
-    rating: 4.7,
-    sessions: 19,
-    image: "/placeholder.svg?height=120&width=120",
-    languages: ["English", "Hindi", "Telugu"],
-    specialties: ["AI", "Coding", "Projects", "Research"],
-    location: "Hyderabad",
-    price: 120,
-    verified: true,
-    bio: "AI student passionate about coding, projects, and guiding aspirants.",
-  },
-];
+const mentors = mentorsData;
 
 const MENTORS_PER_PAGE = 9;
 
-export default function MentorsPage() {
+// Simple Pagination Component
+function SimplePagination({
+  page,
+  totalPages,
+  onPageChange,
+}: {
+  page: number;
+  totalPages: number;
+  onPageChange: (p: number) => void;
+}) {
+  return (
+    <div className="flex items-center gap-2">
+      <button
+        onClick={() => onPageChange(Math.max(1, page - 1))}
+        disabled={page === 1}
+        className="px-4 py-2 rounded-lg bg-white border border-slate-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
+      >
+        Previous
+      </button>
+      <span className="px-4 py-2 text-sm text-slate-600">
+        Page {page} of {totalPages}
+      </span>
+      <button
+        onClick={() => onPageChange(Math.min(totalPages, page + 1))}
+        disabled={page === totalPages}
+        className="px-4 py-2 rounded-lg bg-white border border-slate-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
+      >
+        Next
+      </button>
+    </div>
+  );
+}
+
+// Premium Filter Chip Component
+function FilterChip({
+  label,
+  value,
+  options,
+  onChange,
+  isOpen,
+  onToggle,
+}: {
+  label: string;
+  value: string;
+  options: { value: string; label: string }[];
+  onChange: (v: string) => void;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({});
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node | null;
+      // if click is outside both the button and the menu, close
+      if (
+        isOpen &&
+        target &&
+        !buttonRef.current?.contains(target as Node) &&
+        !menuRef.current?.contains(target as Node)
+      ) {
+        onToggle();
+      }
+    };
+
+    const updatePosition = () => {
+      const btn = buttonRef.current;
+      if (!btn) return;
+      const rect = btn.getBoundingClientRect();
+
+      // prefer the button width, but allow shrinking to fit the viewport
+      const preferredW = Math.max(180, rect.width);
+      const maxViewportW = Math.max(180, window.innerWidth - 32);
+      const menuWidth = Math.min(preferredW, maxViewportW);
+
+      // anchor to the button's left by default, but shift if it would overflow
+      let left = rect.left;
+      const minLeft = 16; // keep 16px gutter on both sides
+      const maxLeft = Math.max(minLeft, window.innerWidth - menuWidth - 16);
+
+      if (left > maxLeft) left = maxLeft;
+      if (left < minLeft) left = minLeft;
+
+      setMenuStyle({
+        position: "fixed",
+        top: rect.bottom + 8,
+        left,
+        width: menuWidth,
+        zIndex: 9999,
+      });
+    };
+
+    const handleScroll = () => {
+      if (isOpen) onToggle();
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("resize", updatePosition);
+    window.addEventListener("scroll", handleScroll, true);
+    // update once when open
+    if (isOpen) updatePosition();
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("scroll", handleScroll, true);
+    };
+  }, [isOpen, onToggle]);
+
+  const selectedOption = options.find((o) => o.value === value);
+  const isActive = value !== "all" && value !== "rating";
+  const displayText = isActive ? selectedOption?.label : label;
+
+  return (
+    <div ref={dropdownRef} className="relative flex-shrink-0">
+      <button
+        ref={buttonRef}
+        type="button"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onToggle();
+        }}
+        className={`
+          inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-medium
+          transition-all duration-200 ease-out whitespace-nowrap cursor-pointer
+          ${
+            isOpen
+              ? "border-2 border-black bg-white text-slate-900"
+              : isActive
+              ? "bg-slate-900 text-white"
+              : "bg-white text-slate-700 border border-slate-200 hover:border-slate-300 hover:shadow-sm"
+          }
+        `}
+      >
+        {/* show text on medium+ screens, icon only on small screens */}
+        <span className="hidden sm:inline">{displayText}</span>
+        <span className="inline sm:hidden">
+          {label === "College" ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M12 2l8 4-8 4-8-4 8-4z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M4 10v6a8 8 0 008 8 8 8 0 008-8v-6"
+              />
+            </svg>
+          ) : label === "Stream" ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M3 7v10a1 1 0 001 1h16a1 1 0 001-1V7"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M7 7v-2a2 2 0 012-2h6a2 2 0 012 2v2"
+              />
+            </svg>
+          ) : label === "Location" ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1118 0z"
+              />
+              <circle cx="12" cy="10" r="3" strokeWidth={1.5} />
+            </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M4 6h16M4 12h10M4 18h7"
+              />
+            </svg>
+          )}
+        </span>
+        <ChevronDown
+          className={`w-3.5 h-3.5 transition-transform duration-200 ${
+            isOpen ? "rotate-180" : ""
+          } ${isActive ? "text-slate-300" : "text-slate-400"}`}
+        />
+      </button>
+
+      {isOpen &&
+        createPortal(
+          <div
+            ref={menuRef}
+            style={menuStyle}
+            className="bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-[9999] overflow-hidden"
+          >
+            {options.map((option) => (
+              <button
+                type="button"
+                key={option.value}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onChange(option.value);
+                  onToggle();
+                }}
+                className={`
+                  w-full text-left px-4 py-2.5 text-sm transition-colors cursor-pointer
+                  ${
+                    value === option.value
+                      ? "bg-slate-100 text-slate-900 font-medium"
+                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                  }
+                `}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>,
+          document.body
+        )}
+    </div>
+  );
+}
+
+function MentorCard({ mentor }: { mentor: any }) {
+  return (
+    <div className="group cursor-pointer">
+      <div
+        className="
+        relative rounded-[24px] overflow-hidden
+        bg-white shadow-[0_4px_24px_rgba(0,0,0,0.08)]
+        transition-all duration-500
+        hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)] hover:scale-[1.01]
+        border border-gray-100
+      "
+      >
+        {/* Image */}
+        <div className="relative h-[280px] overflow-hidden">
+          {mentor.image ? (
+            <Image
+              src={mentor.image}
+              alt={mentor.name}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className={`object-cover transition-all duration-700 group-hover:scale-[1.04] ${
+                mentor.imagePosition === "top" ? "object-top" : ""
+              }`}
+              loading="lazy"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-primary-900 via-violet-500 to-pink-400 flex items-center justify-center">
+              <span className="text-6xl font-bold text-white">
+                {mentor.name
+                  .split(" ")
+                  .map((n: string) => n[0])
+                  .join("")
+                  .toUpperCase()
+                  .slice(0, 2)}
+              </span>
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
+
+          {/* Verified Badge */}
+          {mentor.verified && (
+            <div className="absolute top-4 right-4 w-8 h-8 bg-gradient-to-r from-primary-900 via-violet-500 to-pink-400 rounded-full flex items-center justify-center shadow-lg">
+              <CheckCircle2 className="w-5 h-5 text-white" strokeWidth={2.5} />
+            </div>
+          )}
+
+          {/* Location Badge */}
+          <div className="absolute bottom-4 left-4 flex items-center gap-1.5 px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full shadow-sm">
+            <svg
+              className="w-3.5 h-3.5 text-gray-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+            <span className="text-xs font-medium text-gray-700">
+              {mentor.location}
+            </span>
+          </div>
+        </div>
+
+        {/* Info */}
+        <div className="px-6 pt-5 pb-6">
+          {/* Name */}
+          <h3 className="text-xl font-semibold text-gray-900 tracking-tight">
+            {mentor.name}
+          </h3>
+
+          {/* College Info */}
+          <p className="text-[15px] text-gray-700 mt-1 font-medium">
+            {mentor.college}
+          </p>
+
+          {/* Course + Year */}
+          <p className="text-sm text-gray-500 mt-0.5">
+            {mentor.course} • {mentor.year}
+          </p>
+
+          {/* Stats Pills */}
+          <div className="flex items-center gap-2 mt-4">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 rounded-full">
+              <svg
+                className="w-3.5 h-3.5 text-amber-500"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+              <span className="text-xs font-semibold text-amber-700">
+                {mentor.rating}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 rounded-full">
+              <svg
+                className="w-3.5 h-3.5 text-blue-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+              <span className="text-xs font-semibold text-blue-700">
+                {mentor.sessions}
+              </span>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <Link
+            href={`/mentor/${mentor.id}`}
+            className="
+              block w-full mt-5 py-3 rounded-xl text-center
+              bg-gray-900 text-white text-[15px]
+              font-semibold
+              transition-all duration-300
+              hover:bg-black
+            "
+          >
+            Schedule Session
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function FindMentorsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [collegeFilter, setCollegeFilter] = useState("all");
   const [streamFilter, setStreamFilter] = useState("all");
   const [locationFilter, setLocationFilter] = useState("all");
-  const [priceRange, setPriceRange] = useState([0, 500]);
   const [sortBy, setSortBy] = useState("rating");
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [page, setPage] = useState(1);
-  const cardsRef = useRef<HTMLDivElement>(null);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
 
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Fixed filtering logic
   const filteredMentors = mentors
     .filter((mentor) => {
       const search = searchTerm.trim().toLowerCase();
-      // If search is empty, always match
       const matchesSearch =
         !search ||
         mentor.name.toLowerCase().includes(search) ||
         mentor.college.toLowerCase().includes(search) ||
         mentor.course.toLowerCase().includes(search);
 
+      // Fixed college filter - check if mentor's college contains the filter value
       const matchesCollege =
-        collegeFilter === "all" || mentor.college.includes(collegeFilter);
+        collegeFilter === "all" ||
+        mentor.college.toLowerCase().includes(collegeFilter.toLowerCase());
+
+      // Fixed stream filter - check specialties array
       const matchesStream =
         streamFilter === "all" ||
         mentor.specialties.some((specialty) =>
           specialty.toLowerCase().includes(streamFilter.toLowerCase())
         );
+
+      // Fixed location filter
       const matchesLocation =
         locationFilter === "all" ||
         mentor.location.toLowerCase().includes(locationFilter.toLowerCase());
-      const matchesPrice =
-        mentor.price >= priceRange[0] && mentor.price <= priceRange[1];
 
       return (
-        matchesSearch &&
-        matchesCollege &&
-        matchesStream &&
-        matchesLocation &&
-        matchesPrice
+        matchesSearch && matchesCollege && matchesStream && matchesLocation
       );
     })
     .sort((a, b) => {
@@ -401,499 +476,236 @@ export default function MentorsPage() {
       }
     });
 
-  // Reset to first page if filters/search change
   useEffect(() => {
     setPage(1);
-  }, [
-    searchTerm,
-    collegeFilter,
-    streamFilter,
-    locationFilter,
-    priceRange,
-    sortBy,
-  ]);
-
-  // Animate mentor cards on every render of filteredMentors
-  useEffect(() => {
-    if (cardsRef.current) {
-      const cards = cardsRef.current.querySelectorAll(".mentor-card");
-      cards.forEach((card, idx) => {
-        card.classList.remove("animate-fade-in-up");
-        card.classList.remove("opacity-0");
-        setTimeout(() => {
-          card.classList.add("animate-fade-in-up");
-        }, idx * 100);
-      });
-    }
-  }, [filteredMentors]);
+  }, [searchTerm, collegeFilter, streamFilter, locationFilter, sortBy]);
 
   const clearAllFilters = () => {
     setSearchTerm("");
     setCollegeFilter("all");
     setStreamFilter("all");
     setLocationFilter("all");
-    setPriceRange([0, 500]);
     setSortBy("rating");
-    // Focus the search input for better UX
-    setTimeout(() => {
-      const input = document.querySelector(
-        'input[placeholder="Search mentors..."]'
-      ) as HTMLInputElement;
-      if (input) input.focus();
-    }, 100);
   };
 
   const activeFiltersCount =
-    (searchTerm ? 1 : 0) +
     (collegeFilter !== "all" ? 1 : 0) +
     (streamFilter !== "all" ? 1 : 0) +
-    (locationFilter !== "all" ? 1 : 0) +
-    (priceRange[0] > 0 || priceRange[1] < 500 ? 1 : 0);
+    (locationFilter !== "all" ? 1 : 0);
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredMentors.length / MENTORS_PER_PAGE);
   const pagedMentors = filteredMentors.slice(
     (page - 1) * MENTORS_PER_PAGE,
     page * MENTORS_PER_PAGE
   );
 
+  const collegeOptions = [
+    { value: "all", label: "All Colleges" },
+    { value: "IIT", label: "IIT" },
+    { value: "NIT", label: "NIT" },
+    { value: "IIIT", label: "IIIT" },
+    { value: "NID", label: "NID" },
+    { value: "Nirma", label: "Nirma" },
+    { value: "Dhirubhai Ambani", label: "DA-IICT" },
+    { value: "Charusat", label: "Charusat" },
+    { value: "VIT", label: "VIT" },
+    { value: "MIT", label: "MIT" },
+  ];
+
+  const streamOptions = [
+    { value: "all", label: "All Streams" },
+    { value: "Engineering", label: "Engineering" },
+    { value: "Design", label: "Design" },
+    { value: "Medical", label: "Medical" },
+    { value: "Business", label: "Business" },
+    { value: "AI/ML", label: "AI/ML" },
+    { value: "Research", label: "Research" },
+  ];
+
+  const locationOptions = [
+    { value: "all", label: "All Locations" },
+    { value: "Gujarat", label: "Gujarat" },
+    { value: "Maharashtra", label: "Maharashtra" },
+    { value: "Chhattisgarh", label: "Chhattisgarh" },
+    { value: "West Bengal", label: "West Bengal" },
+    { value: "Tamil Nadu", label: "Tamil Nadu" },
+    { value: "Assam", label: "Assam" },
+  ];
+
+  const sortOptions = [
+    { value: "rating", label: "Highest Rated" },
+    { value: "sessions", label: "Most Sessions" },
+    //   { value: "price_low", label: "Price: Low → High" },
+    //   { value: "price_high", label: "Price: High → Low" },
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-white">
-      <Navigation />
-
-      {/* Hero Banner Section */}
-      <section className="pt-32 pb-12 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center gap-12">
-            <div className="flex-1 text-center lg:text-left">
-              <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-50 to-purple-50 rounded-full border border-blue-100 mb-6">
-                <Verified className="w-4 h-4 mr-2 text-green-600" />
-                <span className="text-sm font-semibold text-gray-700">
-                  Verified Mentors
+    <div className="min-h-screen bg-white">
+      {/* Floating Header with Glassmorphism */}
+      <header className="fixed top-20 left-0 right-0 z-40 flex justify-center px-4 pt-4">
+        <div
+          className={`w-full max-w-6xl transition-all duration-700 ease-out rounded-3xl ${
+            isScrolled
+              ? "backdrop-blur-3xl bg-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.2)] border border-white/50"
+              : "backdrop-blur-2xl bg-white/50 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] border border-white/60"
+          }`}
+          style={{
+            backdropFilter: "blur(24px) saturate(200%)",
+            WebkitBackdropFilter: "blur(24px) saturate(200%)",
+          }}
+        >
+          <div className="px-6 lg:px-8 py-6">
+            {/* Title Row */}
+            <div className="mb-0">
+              {/* <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">
+                Find a{" "}
+                <span className="bg-gradient-to-r from-blue-600 via-violet-500 to-pink-500 bg-clip-text text-transparent">
+                  Mentor
                 </span>
-              </div>
-              <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-                Find Your Perfect{" "}
-                <span className="apple-gradient-text">Mentor</span>
-              </h1>
-              <p className="text-xl text-gray-600 mb-8 max-w-2xl">
-                Connect with experienced college seniors for personalized
-                guidance on academics, placements, internships, and campus life.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 items-center lg:items-start">
-                <div className="flex items-center space-x-4">
-                  <div className="flex -space-x-2">
-                    {[1, 2, 3].map((i) => (
-                      <div
-                        key={i}
-                        className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 border-2 border-white flex items-center justify-center text-white text-sm font-bold"
-                      >
-                        {i}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    <p className="font-semibold text-gray-900">
-                      {mentors.length}+ Mentors
-                    </p>
-                    <p className="text-gray-500">Ready to help</p>
-                  </div>
-                </div>
-              </div>
+              </h1> */}
+              {/* <p className="text-slate-600 mt-2 text-sm">
+                {filteredMentors.length} mentors available
+              </p> */}
             </div>
 
-            <div className="flex-1">
-              <div className="relative">
-                <div className="absolute -inset-4 bg-gradient-to-r from-blue-300 to-purple-300 rounded-3xl blur-3xl opacity-20"></div>
-                <div className="relative bg-white rounded-3xl p-8 shadow-2xl border border-gray-100">
-                  <div className="space-y-4">
-                    <div className="relative">
-                      <Search className="absolute left-4 top-4 text-gray-400 h-5 w-5" />
-                      <input
-                        type="text"
-                        placeholder="Search by name or course..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
-                      />
-                    </div>
-
-                    <div className="pt-2 border-t border-gray-100">
-                      <div className="grid grid-cols-3 gap-2 text-center">
-                        <div>
-                          <p className="text-2xl font-bold text-blue-600">
-                            {filteredMentors.length}
-                          </p>
-                          <p className="text-xs text-gray-600">Available</p>
-                        </div>
-                        <div>
-                          <p className="text-2xl font-bold text-green-600">
-                            4.8
-                          </p>
-                          <p className="text-xs text-gray-600">Avg Rating</p>
-                        </div>
-                        <div>
-                          <p className="text-2xl font-bold text-purple-600">
-                            ₹100
-                          </p>
-                          <p className="text-xs text-gray-600">From</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Filters and Results Section */}
-      <section className="py-12 px-4 bg-gradient-to-b from-white via-blue-50/30 to-white">
-        <div className="max-w-7xl mx-auto">
-          {/* Modern Filter Cards */}
-          <div className="mb-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-              {/* Sort By Card */}
-              <div className="bg-white rounded-2xl p-4 border-2 border-gray-100 hover:border-blue-300 shadow-sm hover:shadow-md transition-all duration-300 group">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="p-2 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
-                    <Star className="w-4 h-4 text-blue-600" />
-                  </div>
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                    Sort By
-                  </label>
-                </div>
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium appearance-none cursor-pointer hover:border-blue-300 transition-colors"
-                >
-                  <option value="rating">Highest Rating</option>
-                  <option value="sessions">Most Sessions</option>
-                  <option value="price_low">Price: Low to High</option>
-                  <option value="price_high">Price: High to Low</option>
-                </select>
-              </div>
-
-              {/* College Type Card */}
-              <div className="bg-white rounded-2xl p-4 border-2 border-gray-100 hover:border-purple-300 shadow-sm hover:shadow-md transition-all duration-300 group">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="p-2 bg-purple-100 rounded-lg group-hover:bg-purple-200 transition-colors">
-                    <Award className="w-4 h-4 text-purple-600" />
-                  </div>
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                    College
-                  </label>
-                </div>
-                <select
-                  value={collegeFilter}
-                  onChange={(e) => setCollegeFilter(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm font-medium appearance-none cursor-pointer hover:border-purple-300 transition-colors"
-                >
-                  <option value="all">All Colleges</option>
-                  {["IIT", "NIT", "AIIMS", "IIM", "BITS"].map((c) => (
-                    <option key={c} value={c}>
-                      {c}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Stream Card */}
-              <div className="bg-white rounded-2xl p-4 border-2 border-gray-100 hover:border-green-300 shadow-sm hover:shadow-md transition-all duration-300 group">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="p-2 bg-green-100 rounded-lg group-hover:bg-green-200 transition-colors">
-                    <BookOpen className="w-4 h-4 text-green-600" />
-                  </div>
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                    Stream
-                  </label>
-                </div>
-                <select
-                  value={streamFilter}
-                  onChange={(e) => setStreamFilter(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm font-medium appearance-none cursor-pointer hover:border-green-300 transition-colors"
-                >
-                  <option value="all">All Streams</option>
-                  {["Engineering", "Medical", "Commerce", "MBA"].map((s) => (
-                    <option key={s} value={s}>
-                      {s}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Location Card */}
-              <div className="bg-white rounded-2xl p-4 border-2 border-gray-100 hover:border-red-300 shadow-sm hover:shadow-md transition-all duration-300 group">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="p-2 bg-red-100 rounded-lg group-hover:bg-red-200 transition-colors">
-                    <MapPin className="w-4 h-4 text-red-600" />
-                  </div>
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                    Location
-                  </label>
-                </div>
-                <select
-                  value={locationFilter}
-                  onChange={(e) => setLocationFilter(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm font-medium appearance-none cursor-pointer hover:border-red-300 transition-colors"
-                >
-                  <option value="all">All Locations</option>
-                  {[
-                    "Delhi",
-                    "Tamil Nadu",
-                    "Gujarat",
-                    "Rajasthan",
-                    "Bangalore",
-                    "Mumbai",
-                  ].map((l) => (
-                    <option key={l} value={l}>
-                      {l}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Price Range Card */}
-              <div className="bg-white rounded-2xl p-4 border-2 border-gray-100 hover:border-orange-300 shadow-sm hover:shadow-md transition-all duration-300 group">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="p-2 bg-orange-100 rounded-lg group-hover:bg-orange-200 transition-colors">
-                    <Calendar className="w-4 h-4 text-orange-600" />
-                  </div>
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                    Max Price
-                  </label>
-                </div>
-                <div className="space-y-2">
-                  <input
-                    type="range"
-                    min="0"
-                    max="500"
-                    step="50"
-                    value={priceRange[1]}
-                    onChange={(e) =>
-                      setPriceRange([priceRange[0], parseInt(e.target.value)])
+            {/* Filter Bar with Search - single line on desktop, stacked on mobile */}
+            <div className="flex flex-col sm:flex-row items-center justify-center">
+              <div className="w-full flex flex-col sm:flex-row items-center gap-4">
+                {/* Filters (compact on small screens) */}
+                <div className="flex items-center gap-3 flex-shrink-0 overflow-x-auto sm:overflow-visible pb-2 -mb-2 sm:pb-0 sm:mb-0">
+                  <FilterChip
+                    label="College"
+                    value={collegeFilter}
+                    options={collegeOptions}
+                    onChange={setCollegeFilter}
+                    isOpen={openDropdown === "college"}
+                    onToggle={() =>
+                      setOpenDropdown(
+                        openDropdown === "college" ? null : "college"
+                      )
                     }
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-600"
                   />
-                  <div className="text-center">
-                    <span className="text-sm font-bold text-gray-900">
-                      ₹{priceRange[1]}
-                    </span>
+                  <FilterChip
+                    label="Stream"
+                    value={streamFilter}
+                    options={streamOptions}
+                    onChange={setStreamFilter}
+                    isOpen={openDropdown === "stream"}
+                    onToggle={() =>
+                      setOpenDropdown(
+                        openDropdown === "stream" ? null : "stream"
+                      )
+                    }
+                  />
+                  <FilterChip
+                    label="Location"
+                    value={locationFilter}
+                    options={locationOptions}
+                    onChange={setLocationFilter}
+                    isOpen={openDropdown === "location"}
+                    onToggle={() =>
+                      setOpenDropdown(
+                        openDropdown === "location" ? null : "location"
+                      )
+                    }
+                  />
+
+                  <div className="h-5 w-px bg-slate-300/50 mx-1 flex-shrink-0" />
+
+                  <FilterChip
+                    label="Sort"
+                    value={sortBy}
+                    options={sortOptions}
+                    onChange={setSortBy}
+                    isOpen={openDropdown === "sort"}
+                    onToggle={() =>
+                      setOpenDropdown(openDropdown === "sort" ? null : "sort")
+                    }
+                  />
+
+                  {activeFiltersCount > 0 && (
+                    <button
+                      onClick={clearAllFilters}
+                      className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-white/70 rounded-full transition-colors whitespace-nowrap flex-shrink-0"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">Clear all</span>
+                    </button>
+                  )}
+                </div>
+
+                {/* Search - on mobile it sits below filters; on sm+ it stays to the right */}
+                <div className="flex-1 min-w-0 mt-3 sm:mt-0">
+                  <div className="relative w-full sm:max-w-md">
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 h-4 w-4" />
+                    <input
+                      type="text"
+                      placeholder="Search mentors..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full pl-11 pr-10 py-2.5 bg-white/80 backdrop-blur-sm border border-slate-200/60 rounded-full text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-all"
+                      style={{
+                        backdropFilter: "blur(12px)",
+                        WebkitBackdropFilter: "blur(12px)",
+                      }}
+                    />
+                    {searchTerm && (
+                      <button
+                        onClick={() => setSearchTerm("")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded-full hover:bg-white/70 transition-colors"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* Results and Clear Filters */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8 p-4 bg-white rounded-2xl border-2 border-gray-100">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg">
-                <Users className="w-5 h-5 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Found</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {filteredMentors.length}
-                  <span className="text-sm font-semibold text-gray-600 ml-2">
-                    mentors
-                  </span>
-                </p>
-              </div>
-            </div>
-
-            {activeFiltersCount > 0 && (
-              <button
-                onClick={clearAllFilters}
-                className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-50 to-purple-50 hover:from-blue-100 hover:to-purple-100 text-blue-700 font-semibold rounded-xl border-2 border-blue-200 hover:border-blue-300 transition-all duration-300 group"
-              >
-                <X className="w-4 h-4 group-hover:rotate-90 transition-transform" />
-                Clear Filters
-              </button>
-            )}
-          </div>
-
-          {/* Mentors Grid */}
-          {filteredMentors.length > 0 ? (
-            <>
-              <div
-                ref={cardsRef}
-                className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8"
-              >
-                {pagedMentors.map((mentor) => (
-                  <div
-                    key={mentor.id}
-                    className="mentor-card opacity-0 bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl border border-gray-100 hover:border-gray-300 transition-all duration-300 group cursor-pointer transform hover:-translate-y-2 flex flex-col hover:bg-gradient-to-b hover:from-white hover:to-gray-50"
-                  >
-                    {/* Header with animated gradient background */}
-                    <div className="relative h-28 bg-gradient-to-135 from-blue-500 via-blue-400 to-purple-500 overflow-hidden">
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-20 bg-white transition-opacity duration-300"></div>
-                      <div className="absolute -top-2 -right-2 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500"></div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="px-6 pb-6 flex-1 flex flex-col">
-                      {/* Profile Section */}
-                      <div className="flex items-start gap-4 -mt-16 mb-5 relative z-10">
-                        <div className="relative">
-                          <Image
-                            src={mentor.image || "/placeholder.svg"}
-                            alt={mentor.name}
-                            width={90}
-                            height={90}
-                            className="rounded-2xl border-4 border-white shadow-lg object-cover group-hover:shadow-xl transition-shadow duration-300"
-                          />
-                          {mentor.verified && (
-                            <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center border-3 border-white shadow-md animate-pulse">
-                              <Verified className="h-4 w-4 text-white" />
-                            </div>
-                          )}
-                        </div>
-                        <div className="flex-1 pt-2">
-                          <h3 className="font-bold text-gray-900 text-lg group-hover:text-blue-600 transition-colors duration-200 leading-tight">
-                            {mentor.name}
-                          </h3>
-                          <p className="text-sm text-gray-600 font-medium mt-0.5">
-                            {mentor.college}
-                          </p>
-                          <div className="flex items-center gap-1.5 mt-1.5">
-                            <BookOpen className="h-3.5 w-3.5 text-blue-500" />
-                            <p className="text-xs text-blue-600 font-semibold">
-                              {mentor.course.split(" ")[0]} • {mentor.year}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Stats with enhanced design */}
-                      <div className="grid grid-cols-3 gap-3 mb-5 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl border border-gray-200 group-hover:from-blue-50 group-hover:to-purple-50 group-hover:border-blue-200 transition-all duration-300">
-                        <div className="text-center">
-                          <div className="flex items-center justify-center gap-1 text-yellow-500 mb-1.5 group-hover:scale-110 transition-transform duration-200">
-                            <Star className="h-4 w-4 fill-current" />
-                            <span className="font-bold text-gray-900 text-sm">
-                              {mentor.rating}
-                            </span>
-                          </div>
-                          <p className="text-xs text-gray-600 font-medium">
-                            Rating
-                          </p>
-                        </div>
-                        <div className="text-center">
-                          <div className="font-bold text-gray-900 mb-1.5 text-sm flex items-center justify-center">
-                            <Users className="h-4 w-4 text-purple-500 mr-1" />
-                            {mentor.sessions}
-                          </div>
-                          <p className="text-xs text-gray-600 font-medium">
-                            Sessions
-                          </p>
-                        </div>
-                        <div className="text-center">
-                          <div className="font-bold text-gray-900 mb-1.5 text-sm flex items-center justify-center">
-                            <MapPin className="h-4 w-4 text-red-500" />
-                            <span className="ml-0.5">
-                              {mentor.location.split(" ")[0]}
-                            </span>
-                          </div>
-                          <p className="text-xs text-gray-600 font-medium">
-                            Location
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Bio */}
-                      <p className="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-2 flex-1 group-hover:text-gray-700 transition-colors">
-                        {mentor.bio}
-                      </p>
-
-                      {/* Specialties with enhanced styling */}
-                      <div className="mb-4">
-                        <div className="flex flex-wrap gap-2">
-                          {mentor.specialties
-                            .slice(0, 2)
-                            .map((specialty, idx) => (
-                              <span
-                                key={idx}
-                                className="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-xs font-semibold border border-blue-200 group-hover:bg-blue-100 group-hover:border-blue-300 transition-all duration-200"
-                              >
-                                {specialty}
-                              </span>
-                            ))}
-                          {mentor.specialties.length > 2 && (
-                            <span className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-xs font-semibold border border-gray-300 group-hover:bg-gray-200 transition-all duration-200">
-                              +{mentor.specialties.length - 2}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Languages */}
-                      <div className="mb-6 flex gap-2 flex-wrap">
-                        {mentor.languages.map((language, idx) => (
-                          <span
-                            key={idx}
-                            className="px-2.5 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-lg border border-gray-300 group-hover:bg-gray-200 group-hover:border-gray-400 transition-all duration-200"
-                          >
-                            {language}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* CTA Footer with enhanced design */}
-                      <div className="border-t border-gray-200 pt-5 flex items-center justify-between">
-                        <div className="flex flex-col">
-                          <span className="text-2xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                            ₹{mentor.price}
-                          </span>
-                          <span className="text-gray-500 text-xs font-medium">
-                            per session
-                          </span>
-                        </div>
-                        <Link href={`/booking/${mentor.id}`}>
-                          <button className="apple-button px-6 py-2.5 text-sm font-semibold group-hover:scale-110 transition-all duration-200 shadow-md hover:shadow-lg">
-                            Book Now
-                          </button>
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="mt-12">
-                  <SimplePagination
-                    page={page}
-                    totalPages={totalPages}
-                    onPageChange={setPage}
-                  />
-                </div>
-              )}
-            </>
-          ) : (
-            <div className="text-center py-24">
-              <div className="w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-8">
-                <Search className="h-16 w-16 text-gray-400" />
-              </div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-4">
-                No mentors found
-              </h3>
-              <p className="text-gray-600 mb-8 max-w-md mx-auto">
-                Try adjusting your filters or search criteria to find more
-                mentors that match your needs.
-              </p>
-              <button
-                onClick={clearAllFilters}
-                className="apple-button px-8 py-3 text-base font-semibold"
-              >
-                Clear All Filters
-              </button>
-            </div>
-          )}
         </div>
-      </section>
+      </header>
+
+      {/* Grid with top padding for fixed header */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-80 sm:pt-60 pb-12">
+        {filteredMentors.length > 0 ? (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {pagedMentors.map((mentor) => (
+                <MentorCard key={mentor.id} mentor={mentor} />
+              ))}
+            </div>
+
+            {totalPages > 1 && (
+              <div className="mt-12 flex justify-center">
+                <SimplePagination
+                  page={page}
+                  totalPages={totalPages}
+                  onPageChange={setPage}
+                />
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="text-center py-20">
+            <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <Search className="h-8 w-8 text-slate-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">
+              No mentors found
+            </h3>
+            <p className="text-slate-500 mb-6 text-sm max-w-sm mx-auto">
+              Try adjusting your search or filters to find what you're looking
+              for.
+            </p>
+            <button
+              onClick={clearAllFilters}
+              className="px-5 py-2.5 bg-slate-900 text-white text-sm font-medium rounded-xl hover:bg-slate-800 transition-colors"
+            >
+              Clear all filters
+            </button>
+          </div>
+        )}
+      </main>
     </div>
   );
 }

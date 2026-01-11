@@ -166,7 +166,7 @@ export default function CommunityPage() {
                 </p>
               </div>
               <Link
-                href="https://discord.gg/your-link"
+                href="https://discord.gg/3ta94ASkV3"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full"

@@ -12,12 +12,23 @@ type Logo = {
 export function CollegeCarousel({ useGrey = false }: { useGrey?: boolean }) {
   const logos: Logo[] = useMemo(
     () => [
-      { src: "/logo/iit_bombay.png", alt: "IIT Bombay" },
-      { src: "/logo/iit_delhi.png", alt: "IIT Delhi" },
-      { src: "/logo/iit_kanpur.png", alt: "IIT Kanpur" },
-      { src: "/logo/iit_madras.png", alt: "IIT Madras" },
-      { src: "/logo/iit_gandhinagar.png", alt: "IIT Gandhinagar" },
-      // add more logos here
+      { src: "/clg-logos/iit_delhi.png", alt: "IIT Delhi" },
+      { src: "/clg-logos/iit_bombay.png", alt: "IIT Bombay" },
+      { src: "/clg-logos/iit_madras.png", alt: "IIT Madras" },
+      { src: "/clg-logos/iit_kanpur.png", alt: "IIT Kanpur" },
+      { src: "/clg-logos/iit_gandhinagar.png", alt: "IIT Gandhinagar" },
+      { src: "/clg-logos/iit_kharagpur.png", alt: "IIT Kharagpur" },
+      { src: "/clg-logos/iit_guwahati.png", alt: "IIT Guwahati" },
+      { src: "/clg-logos/iit_bhilai.png", alt: "IIT Bhilai" },
+      { src: "/clg-logos/nit_surat.png", alt: "NIT Surat" },
+      { src: "/clg-logos/iiit_raipur.png", alt: "IIIT Raipur" },
+      { src: "/clg-logos/vit.png", alt: "VIT" },
+      { src: "/clg-logos/nirma.png", alt: "Nirma University" },
+      { src: "/clg-logos/daiict.png", alt: "DA-IICT" },
+      { src: "/clg-logos/charusat.png", alt: "CHARUSAT" },
+      { src: "/clg-logos/ddu.png", alt: "DDU" },
+      { src: "/clg-logos/iitram.png", alt: "IITRAM" },
+      { src: "/clg-logos/mit_wpu.png", alt: "MIT-WPU" },
     ],
     []
   );
