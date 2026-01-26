@@ -1096,7 +1096,7 @@ export default function FindMentorsPage() {
   const specialtyOptions = [
     { value: "all", label: "All Specialties" },
     ...Array.from(
-      new Set(mentors.flatMap((m) => m.specialties).filter((s) => s))
+      new Set(mentors.map((m) => m.course).filter((s) => s))
     )
       .sort()
       .map((specialty) => ({ value: specialty, label: specialty })),
@@ -1125,9 +1125,7 @@ export default function FindMentorsPage() {
 
       const matchesSpecialty =
         specialtyFilter === "all" ||
-        mentor.specialties.some((specialty) =>
-          specialty.toLowerCase().includes(specialtyFilter.toLowerCase())
-        );
+        (mentor.course || "").toLowerCase().includes(specialtyFilter.toLowerCase());
 
       return matchesSearch && matchesCollege && matchesSpecialty;
     })
