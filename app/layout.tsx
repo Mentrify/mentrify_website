@@ -5,6 +5,7 @@ import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
+import LayoutWrapper from "@/components/LayoutWrapper";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -58,11 +59,9 @@ export default function RootLayout({
 
       <body className={`min-h-screen bg-white ${inter.className}`}>
         <AnalyticsTracker />
-        <Navigation />
-
-        <main>{children}</main>
-
-        <Footer />
+        <LayoutWrapper>
+          {children}
+        </LayoutWrapper>
         <Analytics />
       </body>
     </html>
