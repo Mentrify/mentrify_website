@@ -265,7 +265,7 @@ export default function MentorProfilePage() {
 
           {/* Right Column - Booking Card */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 sticky top-28 relative overflow-hidden">
+            <div className="bg-white rounded-2xl border border-gray-100 p-6 sticky top-28 overflow-hidden">
               {/* Blurred Content */}
               <div className="blur-[6px] pointer-events-none select-none">
                 {/* Price */}

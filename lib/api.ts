@@ -1,12 +1,14 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 // API constants
-export const API_GET_MENTORS = '/api/mentors';
+// export const API_GET_MENTORS = '/api/mentors';
 export const API_GET_SLOTS = '/api/slots';
+export const API_GET_MENTORS = "/Users/v1/Mentors";
+
 
 // Create axios instance
 const api: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
