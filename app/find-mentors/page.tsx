@@ -716,10 +716,11 @@
 
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Search, X, ChevronDown, CheckCircle2 } from "lucide-react";
 import { getMentors, Mentor } from "@/lib/services/mentor.service";
+import { isAuthenticated } from "@/lib/auth";
 
 const MENTORS_PER_PAGE = 9;
 
@@ -896,7 +897,7 @@ function SimplePagination({
 
 /* ==================== MENTOR CARD ==================== */
 
-function MentorCard({ mentor }: { mentor: Mentor }) {
+function MentorCard({ mentor, onScheduleClick }: { mentor: Mentor; onScheduleClick: (mentorId: number) => void }) {
   return (
     <div className="group cursor-pointer">
       <div
@@ -1017,18 +1018,18 @@ function MentorCard({ mentor }: { mentor: Mentor }) {
           </div>
 
           {/* CTA */}
-          <Link
-            href={`/mentor/${mentor.id}`}
+          <button
+            onClick={() => onScheduleClick(mentor.id)}
             className="
-              block w-full mt-5 py-3 rounded-xl text-center
+              w-full mt-5 py-3 rounded-xl text-center
               bg-gray-900 text-white text-[15px]
               font-semibold
               transition-all duration-300
-              hover:bg-black
+              hover:bg-black cursor-pointer
             "
           >
             Schedule Session
-          </Link>
+          </button>
         </div>
       </div>
     </div>
@@ -1038,6 +1039,8 @@ function MentorCard({ mentor }: { mentor: Mentor }) {
 /* ==================== MAIN PAGE ==================== */
 
 export default function FindMentorsPage() {
+  const router = useRouter();
+
   const [mentors, setMentors] = useState<Mentor[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -1049,6 +1052,14 @@ export default function FindMentorsPage() {
   const [page, setPage] = useState(1);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
+
+  const handleScheduleClick = (mentorId: number) => {
+    if (!isAuthenticated()) {
+      window.location.href = "https://dev.mentrify.com/signin";
+    } else {
+      router.push(`/mentor/${mentorId}`);
+    }
+  };
 
   useEffect(() => {
     const fetchMentors = async () => {
@@ -1284,7 +1295,7 @@ export default function FindMentorsPage() {
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {pagedMentors.map((mentor) => (
-                <MentorCard key={mentor.id} mentor={mentor} />
+                <MentorCard key={mentor.id} mentor={mentor} onScheduleClick={handleScheduleClick} />
               ))}
             </div>
 
