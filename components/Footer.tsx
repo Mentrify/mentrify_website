@@ -24,7 +24,7 @@ export default function Footer() {
 
             <div className="mt-8">
               <Link
-                href="/find-mentors"
+                href="https://dev.mentrify.com/signin"
                 className="inline-flex items-center rounded-full bg-white px-5 py-2 text-sm font-medium text-gray-900 shadow-sm hover:shadow transition-shadow"
               >
                 Get Started
