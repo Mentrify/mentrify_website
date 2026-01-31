@@ -67,7 +67,7 @@ export default function BecomeMentorPage() {
 
           <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => window.location.href = "https://app.mentrify.com/mentor-signup"}
               className="apple-button text-lg px-8 py-4 inline-flex items-center justify-center"
             >
               Start Application <ArrowRight className="ml-2 h-5 w-5" />
@@ -160,7 +160,7 @@ export default function BecomeMentorPage() {
       </section>
 
       {/* Modal */}
-      {isModalOpen && (
+      {/* {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div 
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
@@ -195,7 +195,7 @@ export default function BecomeMentorPage() {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
