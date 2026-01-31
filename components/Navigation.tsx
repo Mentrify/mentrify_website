@@ -98,7 +98,7 @@ export default function Navigation() {
               </Link>
               */}
 
-              <Link  href="https://dev.mentrify.com/signin">
+              <Link  href="https://app.mentrify.com/signin">
                 <button className="px-4 py-2 rounded-full bg-black text-white text-sm font-medium hover:opacity-90 transition-all duration-300 shadow-sm">
                   Get Started
                 </button>
@@ -150,7 +150,7 @@ export default function Navigation() {
                 {item.label}
               </Link>
             ))}
-            <Link href="https://dev.mentrify.com/signin" onClick={() => setIsOpen(false)}>
+            <Link href="https://app.mentrify.com/signin" onClick={() => setIsOpen(false)}>
               <button className="w-full px-4 py-3 rounded-2xl bg-black text-white font-medium hover:opacity-90 transition-all duration-300 shadow-sm">
                 Get Started
               </button>

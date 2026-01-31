@@ -1055,7 +1055,7 @@ export default function FindMentorsPage() {
 
   const handleScheduleClick = (mentorId: number) => {
     if (!isAuthenticated()) {
-      window.location.href = "https://dev.mentrify.com/signin";
+      window.location.href = "https://app.mentrify.com/signin";
     } else {
       router.push(`/mentor/${mentorId}`);
     }
