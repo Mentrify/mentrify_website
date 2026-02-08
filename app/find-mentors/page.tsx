@@ -724,6 +724,15 @@ import { isAuthenticated } from "@/lib/auth";
 
 const MENTORS_PER_PAGE = 9;
 
+// Utility function to convert text to Pascal Case
+const toPascalCase = (str: string) => {
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
 /* ==================== FILTER CHIP ==================== */
 
 function FilterChip({
@@ -795,7 +804,7 @@ function FilterChip({
   }, [isOpen, onToggle]);
 
   const selectedOption = options.find((o) => o.value === value);
-  const isActive = value !== "all";
+  const isActive = value !== "all" && value !== "";
   const displayText = isActive ? selectedOption?.label : label;
 
   return (
@@ -917,22 +926,21 @@ function MentorCard({ mentor, onScheduleClick }: { mentor: Mentor; onScheduleCli
               alt={mentor.name}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover transition-all duration-700 group-hover:scale-[1.04]"
+              className="object-cover object-center transition-all duration-700 group-hover:scale-[1.04]"
+              style={mentor.name.toLowerCase() === "diya khurana" ? { transform: "rotate(90deg)" } : mentor.name.toLowerCase() === "misbah rahman" ? { objectPosition: "center top" } : undefined}
               loading="lazy"
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-primary-900 via-violet-500 to-pink-400 flex items-center justify-center">
               <span className="text-6xl font-bold text-white">
-                {mentor.name
+                {toPascalCase(mentor.name)
                   .split(" ")
                   .map((n) => n[0])
                   .join("")
-                  .toUpperCase()
                   .slice(0, 2)}
               </span>
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
 
           {/* Verified Badge */}
           {mentor.verified && (
@@ -971,7 +979,7 @@ function MentorCard({ mentor, onScheduleClick }: { mentor: Mentor; onScheduleCli
         {/* Info */}
         <div className="px-6 pt-5 pb-6">
           <h3 className="text-xl font-semibold text-gray-900 tracking-tight">
-            {mentor.name}
+            {toPascalCase(mentor.name)}
           </h3>
 
           <p className="text-[15px] text-gray-700 mt-1 font-medium">
@@ -1048,7 +1056,7 @@ export default function FindMentorsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [collegeFilter, setCollegeFilter] = useState("all");
   const [specialtyFilter, setSpecialtyFilter] = useState("all");
-  const [sortBy, setSortBy] = useState("rating");
+  const [sortBy, setSortBy] = useState("");
   const [page, setPage] = useState(1);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -1103,6 +1111,7 @@ export default function FindMentorsPage() {
   ];
 
   const sortOptions = [
+    { value: "", label: "Sort" },
     { value: "rating", label: "Highest Rated" },
     { value: "sessions", label: "Most Sessions" },
     { value: "price_low", label: "Price: Low → High" },
@@ -1130,6 +1139,7 @@ export default function FindMentorsPage() {
       return matchesSearch && matchesCollege && matchesSpecialty;
     })
     .sort((a, b) => {
+      if (!sortBy) return 0;
       switch (sortBy) {
         case "rating":
           return b.rating - a.rating;
@@ -1148,11 +1158,15 @@ export default function FindMentorsPage() {
     setPage(1);
   }, [searchTerm, collegeFilter, specialtyFilter, sortBy]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [page]);
+
   const clearAllFilters = () => {
     setSearchTerm("");
     setCollegeFilter("all");
     setSpecialtyFilter("all");
-    setSortBy("rating");
+    setSortBy("");
   };
 
   const activeFiltersCount =
