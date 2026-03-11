@@ -18,34 +18,40 @@ export interface Mentor {
 
 export const getMentors = async (): Promise<Mentor[]> => {
   try {
-    const response = await api.get(API_GET_MENTORS, { params: { status: 'active'}});
+    const response = await api.get(API_GET_MENTORS);
 
-    const results = response.data?.results || [];
+    const payload = response.data?.data ?? response.data ?? response;
+    let results: any[] = [];
+    if (Array.isArray(payload)) {
+      results = payload;
+    } else if (Array.isArray(payload?.results)) {
+      results = payload.results;
+    } else if (Array.isArray(payload?.data)) {
+      results = payload.data;
+    } else if (Array.isArray(response.data)) {
+      results = response.data;
+    }
 
     const mappedMentors: Mentor[] = results.map((mentor: any) => ({
-      id: mentor.id,
+      id: mentor.mentor_id,
 
-      // combine first + last name
       name: `${mentor.first_name ?? ""} ${mentor.last_name ?? ""}`.trim(),
 
-      college: mentor.organization ?? "Not specified",
+      college: mentor.organization ?? mentor.affiliation ?? "Not specified",
 
-      course: mentor.course ?? "Not specified",
+      course: mentor.current_role ?? "Not specified",
 
       year: mentor.year_of_study
         ? `Year ${mentor.year_of_study}`
         : "Not specified",
 
-      // backend does not provide rating yet → default
-      rating: 4.5,
+      rating: typeof mentor.rating === "number" ? mentor.rating : 4.5,
 
-      // backend does not provide sessions → default
-      sessions: 0,
+      sessions: typeof mentor.sessions === "number" ? mentor.sessions : 0,
 
       price: mentor.session_cost ?? 0,
 
-      // backend has no location field → default for now
-      location: "India",
+      location: mentor.organization ?? mentor.affiliation ?? "India",
 
       specialties: mentor.skills ?? [],
 
