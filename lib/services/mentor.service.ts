@@ -18,7 +18,7 @@ export interface Mentor {
 
 export const getMentors = async (): Promise<Mentor[]> => {
   try {
-    const response = await api.get(API_GET_MENTORS, { params: { status: 'active', page_size: 1000 } });
+    const response = await api.get(API_GET_MENTORS, { params: { status: 'active', page_size: 100 } });
 
     const payload = response.data?.data ?? response.data ?? response;
     let results: any[] = [];
