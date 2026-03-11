@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { getUser, isAuthenticated, saveUser } from '@/lib/auth'
+import { getUser, isAuthenticated, setUser as saveUser } from '@/lib/auth'
 import { useRouter } from 'next/navigation'
 import { User, Bell, Shield, Palette, Globe, Save, Eye, EyeOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
